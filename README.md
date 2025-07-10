@@ -4,11 +4,12 @@
 # Problem Statement
 Create a tool that scans SaaS APIs to identify security risks (e.g., unprotected endpoints, weak authentication). The tool should generate a visual risk map and provide simple, actionable recommendations.
 
-# TODO 
+# Core Features
 
-[ ] Directory enumeration
-[ ] Web crawling
-[ ] api prediction
-[ ] api detection
-[ ] risk analysis
-[ ] validation tests
+[ ] Directory enumeration  
+[ ] Web crawling  
+[ ] api prediction  
+[ ] api detection  
+[ ] risk analysis  
+[ ] add visualisation  
+[ ] validation tests  
