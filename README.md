@@ -6,10 +6,10 @@ Create a tool that scans SaaS APIs to identify security risks (e.g., unprotected
 
 # Core Features
 
-[ ] Directory enumeration  
-[ ] Web crawling  
-[ ] api prediction  
-[ ] api detection  
-[ ] risk analysis  
-[ ] add visualisation  
-[ ] validation tests  
+- [ ] Directory enumeration  
+- [ ] Web crawling  
+- [ ] api prediction  
+- [ ] api detection  
+- [ ] risk analysis  
+- [ ] add visualisation  
+- [ ] validation tests  
