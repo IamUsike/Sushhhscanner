@@ -11,35 +11,35 @@ Create a tool that scans SaaS APIs to identify security risks (e.g., unprotected
 
 ## DIR ENUM 
    
-[ ] main-tool  
-[ ] cli  
-[ ] web  
+- [ ] main-tool  
+- [ ] cli  
+- [ ] web  
 
 ----------
 # Web crawling  
   
-[ ]
+- [ ]
 
 ----------
 # Api prediction
 
-[ ] create worldlists wordlist
-[ ] check for professional ways
+- [ ] create worldlists wordlist
+- [ ] check for professional ways
 
 ----------
 # Api detection
 
-[ ]  
+- [ ]  
 
 ----------
 # Risk analysis
 
-[ ] check the function of the api  
-[ ] match the functionality  
+- [ ] check the function of the api  
+- [ ] match the functionality  
 
 ----------
 # Validation tests
 
-[ ] write a few test rules  
-[ ] generate a script for it   
-[ ] manual validation  
+- [ ] write a few test rules  
+- [ ] generate a script for it   
+- [ ] manual validation  
