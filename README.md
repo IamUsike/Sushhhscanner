@@ -7,39 +7,18 @@ Create a tool that scans SaaS APIs to identify security risks (e.g., unprotected
 ----------
 ----------
 
-# TODO [ supportFeatures ]
+# TODO [ Enumerate Directories using CLI or WEB ]
 
 ## DIR ENUM 
    
-- [ ] main-tool  
-- [ ] cli  
-- [ ] web  
+- [x] cli BASE
+- [ ] initialiser
+- [ ] frontend
+- [ ] middleware
+- [ ] [web-logic] backend
+- [ ] CLI Enhanced
 
-----------
-# Web crawling  
-  
-- [ ]
 
-----------
-# Api prediction
+## fixes
 
-- [ ] create worldlists wordlist
-- [ ] check for professional ways
-
-----------
-# Api detection
-
-- [ ]  
-
-----------
-# Risk analysis
-
-- [ ] check the function of the api  
-- [ ] match the functionality  
-
-----------
-# Validation tests
-
-- [ ] write a few test rules  
-- [ ] generate a script for it   
-- [ ] manual validation  
+- [ ] clean code - the colors using Fore are everywhere - organise it
