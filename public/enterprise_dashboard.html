@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛡️ CywAyz Enterprise API Security</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #a855f7 100%);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-bg-solid: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --text-primary: #2c3e50;
+            --text-secondary: #64748b;
+            --text-white: #ffffff;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-orange: #f59e0b;
+            --accent-purple: #8b5cf6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--primary-gradient);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animated background elements */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 25s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .dashboard-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header Section */
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--text-white);
+            animation: slideInDown 1s ease-out;
+        }
+
+        .dashboard-header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #ffffff, #f0f9ff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -2px;
+        }
+
+        .dashboard-header .subtitle {
+            font-size: 1.4rem;
+            opacity: 0.95;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            margin-bottom: 25px;
+        }
+
+        .connection-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(16, 185, 129, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            backdrop-filter: blur(10px);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        /* Glass Card Styling */
+        .glass-card {
+            background: var(--glass-bg);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 
+                0 8px 32px rgba(0,0,0,0.12),
+                0 4px 16px rgba(0,0,0,0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple), var(--accent-green));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 
+                0 20px 60px rgba(0,0,0,0.2),
+                0 8px 24px rgba(0,0,0,0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        .glass-card-solid {
+            background: var(--glass-bg-solid);
+        }
+
+        /* Main Configuration Card */
+        .config-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .config-section h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .config-section h3 i {
+            color: var(--accent-blue);
+            font-size: 1.8rem;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: 16px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+
+        .scan-depth-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .depth-option {
+            padding: 16px;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .depth-option.selected {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+        }
+
+        .depth-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .discovery-methods {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .method-card {
+            background: rgba(248, 250, 252, 0.8);
+            border: 2px solid rgba(0,0,0,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .method-card.selected {
+            border-color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .method-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        .method-card i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--accent-blue);
+        }
+
+        .method-card.selected i {
+            color: var(--accent-green);
+        }
+
+        .method-card h4 {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .method-card p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Progress Section */
+        .progress-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(0,0,0,0.1);
+            transform: translateY(-50%);
+            z-index: -1;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            position: relative;
+        }
+
+        .step-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            border: 3px solid rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-icon {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            color: white;
+            animation: pulse-blue 2s infinite;
+        }
+
+        .step.completed .step-icon {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            color: white;
+        }
+
+        @keyframes pulse-blue {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+        }
+
+        .step-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .step.active .step-label,
+        .step.completed .step-label {
+            color: var(--text-primary);
+        }
+
+        .progress-detail {
+            background: rgba(248, 250, 252, 0.8);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .progress-detail h4 {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .progress-detail p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Scan Button */
+        .scan-button-container {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .scan-btn {
+            padding: 20px 40px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            min-width: 200px;
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
+        }
+
+        .scan-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .scan-btn:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 16px 48px rgba(59, 130, 246, 0.4);
+        }
+
+        .scan-btn:hover::before {
+            left: 100%;
+        }
+
+        .scan-btn:active {
+            transform: translateY(-2px) scale(1.01);
+        }
+
+        .scan-btn.scanning {
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-red));
+            cursor: not-allowed;
+        }
+
+        /* Status Cards Grid */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .status-card {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
+        }
+
+        .status-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .status-card h3 {
+            font-size: 1.1rem;
+            color: var(--text-white);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .status-card .value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-white);
+            margin-bottom: 10px;
+        }
+
+        .status-card .label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Animation classes */
+        @keyframes slideInDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .slide-in-up {
+            animation: slideInUp 0.8s ease-out forwards;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .config-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .progress-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .scan-depth-options,
+            .discovery-methods {
+                grid-template-columns: 1fr;
+            }
+            
+            .status-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-container {
+                padding: 20px;
+            }
+            
+            .glass-card {
+                padding: 20px;
+            }
+            
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <h1>🛡️ CywAyz Enterprise API Security</h1>
+            <div class="subtitle">Advanced AI-Powered API Vulnerability Scanner & Risk Analyzer</div>
+            <div class="connection-status">
+                <div class="status-dot"></div>
+                Connected to Real-Time Scanner
+            </div>
+        </div>
+
+        <!-- Main Configuration -->
+        <div class="glass-card glass-card-solid slide-in-up">
+            <div class="config-grid">
+                <!-- Scan Configuration -->
+                <div class="config-section">
+                    <h3>
+                        <i class="fas fa-cog"></i>
+                        Scan Configuration
+                    </h3>
+                    
+                    <div class="input-group">
+                        <label for="targetUrl">🎯 Target API URL</label>
+                        <input type="url" id="targetUrl" placeholder="https://api.example.com" value="https://jsonplaceholder.typicode.com" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>📊 Scan Depth</label>
+                        <div class="scan-depth-options">
+                            <div class="depth-option" data-depth="shallow">
+                                <div>⚡ Shallow</div>
+                                <small>Quick Discovery</small>
+                            </div>
+                            <div class="depth-option selected" data-depth="deep">
+                                <div>🔍 Deep</div>
+                                <small>Recommended</small>
+                            </div>
+                            <div class="depth-option" data-depth="comprehensive">
+                                <div>🎯 Comprehensive</div>
+                                <small>Thorough</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>🔍 Discovery Methods</label>
+                        <div class="discovery-methods">
+                            <div class="method-card selected" data-method="swagger">
+                                <i class="fas fa-file-code"></i>
+                                <h4>Swagger/OpenAPI</h4>
+                                <p>API Documentation</p>
+                            </div>
+                            <div class="method-card selected" data-method="crawl">
+                                <i class="fas fa-spider"></i>
+                                <h4>Web Crawling</h4>
+                                <p>Smart Discovery</p>
+                            </div>
+                            <div class="method-card" data-method="brute_force">
+                                <i class="fas fa-hammer"></i>
+                                <h4>Brute Force</h4>
+                                <p>Endpoint Fuzzing</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scan Progress -->
+                <div class="config-section">
+                    <h3>
+                        <i class="fas fa-chart-line"></i>
+                        Scan Progress
+                    </h3>
+
+                    <div class="progress-steps">
+                        <div class="step completed">
+                            <div class="step-icon">🔍</div>
+                            <div class="step-label">Discovery</div>
+                        </div>
+                        <div class="step completed">
+                            <div class="step-icon">🔐</div>
+                            <div class="step-label">Auth Testing</div>
+                        </div>
+                        <div class="step completed">
+                            <div class="step-icon">📝</div>
+                            <div class="step-label">Parameters</div>
+                        </div>
+                        <div class="step completed">
+                            <div class="step-icon">📊</div>
+                            <div class="step-label">Risk Scoring</div>
+                        </div>
+                        <div class="step completed">
+                            <div class="step-icon">✅</div>
+                            <div class="step-label">Complete</div>
+                        </div>
+                    </div>
+
+                    <div class="progress-detail">
+                        <h4>🔬 Initializing scan...</h4>
+                        <p>Preparing to analyze your API endpoints for security vulnerabilities and configuration issues.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scan Button -->
+            <div class="scan-button-container">
+                <button class="scan-btn" id="startScanBtn">
+                    🚀 Start Scan
+                </button>
+            </div>
+        </div>
+
+        <!-- Status Cards -->
+        <div class="glass-card slide-in-up">
+            <div class="status-grid">
+                <div class="status-card">
+                    <h3>🏃‍♂️ Live Activity</h3>
+                    <div class="value">✅</div>
+                    <div class="label">Scan Started</div>
+                    <div style="font-size: 0.8rem; margin-top: 8px; color: rgba(255,255,255,0.7);">13:10:36</div>
+                </div>
+                <div class="status-card">
+                    <h3>📊 Live Statistics</h3>
+                    <div style="display: flex; justify-content: space-around; margin-top: 15px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.8rem; font-weight: 700; color: var(--accent-blue);">0</div>
+                            <div style="font-size: 0.8rem; opacity: 0.8;">Endpoints</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.8rem; font-weight: 700; color: var(--accent-red);">0</div>
+                            <div style="font-size: 0.8rem; opacity: 0.8;">Vulnerabilities</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="status-card">
+                    <h3>🔍 Vulnerability Distribution</h3>
+                    <div style="display: flex; justify-content: space-around; margin-top: 10px; font-size: 0.9rem;">
+                        <div style="text-align: center;">
+                            <div style="color: var(--accent-green);">Overview</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="color: var(--accent-blue);">Vulnerabilities</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="color: var(--accent-purple);">Endpoints</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="status-card">
+                    <h3>🗺️ Endpoint Network</h3>
+                    <div class="value">🔄</div>
+                    <div class="label">Ready</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class ModernApiScanner {
+            constructor() {
+                this.socket = null;
+                this.isScanning = false;
+                this.scanStartTime = null;
+                this.currentScanId = null;
+                this.endpoints = [];
+                this.vulnerabilities = [];
+                this.riskScores = [];
+                this.chart = null;
+                this.scanData = {
+                    progress: 0,
+                    phase: 'idle',
+                    endpoints: [],
+                    vulnerabilities: []
+                };
+                
+                this.initializeWebSocket();
+                this.setupEventListeners();
+                this.initializeChart();
+                this.updateInitTime();
+                this.requestNotificationPermission();
+            }
+            
+            initializeWebSocket() {
+                try {
+                    this.socket = io();
+                    
+                    this.socket.on('connect', () => {
+                        console.log('🔌 Connected to real-time updates');
+                        this.updateConnectionStatus('Connected to Real-Time Scanner', true);
+                        this.showNotification('🟢 Connected to scanner successfully', 'success');
+                    });
+                    
+                    this.socket.on('disconnect', () => {
+                        console.log('❌ Disconnected from scanner');
+                        this.updateConnectionStatus('Disconnected - Reconnecting...', false);
+                        this.showNotification('🔴 Connection lost - reconnecting...', 'error');
+                    });
+                    
+                    this.socket.on('progress', (data) => {
+                        console.log('📊 Progress update:', data);
+                        this.handleProgressUpdate(data);
+                    });
+                    
+                    this.socket.on('vulnerability_found', (data) => {
+                        console.log('🚨 Vulnerability found:', data);
+                        this.addVulnerability(data.vulnerability);
+                    });
+                    
+                    this.socket.on('scan_completed', (data) => {
+                        console.log('✅ Scan completed:', data);
+                        this.onScanCompleted(data.summary);
+                    });
+                    
+                    this.socket.on('error', (data) => {
+                        console.error('❌ Scan error:', data);
+                        this.showNotification('❌ Scan error: ' + data.error, 'error');
+                    });
+                    
+                } catch (error) {
+                    console.error('WebSocket connection failed:', error);
+                    this.updateConnectionStatus('Connection Failed', false);
+                    this.showNotification('❌ Failed to connect to scanner', 'error');
+                }
+            }
+            
+            setupEventListeners() {
+                document.getElementById('startScanBtn').addEventListener('click', () => this.startScan());
+                document.getElementById('stopScan').addEventListener('click', () => this.stopScan());
+                
+                // Export handlers
+                document.getElementById('exportJSON').addEventListener('click', () => this.exportData('json'));
+                document.getElementById('exportCSV').addEventListener('click', () => this.exportData('csv'));
+                document.getElementById('exportPDF').addEventListener('click', () => this.exportData('pdf'));
+                
+                // Network view controls
+                document.querySelectorAll('.network-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.network-btn').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        this.updateNetworkView(e.target.dataset.view);
+                    });
+                });
+            }
+            
+            async startScan() {
+                const targetUrl = document.getElementById('targetUrl').value.trim();
+                if (!targetUrl) {
+                    this.showNotification('❌ Please enter a valid target URL', 'error');
+                    return;
+                }
+                
+                const scanConfig = {
+                    targetUrl,
+                    discoveryMethods: this.getSelectedScanMethods(),
+                    scanDepth: document.getElementById('scanDepth').value,
+                    realTimeUpdates: true
+                };
+                
+                try {
+                    this.showLoading(true);
+                    this.isScanning = true;
+                    this.scanStartTime = Date.now();
+                    this.resetScanState();
+                    this.updateScanButtons(true);
+                    
+                    this.addActivity('🚀 Scan Started', `Scanning ${targetUrl}`, 'rocket');
+                    this.showNotification(`🚀 Scan started for ${targetUrl}`, 'success');
+                    
+                    const response = await fetch('/api/scan/start', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(scanConfig)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        this.currentScanId = result.data.scanId;
+                        
+                        // Subscribe to scan updates
+                        if (this.socket) {
+                            this.socket.emit('subscribe_scan', { scanId: this.currentScanId });
+                        }
+                        
+                        this.showLoading(false);
+                        this.playNotificationSound();
+                        this.showBrowserNotification(
+                            'Scan Started', 
+                            `Security scan initiated for ${targetUrl}`
+                        );
+                    } else {
+                        throw new Error(result.error?.message || 'Failed to start scan');
+                    }
+                    
+                } catch (error) {
+                    console.error('Failed to start scan:', error);
+                    this.showLoading(false);
+                    this.isScanning = false;
+                    this.updateScanButtons(false);
+                    this.showNotification('❌ Failed to start scan: ' + error.message, 'error');
+                }
+            }
+            
+            async stopScan() {
+                if (!this.currentScanId) return;
+                
+                try {
+                    await fetch(`/api/scan/stop/${this.currentScanId}`, { method: 'POST' });
+                    this.isScanning = false;
+                    this.updateScanButtons(false);
+                    this.addActivity('⏹️ Scan Stopped', 'Scan terminated by user', 'stop');
+                    this.showNotification('⏹️ Scan stopped successfully', 'warning');
+                } catch (error) {
+                    console.error('Failed to stop scan:', error);
+                    this.showNotification('❌ Failed to stop scan', 'error');
+                }
+            }
+            
+            getSelectedScanMethods() {
+                const methods = [];
+                if (document.getElementById('swaggerDiscovery').checked) methods.push('swagger');
+                if (document.getElementById('crawlDiscovery').checked) methods.push('crawl');
+                if (document.getElementById('bruteForceDiscovery').checked) methods.push('brute_force');
+                return methods;
+            }
+            
+            resetScanState() {
+                this.endpoints = [];
+                this.vulnerabilities = [];
+                this.riskScores = [];
+                this.scanData = {
+                    progress: 0,
+                    phase: 'idle',
+                    endpoints: [],
+                    vulnerabilities: []
+                };
+                
+                this.updateProgress(0, 'Initializing scan...', 'discovery');
+                this.updateStatistics(0, 0, 0, 0);
+                this.clearResults();
+                this.resetPhaseTimeline();
+                this.updateChart();
+                this.updateNetworkGraph();
+            }
+            
+            updateScanButtons(scanning) {
+                document.getElementById('startScanBtn').disabled = scanning;
+                document.getElementById('stopScan').disabled = !scanning;
+            }
+            
+            handleProgressUpdate(data) {
+                const { progress, step, details } = data.data || data;
+                
+                this.scanData.progress = progress || 0;
+                this.scanData.phase = step || 'processing';
+                
+                this.updateProgress(progress, details?.description || step, step, details?.estimatedTimeRemaining);
+                
+                // Update endpoints if provided
+                if (details?.endpointsFound) {
+                    this.endpoints = details.endpoints || [];
+                    this.scanData.endpoints = this.endpoints;
+                    this.updateEndpointsList();
+                }
+                
+                // Update vulnerabilities if provided
+                if (details?.vulnerabilitiesFound) {
+                    this.vulnerabilities = details.vulnerabilities || [];
+                    this.scanData.vulnerabilities = this.vulnerabilities;
+                    this.updateVulnerabilitiesList();
+                }
+                
+                this.updateStatistics(
+                    this.endpoints.length,
+                    this.vulnerabilities.length,
+                    this.calculateAverageRiskScore(),
+                    this.getScanDuration()
+                );
+                
+                this.addActivity(`🔍 ${step}`, details?.description || 'Processing...', this.getPhaseIcon(step));
+            }
+            
+            getPhaseIcon(phase) {
+                const icons = {
+                    'discovery': 'search',
+                    'auth_testing': 'shield',
+                    'parameter_testing': 'flask',
+                    'risk_scoring': 'chart-bar',
+                    'complete': 'check-circle'
+                };
+                return icons[phase] || 'info-circle';
+            }
+            
+            addVulnerability(vulnerability) {
+                this.vulnerabilities.push(vulnerability);
+                this.scanData.vulnerabilities = this.vulnerabilities;
+                
+                // Update vulnerability count
+                this.updateStatistics(
+                    this.endpoints.length,
+                    this.vulnerabilities.length,
+                    this.calculateAverageRiskScore(),
+                    this.getScanDuration()
+                );
+                
+                this.updateVulnerabilitiesList();
+                this.updateChart();
+                
+                this.addActivity(
+                    `🚨 ${vulnerability.severity} Vulnerability`, 
+                    `${vulnerability.type} in ${vulnerability.endpoint}`, 
+                    'exclamation-triangle'
+                );
+                
+                this.showNotification(
+                    `🚨 ${vulnerability.severity} vulnerability found: ${vulnerability.type}`, 
+                    vulnerability.severity === 'CRITICAL' ? 'error' : 'warning'
+                );
+            }
+            
+            onScanCompleted(summary) {
+                this.isScanning = false;
+                this.updateScanButtons(false);
+                this.updateProgress(100, 'Scan completed successfully!', 'complete');
+                
+                const totalVulns = summary?.totalVulnerabilities || this.vulnerabilities.length;
+                const totalEndpoints = summary?.totalEndpoints || this.endpoints.length;
+                
+                this.addActivity(
+                    '✅ Scan Complete', 
+                    `Found ${totalVulns} vulnerabilities in ${totalEndpoints} endpoints`, 
+                    'check-circle'
+                );
+                
+                this.showNotification(
+                    `✅ Scan completed! Found ${totalVulns} vulnerabilities in ${totalEndpoints} endpoints`, 
+                    'success'
+                );
+                
+                this.playCompletionSound();
+                this.showBrowserNotification(
+                    'Scan Completed', 
+                    `Found ${totalVulns} vulnerabilities in ${totalEndpoints} endpoints`
+                );
+                
+                // Final updates
+                this.updateChart();
+                this.updateNetworkGraph();
+            }
+            
+            updateProgress(progress, message, phase, timeRemaining) {
+                const progressFill = document.getElementById('progressFill');
+                const statusMessage = document.getElementById('statusMessage');
+                const timeRemainingElement = document.getElementById('timeRemaining');
+                
+                if (progressFill) {
+                    const safeProgress = Math.min(100, Math.max(0, progress || 0));
+                    progressFill.style.width = `${safeProgress}%`;
+                    progressFill.textContent = `${safeProgress.toFixed(1)}%`;
+                }
+                
+                if (statusMessage) {
+                    statusMessage.textContent = message || 'Processing...';
+                }
+                
+                if (timeRemaining && timeRemainingElement) {
+                    const minutes = Math.floor(timeRemaining / 60);
+                    const seconds = timeRemaining % 60;
+                    timeRemainingElement.innerHTML = `<i class="fas fa-clock"></i> ${minutes}:${seconds.toString().padStart(2, '0')}`;
+                } else if (timeRemainingElement && this.isScanning) {
+                    timeRemainingElement.innerHTML = `<i class="fas fa-clock"></i> Calculating...`;
+                }
+                
+                this.updatePhaseTimeline(phase, progress);
+                this.updateTimelineProgress(progress);
+            }
+            
+            updatePhaseTimeline(currentPhase, progress) {
+                const phases = ['discovery', 'auth_testing', 'parameter_testing', 'risk_scoring', 'complete'];
+                const phaseRanges = {
+                    'discovery': { start: 0, end: 30 },
+                    'auth_testing': { start: 30, end: 55 },
+                    'parameter_testing': { start: 55, end: 80 },
+                    'risk_scoring': { start: 80, end: 95 },
+                    'complete': { start: 95, end: 100 }
+                };
+                
+                phases.forEach(phase => {
+                    const elementMap = {
+                        'discovery': 'phaseDiscovery',
+                        'auth_testing': 'phaseAuth',
+                        'parameter_testing': 'phaseParams',
+                        'risk_scoring': 'phaseRisk',
+                        'complete': 'phaseComplete'
+                    };
+                    
+                    const element = document.getElementById(elementMap[phase]);
+                    if (element) {
+                        element.classList.remove('active', 'complete');
+                        
+                        const range = phaseRanges[phase];
+                        if (progress >= range.end) {
+                            element.classList.add('complete');
+                        } else if (phase === currentPhase) {
+                            element.classList.add('active');
+                        }
+                    }
+                });
+            }
+            
+            updateTimelineProgress(progress) {
+                const timelineProgress = document.getElementById('timelineProgress');
+                if (timelineProgress) {
+                    const safeProgress = Math.min(100, Math.max(0, progress || 0));
+                    timelineProgress.style.width = `${safeProgress}%`;
+                }
+            }
+            
+            resetPhaseTimeline() {
+                const phases = ['phaseDiscovery', 'phaseAuth', 'phaseParams', 'phaseRisk', 'phaseComplete'];
+                phases.forEach(phaseId => {
+                    const element = document.getElementById(phaseId);
+                    if (element) {
+                        element.classList.remove('active', 'complete');
+                    }
+                });
+            }
+            
+            updateStatistics(endpoints, vulnerabilities, riskScore, duration) {
+                this.animateCounter('endpointsFound', endpoints);
+                this.animateCounter('vulnerabilitiesFound', vulnerabilities);
+                this.animateCounter('riskScore', Math.round(riskScore));
+                
+                const durationElement = document.getElementById('scanDuration');
+                if (durationElement) {
+                    durationElement.textContent = `${duration}s`;
+                }
+            }
+            
+            animateCounter(elementId, targetValue) {
+                const element = document.getElementById(elementId);
+                if (!element) return;
+                
+                const currentValue = parseInt(element.textContent) || 0;
+                const increment = Math.ceil((targetValue - currentValue) / 10);
+                
+                if (currentValue < targetValue) {
+                    const newValue = Math.min(targetValue, currentValue + increment);
+                    element.textContent = newValue;
+                    
+                    if (newValue < targetValue) {
+                        setTimeout(() => this.animateCounter(elementId, targetValue), 50);
+                    }
+                }
+            }
+            
+            addActivity(title, description, icon) {
+                const feed = document.getElementById('activityFeed');
+                if (!feed) return;
+                
+                const activity = document.createElement('div');
+                activity.className = 'activity-item';
+                
+                const iconClass = this.getIconClass(icon);
+                
+                activity.innerHTML = `
+                    <div class="activity-icon"><i class="fas fa-${iconClass}"></i></div>
+                    <div class="activity-content">
+                        <div class="activity-message">${title}</div>
+                        <div class="activity-time">${new Date().toLocaleTimeString()}</div>
+                    </div>
+                `;
+                
+                feed.insertBefore(activity, feed.firstChild);
+                
+                // Keep only last 20 items
+                while (feed.children.length > 20) {
+                    feed.removeChild(feed.lastChild);
+                }
+            }
+            
+            getIconClass(icon) {
+                const iconMap = {
+                    'rocket': 'rocket',
+                    'search': 'search',
+                    'shield': 'shield-alt',
+                    'flask': 'flask',
+                    'chart-bar': 'chart-bar',
+                    'check-circle': 'check-circle',
+                    'stop': 'stop-circle',
+                    'exclamation-triangle': 'exclamation-triangle'
+                };
+                return iconMap[icon] || 'info-circle';
+            }
+            
+            updateEndpointsList() {
+                const container = document.getElementById('endpointsList');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                
+                if (this.endpoints.length === 0) {
+                    container.innerHTML = `
+                        <div class="result-item">
+                            <div class="result-header">
+                                <div class="result-title">Scanning for endpoints...</div>
+                                <div class="result-badge medium">In Progress</div>
+                            </div>
+                            <div class="result-description">Discovery phase is running</div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                this.endpoints.forEach(endpoint => {
+                    const item = document.createElement('div');
+                    item.className = 'result-item';
+                    
+                    const method = endpoint.method || 'GET';
+                    const methodColors = {
+                        'GET': 'success',
+                        'POST': 'medium',
+                        'PUT': 'warning',
+                        'DELETE': 'critical',
+                        'PATCH': 'medium'
+                    };
+                    
+                    item.innerHTML = `
+                        <div class="result-header">
+                            <div class="result-title">${endpoint.url}</div>
+                            <div class="result-badge ${methodColors[method] || 'medium'}">${method}</div>
+                        </div>
+                        <div class="result-description">
+                            Discovery: ${endpoint.discoveryMethod || 'unknown'} | 
+                            Parameters: ${(endpoint.parameters || []).length}
+                        </div>
+                    `;
+                    
+                    container.appendChild(item);
+                });
+            }
+            
+            updateVulnerabilitiesList() {
+                const container = document.getElementById('vulnerabilitiesList');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                
+                if (this.vulnerabilities.length === 0) {
+                    container.innerHTML = `
+                        <div class="result-item">
+                            <div class="result-header">
+                                <div class="result-title">Analyzing security...</div>
+                                <div class="result-badge medium">In Progress</div>
+                            </div>
+                            <div class="result-description">Vulnerability testing in progress</div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                this.vulnerabilities.forEach(vuln => {
+                    const item = document.createElement('div');
+                    item.className = `result-item ${vuln.severity.toLowerCase()}`;
+                    
+                    item.innerHTML = `
+                        <div class="result-header">
+                            <div class="result-title">${vuln.type}</div>
+                            <div class="result-badge ${vuln.severity.toLowerCase()}">${vuln.severity}</div>
+                        </div>
+                        <div class="result-description">
+                            ${vuln.description || 'No description available'}<br>
+                            <strong>Endpoint:</strong> ${vuln.endpoint}
+                        </div>
+                    `;
+                    
+                    container.appendChild(item);
+                });
+            }
+            
+            clearResults() {
+                const endpoints = document.getElementById('endpointsList');
+                const vulnerabilities = document.getElementById('vulnerabilitiesList');
+                
+                if (endpoints) {
+                    endpoints.innerHTML = `
+                        <div class="result-item">
+                            <div class="result-header">
+                                <div class="result-title">Scanning...</div>
+                                <div class="result-badge medium">In Progress</div>
+                            </div>
+                            <div class="result-description">Discovering API endpoints...</div>
+                        </div>
+                    `;
+                }
+                
+                if (vulnerabilities) {
+                    vulnerabilities.innerHTML = `
+                        <div class="result-item">
+                            <div class="result-header">
+                                <div class="result-title">Analyzing...</div>
+                                <div class="result-badge medium">In Progress</div>
+                            </div>
+                            <div class="result-description">Testing for security vulnerabilities...</div>
+                        </div>
+                    `;
+                }
+            }
+            
+            initializeChart() {
+                const ctx = document.getElementById('vulnerabilityChart');
+                if (!ctx) return;
+                
+                this.chart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Critical', 'High', 'Medium', 'Low'],
+                        datasets: [{
+                            data: [0, 0, 0, 0],
+                            backgroundColor: [
+                                '#ff6b6b',
+                                '#feca57',
+                                '#48dbfb',
+                                '#4CAF50'
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: '#fff',
+                                    padding: 20
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            updateChart() {
+                if (!this.chart) return;
+                
+                const severityCounts = {
+                    'CRITICAL': 0,
+                    'HIGH': 0,
+                    'MEDIUM': 0,
+                    'LOW': 0
+                };
+                
+                this.vulnerabilities.forEach(vuln => {
+                    severityCounts[vuln.severity] = (severityCounts[vuln.severity] || 0) + 1;
+                });
+                
+                this.chart.data.datasets[0].data = [
+                    severityCounts.CRITICAL,
+                    severityCounts.HIGH,
+                    severityCounts.MEDIUM,
+                    severityCounts.LOW
+                ];
+                
+                this.chart.update();
+            }
+            
+            updateNetworkView(view) {
+                console.log('Updating network view:', view);
+                this.updateNetworkGraph();
+            }
+            
+            updateNetworkGraph() {
+                const svg = d3.select('#networkGraph svg');
+                svg.selectAll('*').remove();
+                
+                if (this.endpoints.length === 0) {
+                    svg.append('text')
+                        .attr('x', '50%')
+                        .attr('y', '50%')
+                        .attr('text-anchor', 'middle')
+                        .attr('dominant-baseline', 'middle')
+                        .attr('fill', 'rgba(255,255,255,0.7)')
+                        .text('Network graph will appear here during scan');
+                    return;
+                }
+                
+                // Simple network visualization
+                const width = 300;
+                const height = 200;
+                
+                const nodes = this.endpoints.slice(0, 10).map((endpoint, i) => ({
+                    id: i,
+                    name: endpoint.url.split('/').pop() || 'root',
+                    url: endpoint.url,
+                    vulnerabilities: this.vulnerabilities.filter(v => v.endpoint === endpoint.url).length
+                }));
+                
+                const links = nodes.slice(1).map(node => ({
+                    source: 0,
+                    target: node.id
+                }));
+                
+                const simulation = d3.forceSimulation(nodes)
+                    .force('link', d3.forceLink(links).id(d => d.id))
+                    .force('charge', d3.forceManyBody().strength(-50))
+                    .force('center', d3.forceCenter(width / 2, height / 2));
+                
+                const link = svg.append('g')
+                    .selectAll('line')
+                    .data(links)
+                    .enter().append('line')
+                    .attr('stroke', 'rgba(255,255,255,0.3)')
+                    .attr('stroke-width', 1);
+                
+                const node = svg.append('g')
+                    .selectAll('circle')
+                    .data(nodes)
+                    .enter().append('circle')
+                    .attr('r', d => d.vulnerabilities > 0 ? 8 : 5)
+                    .attr('fill', d => d.vulnerabilities > 0 ? '#ff6b6b' : '#4facfe')
+                    .attr('stroke', '#fff')
+                    .attr('stroke-width', 1);
+                
+                simulation.on('tick', () => {
+                    link.attr('x1', d => d.source.x)
+                        .attr('y1', d => d.source.y)
+                        .attr('x2', d => d.target.x)
+                        .attr('y2', d => d.target.y);
+                    
+                    node.attr('cx', d => d.x)
+                        .attr('cy', d => d.y);
+                });
+            }
+            
+            calculateAverageRiskScore() {
+                if (!this.riskScores.length) return 0;
+                const sum = this.riskScores.reduce((acc, score) => acc + (score.riskScore?.overall || 0), 0);
+                return Math.round((sum / this.riskScores.length) * 100);
+            }
+            
+            getScanDuration() {
+                if (!this.scanStartTime) return 0;
+                return Math.floor((Date.now() - this.scanStartTime) / 1000);
+            }
+            
+            updateConnectionStatus(message, connected) {
+                const statusElement = document.getElementById('connectionStatus');
+                const statusDot = document.querySelector('.status-dot');
+                
+                if (statusElement) {
+                    statusElement.textContent = message;
+                }
+                
+                if (statusDot) {
+                    statusDot.style.background = connected ? '#4CAF50' : '#ff6b6b';
+                }
+            }
+            
+            updateInitTime() {
+                const initTimeElement = document.getElementById('initTime');
+                if (initTimeElement) {
+                    initTimeElement.textContent = new Date().toLocaleTimeString();
+                }
+            }
+            
+            requestNotificationPermission() {
+                if ('Notification' in window && Notification.permission === 'default') {
+                    Notification.requestPermission();
+                }
+            }
+            
+            showNotification(message, type = 'info') {
+                const notification = document.getElementById('notification');
+                const content = notification.querySelector('.notification-content');
+                
+                if (content) {
+                    content.textContent = message;
+                }
+                
+                notification.className = `notification ${type}`;
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 4000);
+            }
+            
+            showBrowserNotification(title, body) {
+                if ('Notification' in window && Notification.permission === 'granted') {
+                    new Notification(title, {
+                        body,
+                        icon: '/favicon.ico',
+                        tag: 'cywayz-scan'
+                    });
+                }
+            }
+            
+            playNotificationSound() {
+                this.playTone(440, 200);
+            }
+            
+            playCompletionSound() {
+                this.playTone(660, 150);
+                setTimeout(() => this.playTone(880, 150), 200);
+            }
+            
+            playTone(frequency, duration) {
+                if (typeof AudioContext === 'undefined' && typeof webkitAudioContext === 'undefined') return;
+                
+                const AudioCtx = AudioContext || webkitAudioContext;
+                const audioCtx = new AudioCtx();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                oscillator.frequency.value = frequency;
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration / 1000);
+                
+                oscillator.start(audioCtx.currentTime);
+                oscillator.stop(audioCtx.currentTime + duration / 1000);
+            }
+            
+            showLoading(show) {
+                const overlay = document.getElementById('loadingOverlay');
+                if (overlay) {
+                    overlay.classList.toggle('show', show);
+                }
+            }
+            
+            exportData(format) {
+                const data = {
+                    scanId: this.currentScanId,
+                    timestamp: new Date().toISOString(),
+                    endpoints: this.endpoints,
+                    vulnerabilities: this.vulnerabilities,
+                    riskScores: this.riskScores,
+                    summary: {
+                        totalEndpoints: this.endpoints.length,
+                        totalVulnerabilities: this.vulnerabilities.length,
+                        averageRiskScore: this.calculateAverageRiskScore(),
+                        scanDuration: this.getScanDuration()
+                    }
+                };
+                
+                switch (format) {
+                    case 'json':
+                        this.downloadFile(JSON.stringify(data, null, 2), 'cywayz-scan-results.json', 'application/json');
+                        break;
+                    case 'csv':
+                        this.downloadCSV(data);
+                        break;
+                    case 'pdf':
+                        this.generatePDF(data);
+                        break;
+                }
+                
+                this.showNotification(`📄 Results exported as ${format.toUpperCase()}`, 'success');
+            }
+            
+            downloadFile(content, filename, mimeType) {
+                const blob = new Blob([content], { type: mimeType });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            }
+            
+            downloadCSV(data) {
+                let csv = 'Type,Severity,Endpoint,Method,Description,CWE,OWASP\n';
+                data.vulnerabilities.forEach(vuln => {
+                    csv += `"${vuln.type}","${vuln.severity}","${vuln.endpoint}","${vuln.method || 'N/A'}","${vuln.description || ''}","${vuln.cwe || ''}","${vuln.owasp || ''}"\n`;
+                });
+                
+                this.downloadFile(csv, 'cywayz-vulnerabilities.csv', 'text/csv');
+            }
+            
+            generatePDF(data) {
+                const content = `
+CywAyz API Security Scan Report
+Generated: ${new Date().toLocaleString()}
+
+SUMMARY:
+- Total Endpoints: ${data.summary.totalEndpoints}
+- Total Vulnerabilities: ${data.summary.totalVulnerabilities}
+- Average Risk Score: ${data.summary.averageRiskScore}%
+- Scan Duration: ${data.summary.scanDuration}s
+
+VULNERABILITIES:
+${data.vulnerabilities.map(v => `- ${v.type} (${v.severity}): ${v.endpoint}`).join('\n')}
+
+ENDPOINTS:
+${data.endpoints.map(e => `- ${e.method} ${e.url}`).join('\n')}
+                `;
+                
+                this.downloadFile(content, 'cywayz-scan-report.txt', 'text/plain');
+                this.showNotification('📑 PDF functionality coming soon - exported as text file', 'info');
+            }
+        }
+        
+        // Initialize the modern dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            window.scanner = new ModernApiScanner();
+        });
+    </script>
+</body>
+</html> 

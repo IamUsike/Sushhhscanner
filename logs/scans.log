@@ -1,0 +1,504 @@
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: 'c49e2eb1-554e-4e53-967b-02c0daf51a72',
+  step: 'swagger_discovery',
+  progress: 20,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:36:50.221',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: 'c49e2eb1-554e-4e53-967b-02c0daf51a72',
+  step: 'robots_discovery',
+  progress: 30,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:36:51.588',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: 'c49e2eb1-554e-4e53-967b-02c0daf51a72',
+  step: 'crawling_discovery',
+  progress: 50,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:37:00.295',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: 'c49e2eb1-554e-4e53-967b-02c0daf51a72',
+  step: 'bruteforce_discovery',
+  progress: 70,
+  details: { endpointsFound: 100 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:38:16.341',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: 'd687ab03-ddc6-4cf2-aefe-24b6629065f9',
+  step: 'swagger_discovery',
+  progress: 20,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:40:16.394',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: 'd687ab03-ddc6-4cf2-aefe-24b6629065f9',
+  step: 'robots_discovery',
+  progress: 30,
+  details: { endpointsFound: 3 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:40:16.684',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: 'd687ab03-ddc6-4cf2-aefe-24b6629065f9',
+  step: 'crawling_discovery',
+  progress: 50,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:40:21.442',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: 'd687ab03-ddc6-4cf2-aefe-24b6629065f9',
+  step: 'bruteforce_discovery',
+  progress: 70,
+  details: { endpointsFound: 109 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:40:38.094',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: 'a5915167-05cf-43cb-b98b-8b9c853d3401',
+  step: 'swagger_discovery',
+  progress: 20,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:40:59.925',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: 'a5915167-05cf-43cb-b98b-8b9c853d3401',
+  step: 'robots_discovery',
+  progress: 30,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:41:00.064',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: 'a5915167-05cf-43cb-b98b-8b9c853d3401',
+  step: 'crawling_discovery',
+  progress: 50,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:41:09.393',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '88c5217e-1936-49ad-adc3-f5aa45e1244c',
+  step: 'swagger_discovery',
+  progress: 20,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:41:25.107',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '88c5217e-1936-49ad-adc3-f5aa45e1244c',
+  step: 'robots_discovery',
+  progress: 30,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:41:26.623',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '88c5217e-1936-49ad-adc3-f5aa45e1244c',
+  step: 'crawling_discovery',
+  progress: 50,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:41:31.876',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: 'a5915167-05cf-43cb-b98b-8b9c853d3401',
+  step: 'bruteforce_discovery',
+  progress: 70,
+  details: { endpointsFound: 100 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:42:22.662',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '78fcf5cd-e708-4183-9db5-f1fbc40ec5eb',
+  step: 'swagger_discovery',
+  progress: 20,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:44:30.099',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '78fcf5cd-e708-4183-9db5-f1fbc40ec5eb',
+  step: 'robots_discovery',
+  progress: 30,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:44:32.012',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '78fcf5cd-e708-4183-9db5-f1fbc40ec5eb',
+  step: 'crawling_discovery',
+  progress: 50,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:44:33.483',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '3f35d77e-18ec-4a36-ac28-400548c0cf1a',
+  step: 'swagger_discovery',
+  progress: 20,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:45:06.065',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '3f35d77e-18ec-4a36-ac28-400548c0cf1a',
+  step: 'robots_discovery',
+  progress: 30,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:45:06.200',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '3f35d77e-18ec-4a36-ac28-400548c0cf1a',
+  step: 'crawling_discovery',
+  progress: 50,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:45:12.236',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '78fcf5cd-e708-4183-9db5-f1fbc40ec5eb',
+  step: 'bruteforce_discovery',
+  progress: 70,
+  details: { endpointsFound: 100 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:45:46.124',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '2e97f86c-5171-43c3-bfda-ef2fc4463220',
+  step: 'swagger_discovery',
+  progress: 20,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:49:10.125',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '2e97f86c-5171-43c3-bfda-ef2fc4463220',
+  step: 'robots_discovery',
+  progress: 30,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:49:12.052',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '2e97f86c-5171-43c3-bfda-ef2fc4463220',
+  step: 'crawling_discovery',
+  progress: 50,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:49:13.524',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '2e97f86c-5171-43c3-bfda-ef2fc4463220',
+  step: 'bruteforce_discovery',
+  progress: 70,
+  details: { endpointsFound: 100 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:50:22.935',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '0b58ee13-335e-46e7-8b5f-d17ea660be4b',
+  step: 'swagger_discovery',
+  progress: 20,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:52:47.927',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '0b58ee13-335e-46e7-8b5f-d17ea660be4b',
+  step: 'robots_discovery',
+  progress: 30,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:52:48.156',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '0b58ee13-335e-46e7-8b5f-d17ea660be4b',
+  step: 'crawling_discovery',
+  progress: 50,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:52:55.612',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '0b58ee13-335e-46e7-8b5f-d17ea660be4b',
+  step: 'bruteforce_discovery',
+  progress: 70,
+  details: { endpointsFound: 100 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:54:03.019',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '867a2dd6-a83a-4a55-9bce-9b1d9c3aa471',
+  step: 'swagger_discovery',
+  progress: 20,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:54:13.228',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '867a2dd6-a83a-4a55-9bce-9b1d9c3aa471',
+  step: 'robots_discovery',
+  progress: 30,
+  details: { endpointsFound: 3 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:54:13.483',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '867a2dd6-a83a-4a55-9bce-9b1d9c3aa471',
+  step: 'crawling_discovery',
+  progress: 50,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:54:19.087',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '867a2dd6-a83a-4a55-9bce-9b1d9c3aa471',
+  step: 'bruteforce_discovery',
+  progress: 70,
+  details: { endpointsFound: 109 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:54:35.385',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '0c59e668-5837-4412-925f-48c542ce6468',
+  step: 'swagger_discovery',
+  progress: 20,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:54:53.890',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '0c59e668-5837-4412-925f-48c542ce6468',
+  step: 'robots_discovery',
+  progress: 30,
+  details: { endpointsFound: 3 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:54:54.173',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '0c59e668-5837-4412-925f-48c542ce6468',
+  step: 'crawling_discovery',
+  progress: 50,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:54:58.445',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '0c59e668-5837-4412-925f-48c542ce6468',
+  step: 'bruteforce_discovery',
+  progress: 70,
+  details: { endpointsFound: 167 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:55:13.250',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '7f576210-58f3-4d62-b0e0-598df2ed1f28',
+  step: 'swagger_discovery',
+  progress: 20,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:56:55.257',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '7f576210-58f3-4d62-b0e0-598df2ed1f28',
+  step: 'robots_discovery',
+  progress: 30,
+  details: { endpointsFound: 3 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:56:55.532',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '7f576210-58f3-4d62-b0e0-598df2ed1f28',
+  step: 'crawling_discovery',
+  progress: 50,
+  details: { endpointsFound: 0 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:56:59.447',
+  level: 'info',
+  message: 'Scan progress update'
+}
+{
+  service: 'api-risk-visualizer-scans',
+  type: 'scan-operation',
+  scanId: '7f576210-58f3-4d62-b0e0-598df2ed1f28',
+  step: 'bruteforce_discovery',
+  progress: 70,
+  details: { endpointsFound: 109 },
+  event: 'scan_progress',
+  timestamp: '2025-07-12 00:57:14.636',
+  level: 'info',
+  message: 'Scan progress update'
+}

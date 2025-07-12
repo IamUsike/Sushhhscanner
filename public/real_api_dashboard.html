@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 Real API Risk Scanner Dashboard</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-primary: #2c3e50;
+            --text-secondary: #666;
+            --accent-blue: #3498db;
+            --accent-green: #2ecc71;
+            --accent-red: #e74c3c;
+            --accent-orange: #f39c12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animated background particles */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .dashboard-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header Section */
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+            animation: slideInDown 1s ease-out;
+        }
+
+        .dashboard-header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #fff, #f8f9fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .dashboard-header .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* Glass Card Styling */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 
+                0 8px 32px rgba(0,0,0,0.1),
+                0 4px 16px rgba(0,0,0,0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 
+                0 16px 48px rgba(0,0,0,0.15),
+                0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Enhanced Glass Effects */
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.3) 0%, 
+                rgba(255, 255, 255, 0.1) 50%, 
+                rgba(255, 255, 255, 0.3) 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        /* Make background more colorful for better glass effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        /* Scan Input Panel */
+        .scan-input-panel {
+            animation: slideInUp 1s ease-out 0.2s both;
+        }
+
+        .panel-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .panel-title i {
+            color: var(--accent-blue);
+            font-size: 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .scan-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .option-group {
+            background: rgba(248, 249, 250, 0.8);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .option-group h4 {
+            margin-bottom: 15px;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-group:hover {
+            transform: translateX(5px);
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: var(--accent-blue);
+        }
+
+        .checkbox-group label {
+            cursor: pointer;
+            margin-bottom: 0;
+            font-weight: 500;
+        }
+
+        /* Modern Button */
+        .scan-btn {
+            width: 100%;
+            padding: 18px 30px;
+            background: linear-gradient(135deg, var(--accent-blue), #2980b9);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .scan-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .scan-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(52, 152, 219, 0.4);
+        }
+
+        .scan-btn:hover::before {
+            left: 100%;
+        }
+
+        .scan-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .scan-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Progress Panel */
+        .progress-panel {
+            animation: slideInUp 1s ease-out 0.4s both;
+            display: none;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .progress-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cancel-btn {
+            padding: 10px 20px;
+            background: var(--accent-red);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .cancel-btn:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 25px;
+            background: #ecf0f1;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+            width: 0%;
+            transition: width 0.8s ease;
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: rgba(248, 249, 250, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .stat-card .label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-card.endpoints .value { color: var(--accent-blue); }
+        .stat-card.vulnerabilities .value { color: var(--accent-red); }
+        .stat-card.phase .value { color: var(--accent-green); }
+        .stat-card.time .value { color: var(--accent-orange); }
+
+        .current-phase {
+            background: linear-gradient(135deg, #e8f5e8, #d4edda);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-green);
+            margin-top: 20px;
+        }
+
+        .current-phase .phase-title {
+            font-weight: 600;
+            color: #27ae60;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .current-phase .phase-description {
+            color: var(--text-primary);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-panel {
+            animation: slideInUp 1s ease-out 0.6s both;
+            min-height: 400px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .panel-header-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .panel-header-title i {
+            font-size: 1.8rem;
+            color: var(--accent-blue);
+        }
+
+        .visualization-container {
+            width: 100%;
+            height: 350px;
+            position: relative;
+        }
+
+        .no-data-message {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+            background: rgba(248, 249, 250, 0.5);
+            border-radius: 12px;
+            border: 2px dashed #ddd;
+            margin: 20px 0;
+        }
+
+        .no-data-message i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--accent-blue);
+            opacity: 0.7;
+        }
+
+        .no-data-message h3 {
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .error-message {
+            background: #fdf2f2;
+            color: var(--accent-red);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .dashboard-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .scan-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .progress-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes slideInDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .pulse { animation: pulse 2s infinite; }
+
+        /* Loading states */
+        .loading {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <h1>🔍 Real API Risk Scanner</h1>
+            <div class="subtitle">Enter any API URL to discover endpoints and analyze security risks in real-time</div>
+        </div>
+
+        <!-- Scan Input Panel -->
+        <div class="glass-card scan-input-panel">
+            <h2 class="panel-title">
+                <i class="fas fa-rocket"></i>
+                Start Real API Security Scan
+            </h2>
+            <form id="scanForm">
+                <div class="input-group">
+                    <label for="targetUrl">🎯 Target API URL</label>
+                    <input type="url" id="targetUrl" placeholder="https://api.example.com" required>
+                </div>
+                
+                <div class="scan-options">
+                    <div class="option-group">
+                        <h4>🔍 Discovery Methods</h4>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="swagger" value="swagger" checked>
+                            <label for="swagger">Swagger/OpenAPI</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="crawl" value="crawl" checked>
+                            <label for="crawl">Web Crawling</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="brute_force" value="brute_force">
+                            <label for="brute_force">Brute Force</label>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <h4>⚙️ Scan Configuration</h4>
+                        <label for="scanDepth">Scan Depth:</label>
+                        <select id="scanDepth">
+                            <option value="shallow">Shallow (Fast)</option>
+                            <option value="deep" selected>Deep (Recommended)</option>
+                            <option value="comprehensive">Comprehensive (Thorough)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="option-group">
+                        <h4>🔐 Authentication (Optional)</h4>
+                        <input type="text" id="bearerToken" placeholder="Bearer token">
+                        <br><br>
+                        <input type="text" id="apiKey" placeholder="API key header">
+                    </div>
+                </div>
+                
+                <button type="submit" class="scan-btn pulse" id="startScanBtn">
+                    <i class="fas fa-play"></i>
+                    🚀 Start Real-Time Security Scan
+                </button>
+            </form>
+        </div>
+
+        <!-- Progress Panel -->
+        <div class="glass-card progress-panel" id="progressPanel">
+            <div class="progress-header">
+                <div class="progress-title">
+                    <i class="fas fa-cog fa-spin"></i>
+                    Real-Time Scan Progress
+                </div>
+                <button class="cancel-btn" onclick="cancelScan()">
+                    <i class="fas fa-stop"></i>
+                    Cancel Scan
+                </button>
+            </div>
+            
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-text" id="progressText">0%</div>
+                </div>
+            </div>
+            
+            <div class="progress-stats">
+                <div class="stat-card endpoints">
+                    <div class="label">Endpoints Found</div>
+                    <div class="value" id="endpointsFound">0</div>
+                </div>
+                <div class="stat-card vulnerabilities">
+                    <div class="label">Vulnerabilities</div>
+                    <div class="value" id="vulnerabilitiesFound">0</div>
+                </div>
+                <div class="stat-card phase">
+                    <div class="label">Current Phase</div>
+                    <div class="value" id="currentPhase">-</div>
+                </div>
+                <div class="stat-card time">
+                    <div class="label">Time Remaining</div>
+                    <div class="value" id="timeRemaining">-</div>
+                </div>
+            </div>
+            
+            <div class="current-phase" id="currentPhaseDetails">
+                <div class="phase-title" id="phaseTitle">Initializing...</div>
+                <div class="phase-description" id="phaseDescription">Preparing to scan your API...</div>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Metrics Panel -->
+            <div class="glass-card dashboard-panel">
+                <div class="panel-header">
+                    <div class="panel-header-title">
+                        <i class="fas fa-chart-pie"></i>
+                        Real-Time Risk Metrics
+                    </div>
+                </div>
+                <div class="visualization-container" id="metricsContainer">
+                    <div class="no-data-message">
+                        <i class="fas fa-chart-bar"></i>
+                        <h3>Security Metrics</h3>
+                        <p>Start a scan to see real-time security metrics and vulnerability distribution</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Network Risk Map -->
+            <div class="glass-card dashboard-panel">
+                <div class="panel-header">
+                    <div class="panel-header-title">
+                        <i class="fas fa-project-diagram"></i>
+                        Interactive API Risk Map
+                    </div>
+                </div>
+                <div class="visualization-container" id="networkContainer">
+                    <div class="no-data-message">
+                        <i class="fas fa-sitemap"></i>
+                        <h3>Network Map</h3>
+                        <p>Discovered endpoints will appear here as an interactive network map showing relationships and risk levels</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Risk Heatmap -->
+            <div class="glass-card dashboard-panel">
+                <div class="panel-header">
+                    <div class="panel-header-title">
+                        <i class="fas fa-fire"></i>
+                        Vulnerability Heatmap
+                    </div>
+                </div>
+                <div class="visualization-container" id="heatmapContainer">
+                    <div class="no-data-message">
+                        <i class="fas fa-thermometer-half"></i>
+                        <h3>Risk Heatmap</h3>
+                        <p>Vulnerability severity distribution and risk scores will be visualized here</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Insights -->
+            <div class="glass-card dashboard-panel">
+                <div class="panel-header">
+                    <div class="panel-header-title">
+                        <i class="fas fa-brain"></i>
+                        AI Security Insights
+                    </div>
+                </div>
+                <div class="visualization-container" id="insightsContainer" style="height: auto; min-height: 300px;">
+                    <div class="no-data-message">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>AI Analysis</h3>
+                        <p>AI-powered security insights and recommendations will appear here after scanning</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let socket = null;
+        let currentScanId = null;
+        let scanStartTime = null;
+        let scanData = {
+            endpoints: [],
+            vulnerabilities: [],
+            progress: 0,
+            phase: 'idle'
+        };
+
+        // Initialize background animation
+        function initBackgroundAnimation() {
+            const bgAnimation = document.getElementById('bgAnimation');
+            
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = particle.style.height = Math.random() * 6 + 2 + 'px';
+                particle.style.animationDuration = Math.random() * 20 + 10 + 's';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                bgAnimation.appendChild(particle);
+            }
+        }
+
+        // Initialize WebSocket connection
+        function initWebSocket() {
+            try {
+                socket = io();
+                
+                socket.on('connect', () => {
+                    console.log('🔌 Connected to real-time updates');
+                });
+
+                // Listen for scan updates from backend
+                socket.on('scan_updates', (data) => {
+                    console.log('📡 Scan update received:', data);
+                    handleScanUpdate(data);
+                });
+
+                // Listen for real-time updates
+                socket.on('real-time-update', (data) => {
+                    console.log('⚡ Real-time update:', data);
+                    handleRealTimeUpdate(data);
+                });
+
+                // Listen for dashboard updates
+                socket.on('dashboard_update', (data) => {
+                    console.log('📊 Dashboard update:', data);
+                    handleDashboardUpdate(data);
+                });
+
+                socket.on('error', (data) => {
+                    showError(data.error || data.message);
+                });
+
+                socket.on('disconnect', () => {
+                    console.log('❌ Disconnected from real-time updates');
+                });
+
+            } catch (error) {
+                console.warn('⚠️ WebSocket not available, falling back to polling');
+            }
+        }
+
+        // Start scan
+        async function startScan(targetUrl, options) {
+            try {
+                const response = await fetch('/api/scan/start', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        targetUrl,
+                        scanMethods: options.methods,
+                        scanDepth: options.depth,
+                        realTimeUpdates: true,
+                        authConfig: options.auth
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    currentScanId = result.data.scanId;
+                    scanStartTime = Date.now();
+                    
+                    showProgressPanel();
+                    updateScanStatus('Starting scan...', 0);
+                    
+                    console.log('🚀 Scan started:', currentScanId);
+                } else {
+                    throw new Error(result.error?.message || 'Failed to start scan');
+                }
+            } catch (error) {
+                showError('Failed to start scan: ' + error.message);
+            }
+        }
+
+        // Handle scan updates from backend
+        function handleScanUpdate(data) {
+            console.log('Processing scan update:', data);
+            
+            if (data.eventType === 'progress') {
+                updateProgress(data.data);
+            } else if (data.eventType === 'scan_complete') {
+                onScanCompleted(data.data);
+            } else if (data.eventType === 'auth_test_complete' || data.eventType === 'parameter_test_complete') {
+                // Update vulnerability count
+                if (data.data && data.data.totalVulnerabilities) {
+                    document.getElementById('vulnerabilitiesFound').textContent = data.data.totalVulnerabilities;
+                }
+            }
+        }
+
+        // Handle real-time updates
+        function handleRealTimeUpdate(data) {
+            console.log('Processing real-time update:', data);
+            
+            if (data.type === 'metrics') {
+                updateMetricsFromData(data.data);
+            } else if (data.type === 'insights') {
+                updateInsightsFromData(data.data);
+            }
+        }
+
+        // Handle dashboard updates
+        function handleDashboardUpdate(data) {
+            console.log('Processing dashboard update:', data);
+            
+            if (data.type === 'real_data_loaded') {
+                // Update with real scan data
+                if (data.vulnerabilities) {
+                    scanData.vulnerabilities = data.vulnerabilities;
+                    updateCharts();
+                }
+                if (data.scanSummary) {
+                    onScanCompleted(data.scanSummary);
+                }
+            }
+        }
+
+        // Update progress
+        function updateProgress(data) {
+            const { progress, message, endpointsFound, vulnerabilitiesFound, phaseDetails } = data;
+            
+            // Ensure progress is a valid number
+            const safeProgress = isNaN(progress) || progress === null || progress === undefined ? 0 : Math.min(100, Math.max(0, progress));
+            scanData.progress = safeProgress;
+            
+            // Update progress bar
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            
+            progressBar.style.width = `${safeProgress}%`;
+            progressText.textContent = `${Math.round(safeProgress)}%`;
+            
+            // Update phase info
+            if (phaseDetails) {
+                document.getElementById('currentPhase').textContent = phaseDetails.name || 'Processing';
+                document.getElementById('phaseTitle').textContent = `🔬 ${phaseDetails.name || 'Processing'}`;
+                document.getElementById('phaseDescription').textContent = phaseDetails.description || message || 'Processing...';
+            } else {
+                document.getElementById('phaseDescription').textContent = message || 'Processing...';
+            }
+            
+            // Update counts
+            if (endpointsFound !== undefined) {
+                document.getElementById('endpointsFound').textContent = endpointsFound;
+            }
+            if (vulnerabilitiesFound !== undefined) {
+                document.getElementById('vulnerabilitiesFound').textContent = vulnerabilitiesFound;
+            }
+            
+            // Update time remaining (only if scan is not complete)
+            if (scanStartTime && safeProgress > 0 && safeProgress < 100) {
+                const elapsed = Date.now() - scanStartTime;
+                const estimated = (elapsed / safeProgress) * (100 - safeProgress);
+                
+                if (isFinite(estimated) && estimated > 0) {
+                    const minutes = Math.floor(estimated / 60000);
+                    const seconds = Math.floor((estimated % 60000) / 1000);
+                    document.getElementById('timeRemaining').textContent = `${minutes}m ${seconds}s`;
+                } else {
+                    document.getElementById('timeRemaining').textContent = '0m 0s';
+                }
+            } else if (safeProgress >= 100) {
+                document.getElementById('timeRemaining').textContent = '0m 0s';
+            }
+        }
+
+        // Add vulnerability
+        function addVulnerability(vulnerability) {
+            scanData.vulnerabilities.push(vulnerability);
+            
+            // Update vulnerability count
+            document.getElementById('vulnerabilitiesFound').textContent = scanData.vulnerabilities.length;
+            
+            // Update visualizations
+            updateCharts();
+        }
+
+        // Show progress panel
+        function showProgressPanel() {
+            document.getElementById('progressPanel').style.display = 'block';
+            document.getElementById('startScanBtn').disabled = true;
+            document.getElementById('startScanBtn').textContent = '🔄 Scanning...';
+        }
+
+        // Hide progress panel
+        function hideProgressPanel() {
+            document.getElementById('progressPanel').style.display = 'none';
+            document.getElementById('startScanBtn').disabled = false;
+            document.getElementById('startScanBtn').innerHTML = '<i class="fas fa-play"></i> 🚀 Start Real-Time Security Scan';
+        }
+
+        // Update scan status
+        function updateScanStatus(message, progress) {
+            document.getElementById('phaseDescription').textContent = message;
+            
+            if (progress !== undefined) {
+                const progressBar = document.getElementById('progressBar');
+                const progressText = document.getElementById('progressText');
+                
+                // Ensure progress is a valid number
+                const safeProgress = isNaN(progress) || progress === null || progress === undefined ? 0 : Math.min(100, Math.max(0, progress));
+                
+                progressBar.style.width = `${safeProgress}%`;
+                progressText.textContent = `${Math.round(safeProgress)}%`;
+            }
+        }
+
+        // Cancel scan
+        function cancelScan() {
+            if (currentScanId) {
+                fetch(`/api/scan/${currentScanId}/cancel`, { method: 'POST' })
+                    .then(() => {
+                        hideProgressPanel();
+                        currentScanId = null;
+                        console.log('🛑 Scan cancelled');
+                    })
+                    .catch(error => {
+                        console.error('❌ Failed to cancel scan:', error);
+                    });
+            }
+        }
+
+        // Show error
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+            
+            const container = document.querySelector('.dashboard-container');
+            container.insertBefore(errorDiv, container.firstChild);
+            
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 5000);
+        }
+
+        // Update charts
+        function updateCharts() {
+            updateMetricsChart();
+            updateNetworkGraph();
+            updateHeatmap();
+            updateInsights();
+        }
+
+        // Update metrics chart
+        function updateMetricsChart() {
+            const container = document.getElementById('metricsContainer');
+            
+            if (scanData.vulnerabilities.length === 0) return;
+            
+            // Clear no-data message
+            container.innerHTML = '<canvas id="metricsChart"></canvas>';
+            
+            const ctx = document.getElementById('metricsChart').getContext('2d');
+            
+            // Count vulnerabilities by severity
+            const severityCounts = {
+                CRITICAL: 0,
+                HIGH: 0,
+                MEDIUM: 0,
+                LOW: 0,
+                INFO: 0
+            };
+            
+            scanData.vulnerabilities.forEach(vuln => {
+                severityCounts[vuln.severity] = (severityCounts[vuln.severity] || 0) + 1;
+            });
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Critical', 'High', 'Medium', 'Low', 'Info'],
+                    datasets: [{
+                        data: [
+                            severityCounts.CRITICAL,
+                            severityCounts.HIGH,
+                            severityCounts.MEDIUM,
+                            severityCounts.LOW,
+                            severityCounts.INFO
+                        ],
+                        backgroundColor: [
+                            '#e74c3c',
+                            '#f39c12',
+                            '#f1c40f',
+                            '#2ecc71',
+                            '#3498db'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update network graph
+        function updateNetworkGraph() {
+            const container = document.getElementById('networkContainer');
+            
+            if (scanData.endpoints.length === 0) return;
+            
+            // Clear no-data message
+            container.innerHTML = '';
+            
+            const width = container.clientWidth;
+            const height = 350;
+            
+            const svg = d3.select(container)
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            // Create nodes from endpoints
+            const nodes = scanData.endpoints.slice(0, 20).map((endpoint, i) => ({
+                id: endpoint.url || endpoint.path,
+                group: endpoint.method === 'GET' ? 1 : 2,
+                risk: endpoint.riskScore > 7 ? "high" : endpoint.riskScore > 4 ? "medium" : "low",
+                vulnerabilities: scanData.vulnerabilities.filter(v => v.endpoint === endpoint.url).length
+            }));
+
+            // Create links
+            const links = [];
+            for (let i = 0; i < nodes.length - 1; i++) {
+                if (Math.random() > 0.7) {
+                    links.push({
+                        source: nodes[i].id,
+                        target: nodes[i + 1].id
+                    });
+                }
+            }
+
+            const simulation = d3.forceSimulation(nodes)
+                .force("link", d3.forceLink(links).id(d => d.id))
+                .force("charge", d3.forceManyBody().strength(-300))
+                .force("center", d3.forceCenter(width / 2, height / 2));
+
+            const link = svg.append("g")
+                .selectAll("line")
+                .data(links)
+                .enter().append("line")
+                .attr("stroke", "#999")
+                .attr("stroke-opacity", 0.6)
+                .attr("stroke-width", 2);
+
+            const node = svg.append("g")
+                .selectAll("circle")
+                .data(nodes)
+                .enter().append("circle")
+                .attr("r", d => 8 + d.vulnerabilities * 2)
+                .attr("fill", d => {
+                    switch(d.risk) {
+                        case "high": return "#e74c3c";
+                        case "medium": return "#f39c12";
+                        default: return "#2ecc71";
+                    }
+                })
+                .call(d3.drag()
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended));
+
+            // Add labels
+            const label = svg.append("g")
+                .selectAll("text")
+                .data(nodes)
+                .enter().append("text")
+                .text(d => d.id.split('/').pop() || d.id)
+                .attr("font-size", "10px")
+                .attr("text-anchor", "middle")
+                .attr("fill", "white")
+                .attr("font-weight", "bold");
+
+            simulation.on("tick", () => {
+                link
+                    .attr("x1", d => d.source.x)
+                    .attr("y1", d => d.source.y)
+                    .attr("x2", d => d.target.x)
+                    .attr("y2", d => d.target.y);
+
+                node
+                    .attr("cx", d => d.x)
+                    .attr("cy", d => d.y);
+
+                label
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y + 4);
+            });
+
+            function dragstarted(event, d) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            }
+
+            function dragged(event, d) {
+                d.fx = event.x;
+                d.fy = event.y;
+            }
+
+            function dragended(event, d) {
+                if (!event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            }
+        }
+
+        // Update heatmap
+        function updateHeatmap() {
+            const container = document.getElementById('heatmapContainer');
+            
+            if (scanData.vulnerabilities.length === 0) return;
+            
+            // Clear no-data message
+            container.innerHTML = '<canvas id="heatmapChart"></canvas>';
+            
+            const ctx = document.getElementById('heatmapChart').getContext('2d');
+            
+            // Group vulnerabilities by type
+            const vulnTypes = {};
+            scanData.vulnerabilities.forEach(vuln => {
+                vulnTypes[vuln.type] = (vulnTypes[vuln.type] || 0) + 1;
+            });
+            
+            const labels = Object.keys(vulnTypes);
+            const data = Object.values(vulnTypes);
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels.map(label => label.replace(/_/g, ' ')),
+                    datasets: [{
+                        label: 'Vulnerabilities',
+                        data: data,
+                        backgroundColor: labels.map(() => 
+                            `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.8)`
+                        ),
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update insights
+        function updateInsights() {
+            const container = document.getElementById('insightsContainer');
+            
+            if (scanData.vulnerabilities.length === 0) return;
+            
+            const criticalVulns = scanData.vulnerabilities.filter(v => v.severity === 'CRITICAL').length;
+            const highVulns = scanData.vulnerabilities.filter(v => v.severity === 'HIGH').length;
+            const mediumVulns = scanData.vulnerabilities.filter(v => v.severity === 'MEDIUM').length;
+            
+            container.innerHTML = `
+                <div style="padding: 20px; line-height: 1.6;">
+                    ${criticalVulns > 0 ? `
+                    <div style="background: #f8d7da; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #e74c3c;">
+                        <strong>🚨 Critical Alert:</strong> ${criticalVulns} critical vulnerabilities detected! Immediate action required.
+                    </div>` : ''}
+                    
+                    ${highVulns > 0 ? `
+                    <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #f39c12;">
+                        <strong>⚠️ High Priority:</strong> ${highVulns} high-severity issues found. Schedule remediation soon.
+                    </div>` : ''}
+                    
+                    ${mediumVulns > 0 ? `
+                    <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #2ecc71;">
+                        <strong>📋 Medium Risk:</strong> ${mediumVulns} medium-priority vulnerabilities identified.
+                    </div>` : ''}
+                    
+                    <div style="background: #d1ecf1; padding: 15px; border-radius: 8px; border-left: 4px solid #3498db;">
+                        <strong>💡 AI Recommendation:</strong> 
+                        ${scanData.endpoints.length} endpoints analyzed. 
+                        Consider implementing API rate limiting, input validation, and regular security audits.
+                    </div>
+                </div>
+            `;
+        }
+
+        // Update metrics from real-time data
+        function updateMetricsFromData(metricsData) {
+            if (!metricsData) return;
+            
+            const container = document.getElementById('metricsContainer');
+            container.innerHTML = '<canvas id="metricsChart"></canvas>';
+            
+            const ctx = document.getElementById('metricsChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Critical', 'High', 'Medium', 'Low'],
+                    datasets: [{
+                        data: [
+                            metricsData.criticalCount || 0,
+                            metricsData.highCount || 0,
+                            metricsData.mediumCount || 0,
+                            metricsData.lowCount || 0
+                        ],
+                        backgroundColor: [
+                            '#e74c3c',
+                            '#f39c12',
+                            '#f1c40f',
+                            '#2ecc71'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update insights from real-time data
+        function updateInsightsFromData(insightsData) {
+            if (!insightsData || !Array.isArray(insightsData)) return;
+            
+            const container = document.getElementById('insightsContainer');
+            
+            const insightsHtml = insightsData.map(insight => {
+                const severityColors = {
+                    'HIGH': '#f8d7da',
+                    'MEDIUM': '#fff3cd',
+                    'LOW': '#e8f5e8',
+                    'INFO': '#d1ecf1'
+                };
+                
+                const borderColors = {
+                    'HIGH': '#e74c3c',
+                    'MEDIUM': '#f39c12',
+                    'LOW': '#2ecc71',
+                    'INFO': '#3498db'
+                };
+                
+                const icons = {
+                    'HIGH': '🚨',
+                    'MEDIUM': '⚠️',
+                    'LOW': '📋',
+                    'INFO': '💡'
+                };
+                
+                const bgColor = severityColors[insight.severity] || '#d1ecf1';
+                const borderColor = borderColors[insight.severity] || '#3498db';
+                const icon = icons[insight.severity] || '💡';
+                
+                return `
+                    <div style="background: ${bgColor}; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid ${borderColor};">
+                        <strong>${icon} ${insight.title}:</strong> ${insight.description}
+                        ${insight.recommendation ? `<br><em>Recommendation: ${insight.recommendation}</em>` : ''}
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = `<div style="padding: 20px; line-height: 1.6;">${insightsHtml}</div>`;
+        }
+
+        // Scan completion
+        function onScanCompleted(summary) {
+            console.log('✅ Scan completed:', summary);
+            
+            // Update final progress
+            updateProgress({ progress: 100, message: 'Completed', phaseDetails: { name: 'Complete', description: 'Scan completed successfully!' } });
+            
+            // Update all visualizations
+            updateCharts();
+            
+            // Re-enable scan button
+            setTimeout(() => {
+                hideProgressPanel();
+                currentScanId = null;
+            }, 3000);
+        }
+
+        // Form submission
+        document.getElementById('scanForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const targetUrl = document.getElementById('targetUrl').value;
+            const methods = [];
+            
+            if (document.getElementById('swagger').checked) methods.push('swagger');
+            if (document.getElementById('crawl').checked) methods.push('crawl');
+            if (document.getElementById('brute_force').checked) methods.push('brute_force');
+            
+            const options = {
+                methods,
+                depth: document.getElementById('scanDepth').value,
+                auth: {
+                    bearerToken: document.getElementById('bearerToken').value,
+                    apiKey: document.getElementById('apiKey').value
+                }
+            };
+            
+            if (!targetUrl) {
+                showError('Please enter a target URL');
+                return;
+            }
+            
+            if (methods.length === 0) {
+                showError('Please select at least one discovery method');
+                return;
+            }
+            
+            startScan(targetUrl, options);
+        });
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            initBackgroundAnimation();
+            initWebSocket();
+            
+            console.log('🔍 Real API Risk Scanner Dashboard loaded');
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,66 @@
+{
+  message: "Risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-11 00:14:54.475'
+}
+{
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  error: 'SQLite database not initialized',
+  stack: 'Error: SQLite database not initialized\n' +
+    '    at /Users/sudhanshushekhar/Desktop/cywayz/src/core/database.ts:242:16\n' +
+    '    at new Promise (<anonymous>)\n' +
+    '    at Database.executeSQLiteQuery (/Users/sudhanshushekhar/Desktop/cywayz/src/core/database.ts:240:12)\n' +
+    '    at Database.executeQuery (/Users/sudhanshushekhar/Desktop/cywayz/src/core/database.ts:233:19)\n' +
+    '    at Database.createScan (/Users/sudhanshushekhar/Desktop/cywayz/src/core/database.ts:315:16)\n' +
+    '    at /Users/sudhanshushekhar/Desktop/cywayz/src/routes/scans.ts:59:24\n' +
+    '    at /Users/sudhanshushekhar/Desktop/cywayz/src/utils/middleware.ts:189:21\n' +
+    '    at Layer.handle [as handle_request] (/Users/sudhanshushekhar/Desktop/cywayz/node_modules/express/lib/router/layer.js:95:5)\n' +
+    '    at next (/Users/sudhanshushekhar/Desktop/cywayz/node_modules/express/lib/router/route.js:149:13)\n' +
+    '    at /Users/sudhanshushekhar/Desktop/cywayz/src/utils/middleware.ts:182:5',
+  url: '/api/v1/scans',
+  method: 'POST',
+  ip: '::1',
+  userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
+  level: 'error',
+  message: 'Unhandled error:',
+  timestamp: '2025-07-12 00:33:49.393'
+}
+{
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  error: 'SQLite database not initialized',
+  stack: 'Error: SQLite database not initialized\n' +
+    '    at /Users/sudhanshushekhar/Desktop/cywayz/src/core/database.ts:242:16\n' +
+    '    at new Promise (<anonymous>)\n' +
+    '    at Database.executeSQLiteQuery (/Users/sudhanshushekhar/Desktop/cywayz/src/core/database.ts:240:12)\n' +
+    '    at Database.executeQuery (/Users/sudhanshushekhar/Desktop/cywayz/src/core/database.ts:233:19)\n' +
+    '    at Database.createScan (/Users/sudhanshushekhar/Desktop/cywayz/src/core/database.ts:315:16)\n' +
+    '    at /Users/sudhanshushekhar/Desktop/cywayz/src/routes/scans.ts:59:24\n' +
+    '    at /Users/sudhanshushekhar/Desktop/cywayz/src/utils/middleware.ts:189:21\n' +
+    '    at Layer.handle [as handle_request] (/Users/sudhanshushekhar/Desktop/cywayz/node_modules/express/lib/router/layer.js:95:5)\n' +
+    '    at next (/Users/sudhanshushekhar/Desktop/cywayz/node_modules/express/lib/router/route.js:149:13)\n' +
+    '    at /Users/sudhanshushekhar/Desktop/cywayz/src/utils/middleware.ts:182:5',
+  url: '/api/v1/scans',
+  method: 'POST',
+  ip: '::1',
+  userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
+  level: 'error',
+  message: 'Unhandled error:',
+  timestamp: '2025-07-12 00:34:30.657'
+}
+{
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  level: 'error',
+  message: "Endpoint discovery failed for https://jsonplaceholder.typicode.com: Cannot read properties of undefined (reading 'endpoint')",
+  stack: "TypeError: Cannot read properties of undefined (reading 'endpoint')\n" +
+    '    at /Users/sudhanshushekhar/Desktop/cywayz/src/routes/scans.ts:100:25\n' +
+    '    at EndpointDiscovery.updateProgress (/Users/sudhanshushekhar/Desktop/cywayz/src/discovery/endpointDiscovery.ts:146:7)\n' +
+    '    at EndpointDiscovery.discover (/Users/sudhanshushekhar/Desktop/cywayz/src/discovery/endpointDiscovery.ts:72:18)\n' +
+    '    at startFullScanProcess (/Users/sudhanshushekhar/Desktop/cywayz/src/routes/scans.ts:97:52)\n' +
+    '    at /Users/sudhanshushekhar/Desktop/cywayz/src/routes/scans.ts:65:9',
+  timestamp: '2025-07-12 00:35:05.009'
+}
