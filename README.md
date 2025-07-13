@@ -14,8 +14,8 @@ Create a tool that scans SaaS APIs to identify security risks (e.g., unprotected
 - [x] cli BASE
 - [ ] initialiser
 - [ ] frontend
-- [ ] middleware
-- [ ] [web-logic] backend
+- [ ] middleware 
+- [x] [web-logic] backend
 - [ ] CLI Enhanced
 
 
