@@ -13,7 +13,7 @@ Create a tool that scans SaaS APIs to identify security risks (e.g., unprotected
    
 - [x] cli BASE
 - [ ] initialiser
-- [ ] frontend
+- [x] frontend
 - [ ] middleware 
 - [x] [web-logic] backend
 - [ ] CLI Enhanced
@@ -21,4 +21,5 @@ Create a tool that scans SaaS APIs to identify security risks (e.g., unprotected
 
 ## fixes
 
-- [ ] clean code - the colors using Fore are everywhere - organise it
+- [ ] !IMPORTANT handleCaptcha
+- [ ] [cli.py] clean code - the colors using Fore are everywhere - organise it
