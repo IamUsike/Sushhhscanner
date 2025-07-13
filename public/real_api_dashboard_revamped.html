@@ -1412,7 +1412,19 @@
                 const container = document.getElementById('heatmapSvg');
                 if (!container) return;
                 container.innerHTML = ''; // Clear existing content
-                const width = container.clientWidth;
+                // Set up a scrollable wrapper for the SVG
+                let scrollWrapper = document.getElementById('heatmapScrollWrapper');
+                if (!scrollWrapper) {
+                    scrollWrapper = document.createElement('div');
+                    scrollWrapper.id = 'heatmapScrollWrapper';
+                    scrollWrapper.style.overflowX = 'auto';
+                    scrollWrapper.style.width = '100%';
+                    scrollWrapper.style.height = '100%';
+                    container.parentNode.insertBefore(scrollWrapper, container);
+                    scrollWrapper.appendChild(container);
+                }
+                // Set a default width for now; will be updated in updateHeatmap
+                const width = 800;
                 const height = container.clientHeight || 200; // Default height for heatmap
 
                 const svg = d3.select(container)
@@ -1420,7 +1432,22 @@
                     .attr("height", height)
                     .attr("viewBox", [0, 0, width, height]);
 
-                this.heatmapVisualization = { container, svg, g: svg.append("g"), width, height };
+                // Remove any previous zoom behavior
+                svg.on('.zoom', null);
+
+                // Create a group for zooming
+                const g = svg.append("g").attr("class", "zoom-group");
+
+                // Add D3 zoom behavior
+                const zoom = d3.zoom()
+                    .scaleExtent([1, 10]) // Allow 1x to 10x zoom
+                    .translateExtent([[0, 0], [width, height]])
+                    .on("zoom", (event) => {
+                        g.attr("transform", event.transform);
+                    });
+                svg.call(zoom);
+
+                this.heatmapVisualization = { container, svg, g, width, height, zoom };
             }
 
             async downloadReport(format) {
@@ -2045,12 +2072,12 @@
             // New method to update the heatmap visualization
             updateHeatmap() {
                 if (!this.heatmapVisualization) return;
-                const { g, width, height } = this.heatmapVisualization;
+                const { g, container, svg, height, zoom } = this.heatmapVisualization;
                 g.selectAll('*').remove();
 
                 if (this.endpoints.length === 0) {
                     g.append("text")
-                        .attr("x", width / 2)
+                        .attr("x", 400)
                         .attr("y", height / 2)
                         .attr("text-anchor", "middle")
                         .attr("fill", "rgba(255,255,255,0.7)")
@@ -2065,6 +2092,17 @@
                     const risk = this.calculateEndpointRisk(endpointVulnerabilities);
                     return { url: e.url, risk: risk, index: i }; // Add index for xScale
                 });
+
+                // Dynamically set width based on number of endpoints
+                const minBarWidth = 18;
+                const width = Math.max(heatmapData.length * minBarWidth, 800); // At least 800px
+                svg.attr("width", width).attr("viewBox", [0, 0, width, height]);
+                this.heatmapVisualization.width = width;
+                if (zoom) {
+                    // Update zoom translateExtent to match new width
+                    svg.call(zoom.transform, d3.zoomIdentity); // Reset zoom
+                    zoom.translateExtent([[0, 0], [width, height]]);
+                }
 
                 // Define scales and colors
                 const xScale = d3.scaleBand()
@@ -2090,24 +2128,22 @@
                     .attr("height", d => riskHeightScale(d.risk))
                     .attr("fill", d => colorScale(d.risk));
 
-                // Add text labels for each endpoint
+                // Add text labels for each endpoint (show every Nth label for readability)
+                const labelStep = Math.ceil(heatmapData.length / 20); // Show max 20 labels
                 g.selectAll("text.endpoint-label")
                     .data(heatmapData)
                     .join("text")
                     .attr("class", "endpoint-label")
-                    .attr("x", d => xScale(d.index) + xScale.bandwidth() / 2) // Use index for x position
-                    .attr("y", height - riskHeightScale(d.risk) - 5) // Position slightly above the bar
+                    .attr("x", d => xScale(d.index) + xScale.bandwidth() / 2)
+                    .attr("y", d => height - riskHeightScale(d.risk) - 5)
                     .attr("text-anchor", "middle")
                     .attr("fill", "white")
                     .style("font-size", "8px")
-                    .text(d => {
-                        const urlParts = d.url.split('/');
-                        return urlParts[urlParts.length - 1] || urlParts[urlParts.length - 2] || d.url; // Display last non-empty part
-                    })
-                    .attr("transform", (d) => {
+                    .text((d, i) => (i % labelStep === 0 ? (d.url.split('/').pop() || d.url) : ''))
+                    .attr("transform", (d, i) => {
                         const x = xScale(d.index) + xScale.bandwidth() / 2;
                         const y = height - riskHeightScale(d.risk) - 5;
-                        return `rotate(-90, ${x}, ${y})`; // Rotate labels vertically for better readability
+                        return i % labelStep === 0 ? `rotate(-90, ${x}, ${y})` : '';
                     });
 
                 // Add tooltips (optional but highly recommended for detail)

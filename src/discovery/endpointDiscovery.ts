@@ -107,11 +107,15 @@ export class EndpointDiscovery {
         if (this.options.includeBruteForce) {
             updateProgress(70, 'Starting brute force discovery...');
     try {
-                const bruteForceEndpoints = await this.bruteForceDiscovery.discoverEndpoints(this.target.baseUrl, {}, (progressUpdate) => {
-                    const overallProgress = 70 + Math.round(progressUpdate.percentage * 0.25);
-                    updateProgress(overallProgress, progressUpdate.currentOperation);
-                });
-                bruteForceEndpoints.forEach(ep => addAndEmit(ep, 'bruteForce'));
+                await this.bruteForceDiscovery.discoverEndpoints(
+                    this.target.baseUrl,
+                    {},
+                    (progressUpdate) => {
+                        const overallProgress = 70 + Math.round(progressUpdate.percentage * 0.25);
+                        updateProgress(overallProgress, progressUpdate.currentOperation);
+                    },
+                    (ep) => addAndEmit(ep, 'bruteForce') // Real-time emission
+                );
                 updateProgress(95, `Brute force discovery completed`);
     } catch (error) {
                 logger.warn('Brute force discovery failed:', { error: (error as Error).message });

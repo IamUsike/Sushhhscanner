@@ -67,7 +67,8 @@ export class BruteForceDiscovery {
             maxConcurrent?: number;
             testMethods?: string[];
         } = {},
-        progressCallback?: (progress: DiscoveryProgress) => void
+        progressCallback?: (progress: DiscoveryProgress) => void,
+        onEndpointDiscovered?: (endpoint: APIEndpoint) => void
     ): Promise<APIEndpoint[]> {
         const {
             timeout = 10000,
@@ -137,6 +138,9 @@ export class BruteForceDiscovery {
                         }
                         
                         endpoints.push(endpoint);
+                        if (onEndpointDiscovered) {
+                            onEndpointDiscovered(endpoint);
+                        }
                         
                         this.loggerInstance.debug('Found endpoint via brute force', {
                             method,

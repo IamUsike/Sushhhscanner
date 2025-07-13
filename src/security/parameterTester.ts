@@ -307,7 +307,7 @@ export class ParameterTester {
       });
 
       this.xxePayloads.slice(0, 5).forEach(payload => { // Limiting XXE payloads for performance
-        payloads.push({
+      payloads.push({
           value: payload,
           technique: 'in-band',
           category: 'XXE',
@@ -435,10 +435,10 @@ export class ParameterTester {
         evidence: vulnerability.evidence,
         impact: this.getVulnerabilityImpact(vulnerability.vulnerability.type),
         recommendation: this.getVulnerabilityRecommendation(vulnerability.vulnerability.type, vulnerability.vulnerability.severity)
-      };
-    }
+        };
+      }
 
-    return null;
+      return null;
   }
 
   private analyzeResponse(
@@ -461,8 +461,8 @@ export class ParameterTester {
     const timingAnomaly = responseTime > (baselineResponse.headers['x-response-time'] ? parseFloat(baselineResponse.headers['x-response-time'] as string) * 2 : 1000) && responseTime > 2000; // If response time is significantly higher (e.g., 2x baseline and > 2s)
 
     if (timingAnomaly) {
-      return {
-        parameter,
+        return {
+          parameter,
         vulnerability: {
           type: VulnerabilityType.SQL_INJECTION_TIME_BASED,
           name: 'Time-Based Blind SQL Injection',
@@ -473,12 +473,12 @@ export class ParameterTester {
           owasp: 'A03:2021 – Injection'
         },
         payload: { original: parameter.example || '', malicious: payload.value, technique: payload.technique, category: payload.category },
-        evidence: {
+          evidence: {
           request: JSON.stringify({ parameter: parameter.name, payload: payload.value }),
           response: responseBody,
-          statusCode: response.status,
-          responseTime,
-          differenceDetected: true,
+            statusCode: response.status,
+            responseTime,
+            differenceDetected: true,
           timeDelayDetected: true
         },
         impact: this.getVulnerabilityImpact(VulnerabilityType.SQL_INJECTION_TIME_BASED),
@@ -495,8 +495,8 @@ export class ParameterTester {
           description: 'SQL error messages were detected in the application\'s response, indicating a potential error-based SQL Injection vulnerability.',
           severity: VulnerabilitySeverity.HIGH,
           confidence: 0.75,
-          cwe: 'CWE-89',
-          owasp: 'A03:2021 – Injection'
+        cwe: 'CWE-89',
+        owasp: 'A03:2021 – Injection'
         },
         payload: { original: parameter.example || '', malicious: payload.value, technique: payload.technique, category: payload.category },
         evidence: {
@@ -517,12 +517,12 @@ export class ParameterTester {
         parameter,
         vulnerability: {
           type: VulnerabilityType.NOSQL_INJECTION,
-          name: 'NoSQL Injection',
+        name: 'NoSQL Injection',
           description: 'NoSQL error messages or unexpected query results were detected in the application\'s response, indicating a potential NoSQL Injection vulnerability.',
           severity: VulnerabilitySeverity.HIGH,
           confidence: 0.8,
-          cwe: 'CWE-943',
-          owasp: 'A03:2021 – Injection'
+        cwe: 'CWE-943',
+        owasp: 'A03:2021 – Injection'
         },
         payload: { original: parameter.example || '', malicious: payload.value, technique: payload.technique, category: payload.category },
         evidence: {
@@ -547,8 +547,8 @@ export class ParameterTester {
           description: 'The XSS payload was reflected in the response or XSS-related patterns were detected, indicating a potential Reflected XSS vulnerability.',
           severity: VulnerabilitySeverity.HIGH,
           confidence: 0.9,
-          cwe: 'CWE-79',
-          owasp: 'A03:2021 – Injection'
+        cwe: 'CWE-79',
+        owasp: 'A03:2021 – Injection'
         },
         payload: { original: parameter.example || '', malicious: payload.value, technique: payload.technique, category: payload.category },
         evidence: {
@@ -569,12 +569,12 @@ export class ParameterTester {
         parameter,
         vulnerability: {
           type: VulnerabilityType.COMMAND_INJECTION,
-          name: 'Command Injection',
+        name: 'Command Injection',
           description: 'Command execution output or command-related error messages detected in the response, indicating a potential command injection vulnerability.',
           severity: VulnerabilitySeverity.CRITICAL,
           confidence: 0.95,
           cwe: 'CWE-77',
-          owasp: 'A03:2021 – Injection'
+        owasp: 'A03:2021 – Injection'
         },
         payload: { original: parameter.example || '', malicious: payload.value, technique: payload.technique, category: payload.category },
         evidence: {
@@ -598,7 +598,7 @@ export class ParameterTester {
           name: 'Path Traversal',
           description: 'Directory content or system file paths were exposed in the application\'s response, indicating a potential Path Traversal vulnerability.',
           severity: VulnerabilitySeverity.MEDIUM,
-          confidence: 0.7,
+        confidence: 0.7,
           cwe: 'CWE-22',
           owasp: 'A04:2021 – Insecure Design'
         },
@@ -626,7 +626,7 @@ export class ParameterTester {
           severity: VulnerabilitySeverity.HIGH,
           confidence: 0.8,
           cwe: 'CWE-90',
-          owasp: 'A03:2021 – Injection'
+        owasp: 'A03:2021 – Injection'
         },
         payload: { original: parameter.example || '', malicious: payload.value, technique: payload.technique, category: payload.category },
         evidence: {
@@ -677,7 +677,7 @@ export class ParameterTester {
             name: 'Generic Error-Based Injection',
             description: `Application returned an error indicating a potential injection vulnerability: ${errorSignatures.join(', ')}`,
             severity: VulnerabilitySeverity.MEDIUM,
-            confidence: 0.6,
+        confidence: 0.6,
             cwe: 'CWE-74',
             owasp: 'A03:2021 – Injection'
           },
@@ -942,4 +942,4 @@ export class ParameterTester {
       }
     }
   }
-}
+} 
