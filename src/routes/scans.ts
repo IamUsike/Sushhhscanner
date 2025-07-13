@@ -8,6 +8,8 @@ import { Scan, ScanTarget, APIResponse } from '@/types';
 import { EndpointDiscovery, DiscoveryOptions } from '../discovery/endpointDiscovery';
 import { Server as SocketIOServer } from 'socket.io';
 import { reportRoutes } from './reports';
+// n8n integration for notifications (using native fetch in Node.js 18+)
+import 'dotenv/config';
 const globalAny = global as any;
 if (!globalAny.scanStorage) {
   globalAny.scanStorage = new Map();
@@ -148,6 +150,18 @@ async function startFullScanProcess(scan: Omit<Scan, 'createdAt' | 'updatedAt'>,
         if (discovered.endpoints.length > 0) {
             const vuln = { endpoint: discovered.endpoints[0].url, type: 'SQL_INJECTION', severity: 'HIGH', description: 'SQL Injection vulnerability found in login parameter.' };
             io.to(scanId).emit('scan-update', { eventType: 'vulnerability_found', data: { vulnerability: vuln } });
+            // n8n integration for critical/high vulnerabilities
+            if (vuln.severity === 'CRITICAL' || vuln.severity === 'HIGH') {
+                fetch(process.env.WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        endpoint: vuln.endpoint,
+                        type: vuln.type,
+                        description: vuln.description
+                    })
+                }).catch(err => console.error('Failed to notify n8n:', err));
+            }
             // The method doesn't exist, so we comment it out for now to prevent crash
             // await database.addVulnerability(scanId, vuln); 
         }
