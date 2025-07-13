@@ -391,18 +391,13 @@ export class PassiveCrawler {
   }
 
   private async createEndpointInfo(url: string): Promise<EndpointInfo> {
-    // In a real scenario, we might make a HEAD request here to get more info
-    // For now, we'll just return a basic EndpointInfo
     return {
       url,
       method: 'GET', // Default to GET for discovered URLs
       parameters: [],
-      headers: [],
-      body: '',
-      response: '',
-      authentication: { required: false }, // Corrected: AuthenticationInfo does not have 'type'
-      securityScore: 0,
-      lastScanned: new Date(),
+      authentication: { required: false },
+      discoveryMethod: 'crawling',
+      responseTypes: [],
     };
   }
 

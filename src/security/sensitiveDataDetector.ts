@@ -9,9 +9,16 @@ interface SensitiveDataFinding {
   description: string;
 }
 
+interface PatternDefinition {
+  regex: RegExp;
+  type: VulnerabilityType;
+  severity: VulnerabilitySeverity;
+  description: string;
+}
+
 export class SensitiveDataDetector {
   // Regex patterns for common sensitive data types
-  private static readonly PATTERNS = {
+  private static readonly PATTERNS: Record<string, PatternDefinition> = {
     EMAIL_ADDRESS: {
       regex: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g,
       type: 'PII_EXPOSURE',

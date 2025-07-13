@@ -7,6 +7,12 @@ import { logger } from '@utils/logger';
 import { Scan, ScanTarget, APIResponse } from '@/types';
 import { EndpointDiscovery, DiscoveryOptions } from '../discovery/endpointDiscovery';
 import { Server as SocketIOServer } from 'socket.io';
+import { reportRoutes } from './reports';
+const globalAny = global as any;
+if (!globalAny.scanStorage) {
+  globalAny.scanStorage = new Map();
+}
+const scanStorage = globalAny.scanStorage;
 
 export const scanRoutes = (io: SocketIOServer) => {
 const router = Router();
@@ -56,7 +62,8 @@ router.post('/',
           }
     };
 
-    await database.createScan(scan);
+    scanStorage.set(scanId, scan);
+    console.log('scanStorage keys after storing:', [...scanStorage.keys()]);
 
         // Acknowledge the request immediately
         res.status(202).json({ scanId, message: 'Scan initiated successfully.' });
@@ -73,11 +80,26 @@ async function startFullScanProcess(scan: Omit<Scan, 'createdAt' | 'updatedAt'>,
 
     const emitProgress = (progress, message, details = {}) => {
         io.to(scanId).emit('scan-update', { eventType: 'progress', data: { progress, message, ...details } });
-        database.updateScan(scanId, { progress, currentStep: message });
+        const scan = scanStorage.get(scanId);
+        if (scan) {
+            scan.progress = progress;
+            scan.currentStep = message;
+            scanStorage.set(scanId, scan);
+        }
     };
 
     const emitEndpoint = (endpoint) => {
         io.to(scanId).emit('scan-update', { eventType: 'endpoint_discovered', data: { endpoint }});
+    };
+    
+    const emitVulnerability = (vulnerability) => {
+        io.to(scanId).emit('scan-update', { eventType: 'vulnerability_found', data: { vulnerability }});
+        const scan = scanStorage.get(scanId);
+        if (scan) {
+            scan.vulnerabilities = scan.vulnerabilities || [];
+            scan.vulnerabilities.push(vulnerability);
+            scanStorage.set(scanId, scan);
+        }
     };
     
     // This is where your real, complex scanning logic will go.
@@ -100,7 +122,8 @@ async function startFullScanProcess(scan: Omit<Scan, 'createdAt' | 'updatedAt'>,
                 const overallProgress = 5 + Math.round(progress * 0.4);
                 emitProgress(overallProgress, step, details);
             },
-            emitEndpoint // Pass the emitter function here
+            emitEndpoint, // Pass the emitter function here
+            emitVulnerability // Pass the new vulnerability emitter
         );
 
         emitProgress(45, `Discovery complete. Found ${discovered.totalFound} endpoints.`);
@@ -133,12 +156,21 @@ async function startFullScanProcess(scan: Omit<Scan, 'createdAt' | 'updatedAt'>,
         emitProgress(100, "Scan complete!");
         
         io.to(scanId).emit('scan-update', { eventType: 'scan_complete', data: { message: 'Analysis finished.' } });
-        database.updateScan(scanId, { status: 'completed' });
+        const scan = scanStorage.get(scanId);
+        if (scan) {
+            scan.status = 'completed';
+            scanStorage.set(scanId, scan);
+        }
 
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
         logger.error(`Scan ${scanId} failed:`, error);
         io.to(scanId).emit('scan-update', { eventType: 'error', data: { message: errorMessage } });
-        database.updateScan(scanId, { status: 'failed', currentStep: errorMessage });
+        const scanErr = scanStorage.get(scanId);
+        if (scanErr) {
+            scanErr.status = 'failed';
+            scanErr.currentStep = errorMessage;
+            scanStorage.set(scanId, scanErr);
+        }
     }
 } 

@@ -639,9 +639,10 @@
         
         /* Activity Feed */
         .activity-feed {
-            max-height: 400px;
+            /* max-height: 400px; */ /* Removed to allow expansion */
             overflow-y: auto;
             padding-right: var(--spacing-sm);
+            flex-grow: 1; /* Allow it to grow and fill space */
         }
         
         .activity-feed::-webkit-scrollbar {
@@ -1263,6 +1264,26 @@
                         <canvas id="vulnerabilityChart" class="chart-canvas"></canvas>
                     </div>
                 </div>
+
+                <!-- New Radar Chart Container for Risk Categories -->
+                <div style="margin-top: var(--spacing-xl);">
+                    <h4 style="color: var(--text-primary); margin-bottom: var(--spacing-md);">
+                        <i class="fas fa-compass"></i> Risk Category Radar
+                    </h4>
+                    <div class="chart-container">
+                        <canvas id="radarChart" class="chart-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- New Heatmap Container for Endpoint Risks -->
+                <div style="margin-top: var(--spacing-xl);">
+                    <h4 style="color: var(--text-primary); margin-bottom: var(--spacing-md);">
+                        <i class="fas fa-th-large"></i> Endpoint Risk Heatmap
+                    </h4>
+                    <div class="chart-container">
+                        <svg id="heatmapSvg" class="chart-canvas"></svg>
+                    </div>
+                </div>
             </section>
             
             <!-- Network Visualization Section -->
@@ -1295,12 +1316,9 @@
                         <button class="btn btn-sm btn-primary" id="exportCSV">
                             <i class="fas fa-table"></i> CSV
                         </button>
-                        <button class="btn btn-sm btn-primary" id="exportPDF">
-                            <i class="fas fa-file-pdf"></i> Report
-                        </button>
-                        <button class="btn btn-sm btn-secondary" id="clearResults">
+                        <!-- <button class="btn btn-sm btn-secondary" id="clearResults">
                             <i class="fas fa-trash"></i> Clear
-                        </button>
+                        </button> -->
                     </div>
                 </div>
                 
@@ -1348,414 +1366,761 @@
                 this.currentScanId = null;
                 this.endpoints = [];
                 this.vulnerabilities = [];
-                this.chart = null;
+                this.chart = null; // Doughnut chart for vulnerability distribution
+                this.radarChart = null; // New radar chart for risk categories
+                this.heatmapVisualization = null; // New heatmap visualization
                 this.networkVisualization = null;
-        this.scanTimer = null;
+                this.scanTimer = null;
 
-        this.dom = {
-            connectionStatus: document.getElementById('connectionStatus'),
-            statusDot: document.getElementById('statusDot'),
-            startScanBtn: document.getElementById('startScan'),
-            stopScanBtn: document.getElementById('stopScan'),
-            resetScanBtn: document.getElementById('resetScan'),
-            targetUrlInput: document.getElementById('targetUrl'),
-            scanDuration: document.getElementById('scanDuration'),
-            endpointsFound: document.getElementById('endpointsFound'),
-            vulnerabilitiesFound: document.getElementById('vulnerabilitiesFound'),
-            riskScore: document.getElementById('riskScore'),
-            activityFeed: document.getElementById('activityFeed'),
-            endpointsList: document.getElementById('endpointsList'),
-            vulnerabilitiesList: document.getElementById('vulnerabilitiesList'),
-            progressFill: document.getElementById('progressFill'),
-            progressMessage: document.getElementById('progressMessage'),
-            progressPercentage: document.getElementById('progressPercentage'),
-            timelineProgress: document.getElementById('timelineProgress')
-        };
-        this.currentNetworkView = 'topology'; // Default view
-    }
+                this.dom = {
+                    connectionStatus: document.getElementById('connectionStatus'),
+                    statusDot: document.getElementById('statusDot'),
+                    startScanBtn: document.getElementById('startScan'),
+                    stopScanBtn: document.getElementById('stopScan'),
+                    resetScanBtn: document.getElementById('resetScan'),
+                    targetUrlInput: document.getElementById('targetUrl'),
+                    scanDuration: document.getElementById('scanDuration'),
+                    endpointsFound: document.getElementById('endpointsFound'),
+                    vulnerabilitiesFound: document.getElementById('vulnerabilitiesFound'),
+                    riskScore: document.getElementById('riskScore'),
+                    activityFeed: document.getElementById('activityFeed'),
+                    endpointsList: document.getElementById('endpointsList'),
+                    vulnerabilitiesList: document.getElementById('vulnerabilitiesList'),
+                    progressFill: document.getElementById('progressFill'),
+                    progressMessage: document.getElementById('progressMessage'),
+                    progressPercentage: document.getElementById('progressPercentage'),
+                    timelineProgress: document.getElementById('timelineProgress')
+                };
+                this.currentNetworkView = 'topology'; // Default view
+            }
 
-    initialize() {
+            initialize() {
                     this.setupEventListeners();
                     this.initializeCharts();
                     this.initializeNetworkVisualization();
-        this.connectWebSocket();
-        this.updateNetworkVisualization();
-    }
-
-    connectWebSocket() {
-        this.updateConnectionStatus('Connecting...', false);
-        console.log('Attempting to connect WebSocket to http://localhost:3000...');
-        this.socket = io('http://localhost:3000');
-                        
-        this.socket.on('connect', () => {
-            console.log('WebSocket: Connected!');
-            this.updateConnectionStatus('Connected', true);
-            if (this.currentScanId) {
-                this.socket.emit('subscribe', this.currentScanId);
+                this.initializeHeatmap(); // Initialize the heatmap
+                this.connectWebSocket();
+                this.updateNetworkVisualization();
+                // Add export button handlers
+                document.getElementById('exportJSON')?.addEventListener('click', () => this.downloadReport('json'));
+                document.getElementById('exportCSV')?.addEventListener('click', () => this.downloadReport('csv'));
+                // document.getElementById('exportPDF')?.addEventListener('click', () => this.downloadReport('pdf'));
             }
-        });
 
-        this.socket.on('disconnect', (reason) => {
-            console.log('WebSocket: Disconnected! Reason:', reason);
-            this.updateConnectionStatus('Disconnected', false);
-        });
+            // New method to initialize the heatmap
+            initializeHeatmap() {
+                const container = document.getElementById('heatmapSvg');
+                if (!container) return;
+                container.innerHTML = ''; // Clear existing content
+                const width = container.clientWidth;
+                const height = container.clientHeight || 200; // Default height for heatmap
 
-        this.socket.on('connect_error', (error) => {
-            console.error('WebSocket: Connection Error!', error);
-            this.updateConnectionStatus(`Connection Error: ${error.message}`, false);
-        });
+                const svg = d3.select(container)
+                    .attr("width", width)
+                    .attr("height", height)
+                    .attr("viewBox", [0, 0, width, height]);
 
-        this.socket.on('error', (error) => {
-            console.error('WebSocket: Generic Error!', error);
-            this.updateConnectionStatus(`Error: ${error.message}`, false);
-        });
+                this.heatmapVisualization = { container, svg, g: svg.append("g"), width, height };
+            }
 
-        this.socket.on('scan-update', (data) => this.handleScanUpdate(data));
-    }
+            async downloadReport(format) {
+                if (!this.currentScanId) {
+                    alert('No scan in progress. Please run a scan first.');
+                    return;
+                }
+                try {
+                    // Step 1: Request report generation
+                    const response = await fetch(`/api/v1/reports/${this.currentScanId}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ format })
+                    });
+                    const result = await response.json();
+                    if (!result.success || !result.data?.downloadUrl) {
+                        alert('Failed to generate report.');
+                        return;
+                    }
+                    // Step 2: Download the report
+                    const downloadUrl = result.data.downloadUrl;
+                    const fileResponse = await fetch(downloadUrl);
+                    if (!fileResponse.ok) {
+                        alert('Failed to download report.');
+                        return;
+                    }
+                    const blob = await fileResponse.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `cywayz-report-${this.currentScanId}.${format}`;
+                    document.body.appendChild(a);
+                    a.click();
+                    setTimeout(() => {
+                        window.URL.revokeObjectURL(url);
+                        a.remove();
+                    }, 100);
+                } catch (err) {
+                    alert('Error generating or downloading report.');
+                    console.error(err);
+                }
+            }
 
-    updateConnectionStatus(message, isConnected) {
-        if (this.dom.connectionStatus) this.dom.connectionStatus.textContent = message;
-        if (this.dom.statusDot) {
-            this.dom.statusDot.style.background = isConnected ? '#4CAF50' : '#ff6b6b';
-            this.dom.statusDot.style.animation = isConnected ? 'pulse 2s infinite' : 'none';
-        }
+            connectWebSocket() {
+                this.updateConnectionStatus('Connecting...', false);
+                console.log('Attempting to connect WebSocket to http://localhost:3000...');
+                this.socket = io('http://localhost:3000');
+                        
+                        this.socket.on('connect', () => {
+                    console.log('WebSocket: Connected!');
+                    this.updateConnectionStatus('Connected', true);
+                    if (this.currentScanId) {
+                        this.socket.emit('subscribe', this.currentScanId);
+                    }
+                });
+
+                this.socket.on('disconnect', (reason) => {
+                    console.log('WebSocket: Disconnected! Reason:', reason);
+                    this.updateConnectionStatus('Disconnected', false);
+                        });
+                        
+                        this.socket.on('connect_error', (error) => {
+                    console.error('WebSocket: Connection Error!', error);
+                    this.updateConnectionStatus(`Connection Error: ${error.message}`, false);
+                });
+
+                this.socket.on('error', (error) => {
+                    console.error('WebSocket: Generic Error!', error);
+                    this.updateConnectionStatus(`Error: ${error.message}`, false);
+                });
+
+                this.socket.on('scan-update', (data) => this.handleScanUpdate(data));
+            }
+
+            updateConnectionStatus(message, isConnected) {
+                if (this.dom.connectionStatus) this.dom.connectionStatus.textContent = message;
+                if (this.dom.statusDot) {
+                    this.dom.statusDot.style.background = isConnected ? '#4CAF50' : '#ff6b6b';
+                    this.dom.statusDot.style.animation = isConnected ? 'pulse 2s infinite' : 'none';
+                }
             }
             
             setupEventListeners() {
-        this.dom.startScanBtn.addEventListener('click', () => this.startScan());
-        this.dom.stopScanBtn.addEventListener('click', () => this.stopScan());
-        this.dom.resetScanBtn.addEventListener('click', () => this.resetScan());
+                this.dom.startScanBtn.addEventListener('click', () => this.startScan());
+                this.dom.stopScanBtn.addEventListener('click', () => this.stopScan());
+                this.dom.resetScanBtn.addEventListener('click', () => this.resetScan());
                 document.querySelectorAll('[data-view]').forEach(btn => {
                     btn.addEventListener('click', (e) => {
                         document.querySelectorAll('[data-view]').forEach(b => b.classList.remove('active'));
-                 e.currentTarget.classList.add('active');
-                 this.switchNetworkView(e.currentTarget.dataset.view);
+                        e.currentTarget.classList.add('active');
+                        this.switchNetworkView(e.currentTarget.dataset.view);
                     });
                 });
             }
             
             async startScan() {
-        if (this.isScanning) return;
+                if (this.isScanning) return;
                     this.isScanning = true;
                     this.updateScanButtons(true);
-        this.resetScanState();
-        this.scanStartTime = Date.now();
-        
-        this.scanTimer = setInterval(() => {
-            const duration = Math.floor((Date.now() - this.scanStartTime) / 1000);
-            if (this.dom.scanDuration) this.dom.scanDuration.textContent = `${duration}s`;
-        }, 1000);
+                this.resetScanState();
+                this.scanStartTime = Date.now();
+                
+                this.scanTimer = setInterval(() => {
+                    const duration = Math.floor((Date.now() - this.scanStartTime) / 1000);
+                    if (this.dom.scanDuration) this.dom.scanDuration.textContent = `${duration}s`;
+                }, 1000);
 
-        const targetUrl = this.dom.targetUrlInput.value.trim();
-        this.addActivity('🚀 Scan Initiated', `Scanning ${targetUrl}`);
-        
-        try {
-            const response = await fetch('/api/v1/scans', {
+                const targetUrl = this.dom.targetUrlInput.value.trim();
+                this.addActivity('🚀 Scan Initiated', `Scanning ${targetUrl}`);
+                
+                try {
+                    const response = await fetch('/api/v1/scans', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ target: { baseUrl: targetUrl }, scanConfig: { depth: 'comprehensive' } })
+                        body: JSON.stringify({ target: { baseUrl: targetUrl }, scanConfig: { depth: 'comprehensive' } })
                     });
                     const result = await response.json();
-            this.currentScanId = result.scanId;
-            this.socket.emit('subscribe', this.currentScanId);
+                    this.currentScanId = result.scanId;
+                    this.socket.emit('subscribe', this.currentScanId);
                 } catch (error) {
-            this.addActivity('❌ Scan Failed', error.message);
-            this.stopScan();
-        }
-    }
+                    this.addActivity('❌ Scan Failed', error.message);
+                    this.stopScan();
+                }
+            }
 
-    stopScan() {
+            stopScan() {
                     this.isScanning = false;
-        clearInterval(this.scanTimer);
+                clearInterval(this.scanTimer);
                     this.updateScanButtons(false);
-        this.addActivity('⏹️ Scan Stopped', 'Scan terminated by user.');
-    }
+                this.addActivity('⏹️ Scan Stopped', 'Scan terminated by user.');
+            }
 
-    updateScanButtons(isScanning) {
-        this.dom.startScanBtn.disabled = isScanning;
-        this.dom.stopScanBtn.disabled = !isScanning;
-    }
+            updateScanButtons(isScanning) {
+                this.dom.startScanBtn.disabled = isScanning;
+                this.dom.stopScanBtn.disabled = !isScanning;
+            }
 
-    resetScanState() {
+            resetScanState() {
                 this.endpoints = [];
                 this.vulnerabilities = [];
-        this.scanStartTime = null;
-        clearInterval(this.scanTimer);
-        if (this.dom.scanDuration) this.dom.scanDuration.textContent = '0s';
-        this.updateStatistics();
+                this.scanStartTime = null;
+                clearInterval(this.scanTimer);
+                if (this.dom.scanDuration) this.dom.scanDuration.textContent = '0s';
+                this.updateStatistics();
                 this.updateCharts();
                 this.updateNetworkVisualization(); // Call without view, it will use currentNetworkView
-        if(this.dom.activityFeed) this.dom.activityFeed.innerHTML = '';
-        if(this.dom.endpointsList) this.dom.endpointsList.innerHTML = '';
-        if(this.dom.vulnerabilitiesList) this.dom.vulnerabilitiesList.innerHTML = '';
-        this.updateProgress(0, 'Ready to start security analysis.');
-    }
+                if(this.dom.activityFeed) this.dom.activityFeed.innerHTML = '';
+                if(this.dom.endpointsList) this.dom.endpointsList.innerHTML = '';
+                if(this.dom.vulnerabilitiesList) this.dom.vulnerabilitiesList.innerHTML = '';
+                this.updateProgress(0, 'Ready to start security analysis.');
+            }
 
-    handleScanUpdate({ eventType, data: payload }) {
+            handleScanUpdate({ eventType, data: payload }) {
                 switch (eventType) {
                     case 'progress':
-                this.updateProgress(payload.progress, payload.message);
+                        this.updateProgress(payload.progress, payload.message);
                         break;
                     case 'endpoint_discovered':
-                this.addEndpoint(payload.endpoint);
+                        this.addEndpoint(payload.endpoint);
                         break;
                     case 'vulnerability_found':
-                this.addVulnerability(payload.vulnerability);
+                        this.addVulnerability(payload.vulnerability);
                         break;
                     case 'scan_complete':
-                this.stopScan();
-                this.addActivity('✅ Scan Complete', payload.message || 'Scan has finished.');
-                this.updateProgress(100, 'Scan Complete!');
+                        this.stopScan();
+                        this.addActivity('✅ Scan Complete', payload.message || 'Scan has finished.');
+                        this.updateProgress(100, 'Scan Complete!');
                         break;
-            default:
-                this.addActivity(`ℹ️ ${eventType}`, payload.message || 'General update from scanner.');
-        }
-    }
+                    default:
+                        this.addActivity(`ℹ️ ${eventType}`, payload.message || 'General update from scanner.');
+                }
+            }
+            
+            addEndpoint(endpoint) {
+                if (!endpoint || !endpoint.url || this.endpoints.some(e => e.url === endpoint.url)) return;
+                this.endpoints.push(endpoint);
+                this.updateStatistics();
+                this.updateNetworkVisualization();
+                this.addToList(this.dom.endpointsList, `${endpoint.method || 'GET'} ${endpoint.url}`);
+                this.addActivity('🔍 Endpoint Found', `${endpoint.method || 'GET'} ${endpoint.url}`);
+                this.updateHeatmap(); // Update heatmap when new endpoint is added
+            }
+            
+            addVulnerability(vulnerability) {
+                if (!vulnerability || !vulnerability.endpoint) return;
+                this.vulnerabilities.push(vulnerability);
+                this.updateStatistics();
+                this.updateCharts();
+                this.updateNetworkVisualization();
+                // Add console log to inspect the vulnerability object
+                console.log('Received vulnerability object:', vulnerability);
+                this.addToList(this.dom.vulnerabilitiesList, this.createVulnerabilityItemHtml(vulnerability));
+                this.addActivity('🚨 Vulnerability Found', `${vulnerability.severity} - ${vulnerability.type}`);
+                this.updateHeatmap(); // Update heatmap when new vulnerability is found
+            }
 
-    addEndpoint(endpoint) {
-        if (!endpoint || !endpoint.url || this.endpoints.some(e => e.url === endpoint.url)) return;
-        this.endpoints.push(endpoint);
-        this.updateStatistics();
-        this.updateNetworkVisualization();
-        this.addToList(this.dom.endpointsList, `${endpoint.method || 'GET'} ${endpoint.url}`);
-        this.addActivity('🔍 Endpoint Found', `${endpoint.method || 'GET'} ${endpoint.url}`);
-    }
+            // Helper to create HTML for a vulnerability item, including remediation guidance
+            createVulnerabilityItemHtml(vulnerability) {
+                const severityClass = vulnerability.severity.toLowerCase();
+                let remediationHtml = '';
+                if (vulnerability.remediationGuidance) {
+                    const { description, steps, references } = vulnerability.remediationGuidance;
+                    remediationHtml = `
+                        <details style="margin-top: var(--spacing-sm); background: rgba(255,255,255,0.05); padding: var(--spacing-sm); border-radius: var(--radius-sm);">
+                            <summary style="font-weight: 600; cursor: pointer; color: var(--text-primary);">
+                                <i class="fas fa-wrench" style="margin-right: 5px;"></i> Remediation Guidance
+                            </summary>
+                            <div style="padding-top: var(--spacing-sm); border-top: 1px solid rgba(255,255,255,0.1); margin-top: var(--spacing-sm);">
+                                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: var(--spacing-sm);">
+                                    ${description}
+                                </p>
+                                ${steps && steps.length > 0 ? `
+                                    <h5 style="color: var(--text-primary); margin-bottom: var(--spacing-xs); font-size: 0.9rem;">Steps:</h5>
+                                    <ul style="list-style-type: decimal; margin-left: 1.25rem; font-size: 0.85rem; color: var(--text-secondary);">
+                                        ${steps.map(step => `<li>${step}</li>`).join('')}
+                                    </ul>
+                                ` : ''}
+                                ${references && references.length > 0 ? `
+                                    <h5 style="color: var(--text-primary); margin-top: var(--spacing-sm); margin-bottom: var(--spacing-xs); font-size: 0.9rem;">References:</h5>
+                                    <ul style="list-style-type: disc; margin-left: 1.25rem; font-size: 0.85rem; color: var(--text-secondary);">
+                                        ${references.map(ref => `<li><a href="${ref}" target="_blank" style="color: #4facfe; text-decoration: none;">${ref}</a></li>`).join('')}
+                                    </ul>
+                                ` : ''}
+                            </div>
+                        </details>
+                    `;
+                }
 
-    addVulnerability(vulnerability) {
-        if (!vulnerability || !vulnerability.endpoint) return;
-        this.vulnerabilities.push(vulnerability);
-        this.updateStatistics();
-        this.updateCharts();
-        this.updateNetworkVisualization();
-        this.addToList(this.dom.vulnerabilitiesList, `${vulnerability.severity}: ${vulnerability.type} at ${vulnerability.endpoint}`, vulnerability.severity.toLowerCase());
-        this.addActivity('🚨 Vulnerability Found', `${vulnerability.severity} - ${vulnerability.type}`);
-    }
+                return `
+                        <div class="result-header">
+                        <div class="result-title">${vulnerability.type} at ${vulnerability.endpoint}</div>
+                        <div class="result-badge ${severityClass}">${vulnerability.severity}</div>
+                        </div>
+                        <div class="result-description">
+                        ${vulnerability.description || 'No description provided.'}
+                        </div>
+                    ${remediationHtml}
+                `;
+            }
 
-    updateProgress(progress, message) {
-        if (this.dom.progressFill) this.dom.progressFill.style.width = `${progress}%`;
-        if (this.dom.progressMessage) this.dom.progressMessage.textContent = message;
-        if (this.dom.progressPercentage) this.dom.progressPercentage.textContent = `${Math.round(progress)}%`;
-        this.updatePhaseTimeline(this.getPhaseFromProgress(progress), progress);
-    }
-    
-    getPhaseFromProgress(progress) {
-        if (progress < 45) return 'discovery';
-        if (progress < 60) return 'auth';
-        if (progress < 80) return 'vulns';
-        return 'complete';
+            updateProgress(progress, message) {
+                if (this.dom.progressFill) this.dom.progressFill.style.width = `${progress}%`;
+                if (this.dom.progressMessage) this.dom.progressMessage.textContent = message;
+                if (this.dom.progressPercentage) this.dom.progressPercentage.textContent = `${Math.round(progress)}%`;
+                this.updatePhaseTimeline(this.getPhaseFromProgress(progress), progress);
+            }
+            
+            getPhaseFromProgress(progress) {
+                if (progress < 45) return 'discovery';
+                if (progress < 60) return 'auth';
+                if (progress < 80) return 'vulns';
+                return 'complete';
             }
             
             updatePhaseTimeline(currentPhase, progress) {
-        ['discovery', 'auth', 'vulns', 'risk', 'complete'].forEach(phase => {
-            const el = document.getElementById(`phase${phase.charAt(0).toUpperCase() + phase.slice(1)}`);
-            if (el) {
-                el.classList.remove('active', 'complete');
-                if (progress >= 100 && phase === 'complete') el.classList.add('complete');
-                else if (phase === currentPhase) el.classList.add('active');
+                ['discovery', 'auth', 'vulns', 'risk', 'complete'].forEach(phase => {
+                    const el = document.getElementById(`phase${phase.charAt(0).toUpperCase() + phase.slice(1)}`);
+                    if (el) {
+                        el.classList.remove('active', 'complete');
+                        if (progress >= 100 && phase === 'complete') el.classList.add('complete');
+                        else if (phase === currentPhase) el.classList.add('active');
+                    }
+                });
+                if (this.dom.timelineProgress) this.dom.timelineProgress.style.width = `${progress}%`;
             }
-        });
-        if (this.dom.timelineProgress) this.dom.timelineProgress.style.width = `${progress}%`;
-    }
 
-    updateStatistics() {
-        this.animateCounter(this.dom.endpointsFound, this.endpoints.length);
-        this.animateCounter(this.dom.vulnerabilitiesFound, this.vulnerabilities.length);
-        this.animateCounter(this.dom.riskScore, this.calculateRiskScore());
-    }
+            updateStatistics() {
+                this.animateCounter(this.dom.endpointsFound, this.endpoints.length);
+                this.animateCounter(this.dom.vulnerabilitiesFound, this.vulnerabilities.length);
+                this.animateCounter(this.dom.riskScore, this.calculateRiskScore());
+            }
 
-    animateCounter(element, targetValue) {
+            animateCounter(element, targetValue) {
                 if (!element) return;
-        const startValue = parseInt(element.textContent) || 0;
-        const duration = 1000;
-        let startTime = null;
-        const step = (timestamp) => {
-            if (!startTime) startTime = timestamp;
-            const progress = Math.min((timestamp - startTime) / duration, 1);
-            element.textContent = Math.floor(progress * (targetValue - startValue) + startValue);
-            if (progress < 1) window.requestAnimationFrame(step);
-        };
-        window.requestAnimationFrame(step);
-    }
+                const startValue = parseInt(element.textContent) || 0;
+                const duration = 1000;
+                let startTime = null;
+                const step = (timestamp) => {
+                    if (!startTime) startTime = timestamp;
+                    const progress = Math.min((timestamp - startTime) / duration, 1);
+                    element.textContent = Math.floor(progress * (targetValue - startValue) + startValue);
+                    if (progress < 1) window.requestAnimationFrame(step);
+                };
+                window.requestAnimationFrame(step);
+            }
 
-    addToList(list, text, severityClass = '') {
-                    const item = document.createElement('div');
-        item.className = `result-item ${severityClass}`;
-        item.innerHTML = `<div class="result-title">${text}</div>`;
-        if (list && list.firstChild) list.insertBefore(item, list.firstChild);
-        else if (list) list.appendChild(item);
-    }
-    
-    addActivity(title, description) {
-                    const item = document.createElement('div');
-        item.className = 'activity-item';
-        item.innerHTML = `<div class="activity-icon">💡</div><div class="activity-content"><div class="activity-message">${title}</div><div class="activity-time">${description}</div></div>`;
-        if (this.dom.activityFeed && this.dom.activityFeed.firstChild) this.dom.activityFeed.insertBefore(item, this.dom.activityFeed.firstChild);
-        else if (this.dom.activityFeed) this.dom.activityFeed.appendChild(item);
+            addToList(list, htmlContent) { // Changed text to htmlContent to accept full HTML
+                const item = document.createElement('div');
+                item.className = `result-item`; // Severity class is now handled inside htmlContent
+                item.innerHTML = htmlContent; // Directly set innerHTML
+                if (list && list.firstChild) list.insertBefore(item, list.firstChild);
+                else if (list) list.appendChild(item);
+            }
+            
+            addActivity(title, description) {
+                const item = document.createElement('div');
+                item.className = 'activity-item';
+                item.innerHTML = `<div class="activity-icon">💡</div><div class="activity-content"><div class="activity-message">${title}</div><div class="activity-time">${description}</div></div>`;
+                if (this.dom.activityFeed && this.dom.activityFeed.firstChild) this.dom.activityFeed.insertBefore(item, this.dom.activityFeed.firstChild);
+                else if (this.dom.activityFeed) this.dom.activityFeed.appendChild(item);
             }
             
             initializeCharts() {
-        const ctx = document.getElementById('vulnerabilityChart')?.getContext('2d');
-        if(!ctx) return;
+                const ctx = document.getElementById('vulnerabilityChart')?.getContext('2d');
+                if(!ctx) return;
                 this.chart = new Chart(ctx, {
                     type: 'doughnut',
                     data: {
                         labels: ['Critical', 'High', 'Medium', 'Low'],
-                datasets: [{ data: [0, 0, 0, 0], backgroundColor: ['#ff6b6b', '#feca57', '#48dbfb', '#4CAF50'] }]
-            },
-            options: { responsive: true, maintainAspectRatio: false }
+                        datasets: [{ data: [0, 0, 0, 0], backgroundColor: ['#ff6b6b', '#feca57', '#48dbfb', '#4CAF50'] }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false }
+                });
+
+                const radarCtx = document.getElementById('radarChart')?.getContext('2d');
+                if(!radarCtx) return;
+                this.radarChart = new Chart(radarCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Critical', 'High', 'Medium', 'Low'],
+                        datasets: [{
+                            label: 'Risk Distribution',
+                            data: [0, 0, 0, 0],
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                            borderColor: 'rgba(255, 255, 255, 0.5)',
+                            pointBackgroundColor: 'rgba(255, 255, 255, 0.7)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgba(179,181,198,1)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    color: 'rgba(255, 255, 255, 0.7)'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.2)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'rgba(255, 255, 255, 0.7)'
+                                }
+                            }
+                        }
+                    }
                 });
             }
             
             updateCharts() {
-        if(!this.chart) return;
-        const counts = this.vulnerabilities.reduce((acc, v) => { acc[v.severity] = (acc[v.severity] || 0) + 1; return acc; }, {});
-        this.chart.data.datasets[0].data = [counts['CRITICAL'] || 0, counts['HIGH'] || 0, counts['MEDIUM'] || 0, counts['LOW'] || 0];
-        this.chart.update();
+                if(!this.chart) return;
+                const counts = this.vulnerabilities.reduce((acc, v) => { acc[v.severity] = (acc[v.severity] || 0) + 1; return acc; }, {});
+                this.chart.data.datasets[0].data = [counts['CRITICAL'] || 0, counts['HIGH'] || 0, counts['MEDIUM'] || 0, counts['LOW'] || 0];
+                this.chart.update();
+
+                this.updateRadarChart(); // Call the new radar chart update method
+            }
+
+            // New method to update the radar chart based on risk categories
+            updateRadarChart() {
+                if (!this.radarChart) return;
+
+                const riskCategories = {
+                    'Injection': ['SQL_INJECTION', 'NOSQL_INJECTION', 'XSS', 'COMMAND_INJECTION', 'LDAP_INJECTION'],
+                    'Sensitive Data Exposure': ['PII_EXPOSURE', 'SENSITIVE_DATA_EXPOSURE', 'INFORMATION_DISCLOSURE', 'FILE_EXPOSURE', 'DETAILED_ERROR_MESSAGES', 'EXPOSED_SENSITIVE_PATH_IN_ROBOTS_OR_SITEMAP'],
+                    'Authentication & Access Control': ['NO_AUTHENTICATION', 'WEAK_AUTHENTICATION', 'BROKEN_ACCESS_CONTROL', 'ADMIN_PANEL_EXPOSED', 'HTTP_METHOD_ALLOWED_WITH_AUTH'],
+                    'Misconfiguration': ['MISSING_SECURITY_HEADERS', 'CORS_MISCONFIGURATION', 'DEBUG_MODE_ENABLED', 'DIRECTORY_LISTING_ENABLED', 'SERVER_INFO_DISCLOSURE', 'X_POWERED_BY_HEADER_DISCLOSURE', 'MISSING_HSTS', 'TLS_CERT_HOSTNAME_MISMATCH', 'TLS_CERT_UNTRUSTED', 'MISSING_SECURE_COOKIE_FLAG', 'MISSING_HTTPONLY_COOKIE_FLAG', 'MISSING_SAMESITE_COOKIE_FLAG', 'PERMISSIVE_CORS_WITH_CREDENTIALS', 'PERMISSIVE_CORS', 'CSP_UNSAFE_INLINE', 'CSP_UNSAFE_EVAL', 'CSP_WEAK_DEFAULT_SRC', 'CSP_MISSING'],
+                    'Business Logic & Rate Limiting': ['BUSINESS_LOGIC_FLAW', 'MASS_ASSIGNMENT', 'RACE_CONDITION', 'RATE_LIMITING_BYPASS'],
+                    'HTTP Method Enforcement': ['UNSAFE_HTTP_METHOD_ALLOWED']
+                };
+
+                const categoryCounts = {};
+                for (const category in riskCategories) {
+                    categoryCounts[category] = 0;
+                }
+
+                this.vulnerabilities.forEach(vulnerability => {
+                    for (const category in riskCategories) {
+                        if (riskCategories[category].includes(vulnerability.type)) {
+                            categoryCounts[category]++;
+                            break; // Assign to first matching category
+                        }
+                    }
+                });
+
+                const labels = Object.keys(riskCategories);
+                const data = labels.map(label => categoryCounts[label]);
+
+                this.radarChart.data.labels = labels;
+                this.radarChart.data.datasets[0].data = data;
+
+                // Dynamically adjust the max value of the radar chart's radial scale
+                const maxCount = Math.max(...data, 1); // Ensure it's at least 1 to avoid division by zero or flat line
+                this.radarChart.options.scales.r.max = maxCount + (maxCount > 0 ? Math.ceil(maxCount * 0.1) : 5); // Add a 10% buffer or a minimum of 5 if maxCount is 0
+                
+                this.radarChart.update();
             }
             
             initializeNetworkVisualization() {
-        const container = document.getElementById('networkGraph');
-        if (!container) return;
+                const container = document.getElementById('networkGraph');
+                if (!container) return;
                 container.innerHTML = '';
-        const width = container.clientWidth;
-        const height = container.clientHeight || 500;
-        const svg = d3.select(container).append("svg").attr("width", width).attr("height", height).attr("viewBox", [0, 0, width, height]);
-        this.networkVisualization = { container, svg, g: svg.append("g"), width, height, simulation: d3.forceSimulation() };
+                const width = container.clientWidth;
+                const height = container.clientHeight || 500;
+                const svg = d3.select(container).append("svg").attr("width", width).attr("height", height).attr("viewBox", [0, 0, width, height]);
+                this.networkVisualization = { container, svg, g: svg.append("g"), width, height, simulation: d3.forceSimulation() };
             }
 
             updateNetworkVisualization() {
-        if (!this.networkVisualization) return;
-        const { g, width, height, simulation } = this.networkVisualization;
-        g.selectAll('*').remove();
+                if (!this.networkVisualization) return;
+                const { g, width, height, simulation } = this.networkVisualization;
+                g.selectAll('*').remove();
 
-        if (this.endpoints.length === 0) {
-            g.append("text").attr("x", width / 2).attr("y", height / 2).attr("text-anchor", "middle").attr("fill", "rgba(255,255,255,0.7)").style("font-size", "16px").text("Scan to build network map");
-            return;
-        }
+                if (this.endpoints.length === 0) {
+                    g.append("text").attr("x", width / 2).attr("y", height / 2).attr("text-anchor", "middle").attr("fill", "rgba(255,255,255,0.7)").style("font-size", "16px").text("Scan to build network map");
+                    return;
+                }
 
-        const nodes = [
-            { id: 'gateway', name: 'Gateway', type: 'gateway', risk: 'safe', performance: 0.8 },
-            ...this.endpoints.map(e => {
-                const endpointVulnerabilities = this.vulnerabilities.filter(v => v.endpoint === e.url);
-                return {
-                    id: e.url,
-                    name: e.url.split('/').pop() || 'endpoint',
-                    type: 'endpoint',
-                    risk: this.calculateEndpointRisk(endpointVulnerabilities),
-                    performance: Math.random() // Placeholder for performance score (0-1)
+                const nodes = [
+                    { id: 'gateway', name: 'Gateway', type: 'gateway', risk: 'safe', performance: 0.8 },
+                    ...this.endpoints.map(e => {
+                        const endpointVulnerabilities = this.vulnerabilities.filter(v => v.endpoint === e.url);
+                        return {
+                            id: e.url,
+                            name: e.url.split('/').pop() || 'endpoint',
+                            type: 'endpoint',
+                            risk: this.calculateEndpointRisk(endpointVulnerabilities),
+                            performance: Math.random() // Placeholder for performance score (0-1)
+                        };
+                    })
+                ];
+                const links = this.endpoints.map(e => ({ source: 'gateway', target: e.url }));
+
+                simulation.nodes(nodes)
+                    .force("link", d3.forceLink(links).id(d => d.id).distance(150))
+                    .force("charge", d3.forceManyBody().strength(-400))
+                    .force("collide", d3.forceCollide().radius(25))
+                    .force("center", d3.forceCenter(width / 2, height / 2));
+                
+                const riskColorScale = d3.scaleOrdinal()
+                    .domain(['gateway', 'low', 'medium', 'high', 'critical'])
+                    .range(['#74b9ff', '#4CAF50', '#48dbfb', '#feca57', '#ff6b6b']);
+
+                const performanceColorScale = d3.scaleSequential(d3.interpolateViridis)
+                    .domain([0, 1]); // 0 for bad performance (e.g., slow), 1 for good performance (e.g., fast)
+                
+                const nodeColor = (d) => {
+                    if (d.type === 'gateway') return riskColorScale('gateway');
+                    if (this.currentNetworkView === 'security') return riskColorScale(d.risk);
+                    if (this.currentNetworkView === 'performance') return performanceColorScale(d.performance);
+                    return riskColorScale('low'); // Default to topology view (green for new endpoints)
                 };
-            })
-        ];
-        const links = this.endpoints.map(e => ({ source: 'gateway', target: e.url }));
 
-        simulation.nodes(nodes)
-            .force("link", d3.forceLink(links).id(d => d.id).distance(150))
-            .force("charge", d3.forceManyBody().strength(-400))
-            .force("collide", d3.forceCollide().radius(25))
-            .force("center", d3.forceCenter(width / 2, height / 2));
-        
-        const riskColorScale = d3.scaleOrdinal()
-            .domain(['gateway', 'low', 'medium', 'high', 'critical'])
-            .range(['#74b9ff', '#4CAF50', '#48dbfb', '#feca57', '#ff6b6b']);
+                const nodeRadius = (d) => {
+                    if (d.type === 'gateway') return 20;
+                    // You can make radius dependent on risk or performance here too
+                    return 12;
+                };
 
-        const performanceColorScale = d3.scaleSequential(d3.interpolateViridis)
-            .domain([0, 1]); // 0 for bad performance (e.g., slow), 1 for good performance (e.g., fast)
-        
-        const nodeColor = (d) => {
-            if (d.type === 'gateway') return riskColorScale('gateway');
-            if (this.currentNetworkView === 'security') return riskColorScale(d.risk);
-            if (this.currentNetworkView === 'performance') return performanceColorScale(d.performance);
-            return riskColorScale('low'); // Default to topology view (green for new endpoints)
-        };
+                const linkStroke = (d) => {
+                    // Future enhancement: vary link stroke based on data flow or security
+                    return "#999";
+                };
 
-        const nodeRadius = (d) => {
-            if (d.type === 'gateway') return 20;
-            // You can make radius dependent on risk or performance here too
-            return 12;
-        };
+                const linkStrokeOpacity = (d) => {
+                    // Future enhancement: vary link opacity based on data flow or security
+                    return 0.6;
+                };
 
-        const linkStroke = (d) => {
-            // Future enhancement: vary link stroke based on data flow or security
-            return "#999";
-        };
+                const link = g.append("g")
+                    .attr("stroke", linkStroke)
+                    .attr("stroke-opacity", linkStrokeOpacity)
+                    .selectAll("line")
+                    .data(links)
+                    .join("line");
 
-        const linkStrokeOpacity = (d) => {
-            // Future enhancement: vary link opacity based on data flow or security
-            return 0.6;
-        };
+                const node = g.append("g")
+                    .selectAll("circle")
+                    .data(nodes)
+                    .join("circle")
+                    .attr("r", nodeRadius)
+                    .attr("fill", nodeColor)
+                    .call(this.drag(simulation));
 
-        const link = g.append("g")
-            .attr("stroke", linkStroke)
-            .attr("stroke-opacity", linkStrokeOpacity)
-            .selectAll("line")
-            .data(links)
-            .join("line");
+                const labels = g.append("g")
+                    .selectAll("text")
+                    .data(nodes)
+                    .join("text")
+                    .text(d => d.name)
+                    .attr("font-size", "10px")
+                    .attr("fill", "white")
+                    .attr("text-anchor", "middle")
+                    .attr("dy", d => nodeRadius(d) + 12) // Position label below the node
+                    .style("pointer-events", "none"); // Make labels non-interactive
 
-        const node = g.append("g")
-            .selectAll("circle")
-            .data(nodes)
-            .join("circle")
-            .attr("r", nodeRadius)
-            .attr("fill", nodeColor)
-            .call(drag(simulation));
+                simulation.on("tick", () => {
+                    link
+                        .attr("x1", d => d.source.x)
+                        .attr("y1", d => d.source.y)
+                        .attr("x2", d => d.target.x)
+                        .attr("y2", d => d.target.y);
 
-        const label = g.append("g")
-            .selectAll("text")
-            .data(nodes)
-            .join("text")
-            .text(d => d.name)
-            .attr("fill", "#fff")
-            .attr("dy", "-1.5em")
-            .attr("text-anchor", "middle");
+                    node
+                        .attr("cx", d => d.x)
+                        .attr("cy", d => d.y);
+                    
+                    labels
+                        .attr("x", d => d.x)
+                        .attr("y", d => d.y + nodeRadius(d) + 12); // Keep labels below nodes
+                });
+                
+                simulation.alpha(1).restart();
+            }
 
-        simulation.on("tick", () => {
-            link.attr("x1", d => d.source.x).attr("y1", d => d.source.y).attr("x2", d => d.target.x).attr("y2", d => d.target.y);
-            node.attr("cx", d => d.x).attr("cy", d => d.y);
-            label.attr("x", d => d.x).attr("y", d => d.y);
-        });
+            calculateEndpointRisk(vulnerabilities) {
+                // Simple aggregation: find the highest severity among vulnerabilities for an endpoint
+                const severities = vulnerabilities.map(v => v.severity);
+                if (severities.includes('CRITICAL')) return 'critical';
+                if (severities.includes('HIGH')) return 'high';
+                if (severities.includes('MEDIUM')) return 'medium';
+                if (severities.includes('LOW')) return 'low';
+                return 'safe';
+            }
 
-        function drag(sim) {
-            const dragstarted = (e, d) => { if (!e.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; };
-            const dragged = (e, d) => { d.fx = e.x; d.fy = e.y; };
-            const dragended = (e, d) => { if (!e.active) sim.alphaTarget(0); d.fx = null; d.fy = null; };
-            return d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
-        }
-        
-        simulation.alpha(1).restart();
+            // Helper function to get color based on performance score (0-1)
+            getPerformanceColor(score) {
+                // Example: Green for high (good), Red for low (bad)
+                if (score > 0.75) return '#4CAF50'; // Green
+                if (score > 0.5) return '#feca57'; // Yellow/Orange
+                if (score > 0.25) return '#48dbfb'; // Light Blue
+                return '#ff6b6b'; // Red
             }
 
             switchNetworkView(view) {
-      console.log(`Switching to ${view} view`);
-      this.currentNetworkView = view;
-      this.updateNetworkVisualization();
-            }
-            
-            calculateEndpointRisk(vulnerabilities) {
-                if (!vulnerabilities || vulnerabilities.length === 0) return 'low'; // Return string for low risk
-        const severityMap = { 'CRITICAL': 4, 'HIGH': 3, 'MEDIUM': 2, 'LOW': 1 };
-                let maxSeverity = 0;
-                vulnerabilities.forEach(vuln => {
-            if (severityMap[vuln.severity] > maxSeverity) maxSeverity = severityMap[vuln.severity];
+                this.currentNetworkView = view;
+                document.querySelectorAll('.network-graph button').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.dataset.view === view) {
+                        btn.classList.add('active');
+                    }
                 });
-                if (maxSeverity === 4) return 'critical';
-                if (maxSeverity === 3) return 'high';
-                if (maxSeverity === 2) return 'medium';
-                return 'low';
+                this.updateNetworkVisualization();
+            }
+
+            calculateRiskScore() {
+                let totalScore = 0;
+                const severityScores = {
+                    'CRITICAL': 100,
+                    'HIGH': 75,
+                    'MEDIUM': 50,
+                    'LOW': 25,
+                    'INFO': 10 // Assuming INFO might exist for very low impact findings
+                };
+
+                this.vulnerabilities.forEach(vuln => {
+                    totalScore += severityScores[vuln.severity] || 0;
+                });
+
+                // Normalize or cap the score if needed for display purposes (e.g., max 1000)
+                return Math.min(totalScore, 1000);
             }
             
-    calculateRiskScore() { return Math.floor(Math.random() * 20) + this.vulnerabilities.length * 5; }
-    debounce(func, wait) { let timeout; return (...args) => { clearTimeout(timeout); timeout = setTimeout(() => func.apply(this, args), wait); }; }
-    updateInitializationTime(){}
-    requestNotificationPermission(){}
-    playNotificationSound(){}
-    showNotification(msg, type) { console.log(`[${type}] ${msg}`); }
-}
+            getRiskColor(score) {
+                if (score >= 800) return '#ff6b6b'; // Critical
+                if (score >= 600) return '#feca57'; // High
+                if (score >= 400) return '#48dbfb'; // Medium
+                if (score >= 200) return '#4CAF50'; // Low
+                return '#74b9ff'; // Info/Safe
+            }
 
-            window.addEventListener('load', () => {
-    console.log('Window loaded, attempting to initialize CywAyzDashboard...');
-    new CywAyzDashboard().initialize();
-    console.log('CywAyzDashboard initialization attempt complete.');
-            });
-        </script>
+            getSeverityColor(severity) {
+                switch (severity) {
+                    case 'CRITICAL': return '#ff6b6b';
+                    case 'HIGH': return '#feca57';
+                    case 'MEDIUM': return '#48dbfb';
+                    case 'LOW': return '#4CAF50';
+                    default: return '#b3b3b3'; // Muted for unknown/info
+                }
+            }
+
+            debounce(func, delay) {
+                let timeout;
+                return function(...args) {
+                    const context = this;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(context, args), delay);
+                };
+            }
+
+            drag(simulation) {
+                function dragstarted(event, d) {
+                    if (!event.active) simulation.alphaTarget(0.3).restart();
+                    d.fx = d.x;
+                    d.fy = d.y;
+                }
+
+                function dragged(event, d) {
+                    d.fx = event.x;
+                    d.fy = event.y;
+                }
+
+                function dragended(event, d) {
+                    if (!event.active) simulation.alphaTarget(0);
+                    d.fx = null;
+                    d.fy = null;
+                }
+
+                return d3.drag()
+                    .on("start", dragstarted)
+                    .on("drag", dragged)
+                    .on("end", dragended);
+            }
+
+            // New method to update the heatmap visualization
+            updateHeatmap() {
+                if (!this.heatmapVisualization) return;
+                const { g, width, height } = this.heatmapVisualization;
+                g.selectAll('*').remove();
+
+                if (this.endpoints.length === 0) {
+                    g.append("text")
+                        .attr("x", width / 2)
+                        .attr("y", height / 2)
+                        .attr("text-anchor", "middle")
+                        .attr("fill", "rgba(255,255,255,0.7)")
+                        .style("font-size", "14px")
+                        .text("Scan to generate endpoint risk heatmap");
+                    return;
+                }
+
+                // Prepare data for heatmap: map each endpoint to its risk score
+                const heatmapData = this.endpoints.map((e, i) => {
+                    const endpointVulnerabilities = this.vulnerabilities.filter(v => v.endpoint === e.url);
+                    const risk = this.calculateEndpointRisk(endpointVulnerabilities);
+                    return { url: e.url, risk: risk, index: i }; // Add index for xScale
+                });
+
+                // Define scales and colors
+                const xScale = d3.scaleBand()
+                    .range([0, width])
+                    .domain(heatmapData.map(d => d.index)) // Use index as domain
+                    .paddingInner(0.2); // Increased padding
+
+                const riskHeightScale = d3.scaleOrdinal()
+                    .domain(['low', 'medium', 'high', 'critical', 'safe'])
+                    .range([0.2, 0.4, 0.6, 1.0, 0.1].map(h => h * height)); 
+
+                const colorScale = d3.scaleOrdinal()
+                    .domain(['low', 'medium', 'high', 'critical', 'safe'])
+                    .range(['#4CAF50', '#48dbfb', '#feca57', '#ff6b6b', '#74b9ff']);
+
+                // Draw rectangles for each endpoint
+                const bars = g.selectAll("rect")
+                    .data(heatmapData)
+                    .join("rect")
+                    .attr("x", d => xScale(d.index))
+                    .attr("y", d => height - riskHeightScale(d.risk))
+                    .attr("width", xScale.bandwidth())
+                    .attr("height", d => riskHeightScale(d.risk))
+                    .attr("fill", d => colorScale(d.risk));
+
+                // Add text labels for each endpoint
+                g.selectAll("text.endpoint-label")
+                    .data(heatmapData)
+                    .join("text")
+                    .attr("class", "endpoint-label")
+                    .attr("x", d => xScale(d.index) + xScale.bandwidth() / 2) // Use index for x position
+                    .attr("y", height - riskHeightScale(d.risk) - 5) // Position slightly above the bar
+                    .attr("text-anchor", "middle")
+                    .attr("fill", "white")
+                    .style("font-size", "8px")
+                    .text(d => {
+                        const urlParts = d.url.split('/');
+                        return urlParts[urlParts.length - 1] || urlParts[urlParts.length - 2] || d.url; // Display last non-empty part
+                    })
+                    .attr("transform", (d) => {
+                        const x = xScale(d.index) + xScale.bandwidth() / 2;
+                        const y = height - riskHeightScale(d.risk) - 5;
+                        return `rotate(-90, ${x}, ${y})`; // Rotate labels vertically for better readability
+                    });
+
+                // Add tooltips (optional but highly recommended for detail)
+                bars.append("title")
+                    .text(d => `Endpoint: ${d.url}\nRisk: ${d.risk.toUpperCase()}`);
+            }
+        }
+
+        // Initialize dashboard on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+            const dashboard = new CywAyzDashboard();
+            dashboard.initialize();
+        });
+    </script>
 </body>
-</html>
+</html> 

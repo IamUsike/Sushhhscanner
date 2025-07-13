@@ -8,6 +8,7 @@ import path from 'path';
 
 import { logger } from './utils/logger';
 import { scanRoutes } from './routes/scans';
+import { reportRoutes } from './routes/reports';
 import { notFound, errorHandler } from './utils/middleware'; // Restore middleware
 import { database } from './core/database'; // Corrected import path
 
@@ -23,6 +24,8 @@ const io = new SocketIOServer(server, {
   }
 });
 
+
+console.log('app.ts starting');
 // Restore original Helmet configuration with correct CSP
 app.use(helmet({
   contentSecurityPolicy: {
@@ -46,6 +49,7 @@ app.use(express.static(PUBLIC_PATH));
 const API_VERSION = process.env.API_VERSION || 'v1';
 const apiRouter = scanRoutes(io); // Get the router from the routes file
 app.use(`/api/${API_VERSION}/scans`, apiRouter);
+app.use(`/api/${API_VERSION}/reports`, reportRoutes);
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(PUBLIC_PATH, 'real_api_dashboard_revamped.html'));

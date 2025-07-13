@@ -206,6 +206,7 @@ class Database {
           download_url TEXT NOT NULL,
           expires_at DATETIME NOT NULL,
           size INTEGER NOT NULL,
+          report_data TEXT NOT NULL, /* New column to store report content */
           FOREIGN KEY (scan_id) REFERENCES scans(id)
         )
       `;
@@ -222,6 +223,7 @@ class Database {
           download_url TEXT NOT NULL,
           expires_at TIMESTAMP NOT NULL,
           size BIGINT NOT NULL,
+          report_data JSONB NOT NULL, /* New column to store report content */
           FOREIGN KEY (scan_id) REFERENCES scans(id)
         )
       `;
@@ -452,6 +454,80 @@ class Database {
       aiAnalysis: row.ai_analysis ? JSON.parse(row.ai_analysis) : undefined,
       remediation: JSON.parse(row.remediation),
       discoveredAt: new Date(row.discovered_at),
+    }));
+  }
+
+  async saveReport(report: Report, reportData: string): Promise<void> {
+    const sql = this.dbType === 'sqlite' ? 
+      `INSERT INTO reports (id, scan_id, type, format, template, sections, generated_at, download_url, expires_at, size, report_data)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)` :
+      `INSERT INTO reports (id, scan_id, type, format, template, sections, generated_at, download_url, expires_at, size, report_data)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`;
+    const params = [
+      report.id,
+      report.scanId,
+      report.type,
+      report.format,
+      report.template,
+      this.dbType === 'sqlite' ? JSON.stringify(report.sections) : report.sections,
+      report.generatedAt.toISOString(),
+      report.downloadUrl,
+      report.expiresAt.toISOString(),
+      report.size,
+      reportData,
+    ];
+    await this.executeQuery(sql, params);
+  }
+
+  async getReport(reportId: string): Promise<{ data: string; format: string } | null> {
+    const sql = this.dbType === 'sqlite' ? 
+      `SELECT report_data, format, expires_at FROM reports WHERE id = ?` :
+      `SELECT report_data, format, expires_at FROM reports WHERE id = $1`;
+    const params = [reportId];
+    const row = await this.executeQuery(sql, params);
+    
+    if (!row || row.length === 0) return null;
+
+    const report = row[0];
+    const expiresAt = new Date(report.expires_at);
+
+    if (expiresAt < new Date()) {
+      // Report expired, delete it (optional, but good for cleanup)
+      await this.deleteReport(reportId);
+      return null;
+    }
+
+    return { data: report.report_data, format: report.format };
+  }
+
+  async deleteReport(reportId: string): Promise<void> {
+    const sql = this.dbType === 'sqlite' ? 
+      `DELETE FROM reports WHERE id = ?` :
+      `DELETE FROM reports WHERE id = $1`;
+    const params = [reportId];
+    await this.executeQuery(sql, params);
+  }
+
+  async getReportsByScanId(scanId: string): Promise<Report[]> {
+    const sql = this.dbType === 'sqlite' ?
+      `SELECT id, scan_id, type, format, template, sections, generated_at, download_url, expires_at, size
+       FROM reports WHERE scan_id = ?` :
+      `SELECT id, scan_id, type, format, template, sections, generated_at, download_url, expires_at, size
+       FROM reports WHERE scan_id = $1`;
+    const params = [scanId];
+    const rows = await this.executeQuery(sql, params);
+
+    return rows.map((row: any) => ({
+      id: row.id,
+      scanId: row.scan_id,
+      type: row.type,
+      format: row.format,
+      template: row.template,
+      sections: this.dbType === 'sqlite' ? JSON.parse(row.sections) : row.sections,
+      generatedAt: new Date(row.generated_at),
+      downloadUrl: row.download_url,
+      expiresAt: new Date(row.expires_at),
+      size: row.size,
     }));
   }
 

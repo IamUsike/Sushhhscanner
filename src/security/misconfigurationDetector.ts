@@ -1,10 +1,12 @@
 import axios, { AxiosResponse } from 'axios';
 import { logger } from '../utils/logger';
+import { VulnerabilitySeverity, VulnerabilityType, Vulnerability, RemediationGuidance } from '../types';
+import { RecommendationService } from '../recommendations/RecommendationService';
 
 export interface MisconfigurationResult {
   category: string;
   type: string;
-  severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'INFO';
+  severity: VulnerabilitySeverity;
   confidence: number;
   title: string;
   description: string;
@@ -18,7 +20,7 @@ export interface MisconfigurationResult {
   };
   cwe: string;
   owasp: string;
-  recommendation: string;
+  recommendation: RemediationGuidance; // Changed from string
   impact: string;
   references: string[];
 }
@@ -37,7 +39,17 @@ export interface MisconfigurationScanOptions {
   userAgent?: string;
 }
 
+interface SecurityHeaderConfig {
+  name: string;
+  severity: VulnerabilitySeverity;
+  cwe: string;
+  owasp: string;
+  checkValue?: (value: string) => string | null;
+}
+
 export class MisconfigurationDetector {
+  private recommendationService: RecommendationService;
+
   private readonly defaultOptions: MisconfigurationScanOptions = {
     timeout: 15000,
     followRedirects: true,
@@ -52,7 +64,6 @@ export class MisconfigurationDetector {
     userAgent: 'API-Security-Scanner/1.0'
   };
 
-  // Common sensitive files and directories to check
   private readonly sensitiveFiles = [
     '.env', '.env.local', '.env.production', '.env.development',
     'config.php', 'config.yml', 'config.yaml', 'config.json',
@@ -88,6 +99,7 @@ export class MisconfigurationDetector {
 
   constructor(private options: MisconfigurationScanOptions = {}) {
     this.options = { ...this.defaultOptions, ...options };
+    this.recommendationService = new RecommendationService();
   }
 
   async scanTarget(baseUrl: string, progressCallback?: (progress: string) => void): Promise<MisconfigurationResult[]> {
@@ -95,69 +107,63 @@ export class MisconfigurationDetector {
     const results: MisconfigurationResult[] = [];
 
     try {
-      // Normalize base URL
       const normalizedUrl = this.normalizeUrl(baseUrl);
       
       if (progressCallback) progressCallback('🔍 Starting misconfiguration detection...');
 
-      // 1. HTTP Security Headers Check
       if (this.options.checkHeaders) {
         if (progressCallback) progressCallback('🛡️ Checking HTTP security headers...');
         const headerResults = await this.checkSecurityHeaders(normalizedUrl);
         results.push(...headerResults);
       }
 
-      // 2. Sensitive File Exposure Check
       if (this.options.checkFiles) {
         if (progressCallback) progressCallback('📄 Scanning for exposed sensitive files...');
         const fileResults = await this.checkSensitiveFiles(normalizedUrl);
         results.push(...fileResults);
       }
 
-      // 3. Directory Traversal & Listing Check
       if (this.options.checkDirectories) {
         if (progressCallback) progressCallback('📁 Checking directory listings and traversal...');
         const directoryResults = await this.checkDirectoryMisconfigurations(normalizedUrl);
         results.push(...directoryResults);
       }
 
-      // 4. Server Information Disclosure
       if (this.options.checkServerInfo) {
         if (progressCallback) progressCallback('🖥️ Analyzing server information disclosure...');
         const serverResults = await this.checkServerInformation(normalizedUrl);
         results.push(...serverResults);
       }
 
-      // 5. CORS Misconfiguration
       if (this.options.checkCORS) {
         if (progressCallback) progressCallback('🌐 Testing CORS configurations...');
         const corsResults = await this.checkCORSMisconfiguration(normalizedUrl);
         results.push(...corsResults);
       }
 
-      // 6. Content Security Policy Issues
       if (this.options.checkCSP) {
         if (progressCallback) progressCallback('🔒 Evaluating Content Security Policy...');
         const cspResults = await this.checkCSPMisconfiguration(normalizedUrl);
         results.push(...cspResults);
       }
 
-      // 7. SSL/TLS Configuration Issues
       if (this.options.checkSSL && normalizedUrl.startsWith('https://')) {
         if (progressCallback) progressCallback('🔐 Analyzing SSL/TLS configuration...');
         const sslResults = await this.checkSSLConfiguration(normalizedUrl);
         results.push(...sslResults);
       }
 
-      // 8. Insecure Cookie Directives Check
       if (progressCallback) progressCallback('🍪 Checking for insecure cookie directives...');
       const cookieResults = await this.checkInsecureCookieDirectives(normalizedUrl);
       results.push(...cookieResults);
 
-      // 9. Robots.txt and Sitemap.xml for sensitive paths
       if (progressCallback) progressCallback('🤖 Checking robots.txt and sitemap.xml for exposed sensitive paths...');
       const robotsSitemapResults = await this.checkRobotsAndSitemap(normalizedUrl);
       results.push(...robotsSitemapResults);
+
+      if (progressCallback) progressCallback('🚦 Checking HTTP method enforcement...');
+      const methodEnforcementResults = await this.checkHttpMethodEnforcement(normalizedUrl);
+      results.push(...methodEnforcementResults);
 
       if (progressCallback) progressCallback('✅ Misconfiguration scan completed');
       logger.info(`Misconfiguration scan completed. Found ${results.length} issues.`);
@@ -177,11 +183,10 @@ export class MisconfigurationDetector {
       const response = await this.makeRequest(baseUrl);
       const headers = response.headers;
 
-      // Check for missing security headers
-      const securityHeaders = {
+      const securityHeaders: Record<string, SecurityHeaderConfig> = {
         'strict-transport-security': {
           name: 'HTTP Strict Transport Security (HSTS)',
-          severity: 'HIGH' as const,
+          severity: 'HIGH',
           cwe: 'CWE-319',
           owasp: 'A06:2021 – Vulnerable and Outdated Components',
           checkValue: (value: string) => {
@@ -192,13 +197,13 @@ export class MisconfigurationDetector {
         },
         'content-security-policy': {
           name: 'Content Security Policy (CSP)',
-          severity: 'MEDIUM' as const,
+          severity: 'MEDIUM',
           cwe: 'CWE-79',
           owasp: 'A03:2021 – Injection'
         },
         'x-frame-options': {
           name: 'X-Frame-Options',
-          severity: 'MEDIUM' as const,
+          severity: 'MEDIUM',
           cwe: 'CWE-1021',
           owasp: 'A04:2021 – Insecure Design',
           checkValue: (value: string) => {
@@ -208,7 +213,7 @@ export class MisconfigurationDetector {
         },
         'x-content-type-options': {
           name: 'X-Content-Type-Options',
-          severity: 'LOW' as const,
+          severity: 'LOW',
           cwe: 'CWE-79',
           owasp: 'A03:2021 – Injection',
           checkValue: (value: string) => {
@@ -218,13 +223,13 @@ export class MisconfigurationDetector {
         },
         'referrer-policy': {
           name: 'Referrer Policy',
-          severity: 'LOW' as const,
+          severity: 'LOW',
           cwe: 'CWE-200',
           owasp: 'A01:2021 – Broken Access Control'
         },
         'permissions-policy': {
           name: 'Permissions Policy',
-          severity: 'LOW' as const,
+          severity: 'LOW',
           cwe: 'CWE-200',
           owasp: 'A05:2021 – Security Misconfiguration'
         }
@@ -236,7 +241,7 @@ export class MisconfigurationDetector {
         if (!headerValue) {
           results.push({
             category: 'HTTP Security Headers',
-            type: 'missing_security_header',
+            type: 'MISSING_SECURITY_HEADERS',
             severity: headerInfo.severity,
             confidence: 0.9,
             title: `Missing ${headerInfo.name}`,
@@ -250,75 +255,53 @@ export class MisconfigurationDetector {
             },
             cwe: headerInfo.cwe,
             owasp: headerInfo.owasp,
-            recommendation: `Implement the ${headerInfo.name} header with appropriate values to enhance security.`,
-            impact: `Without ${headerName}, the application may be vulnerable to various attacks.`,
-            references: [
-              'https://owasp.org/www-project-secure-headers/',
-              'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers'
-            ]
+            impact: `Reduced defense-in-depth against attacks like XSS, clickjacking, or content sniffing.`,
+            references: [],
+            recommendation: this.generateRecommendationForMisconfiguration(
+              'MISSING_SECURITY_HEADERS', 
+              headerInfo.severity,
+              `Ensure the ${headerInfo.name} header is present in all responses to enhance security.`
+            )
           });
-        } else if (headerInfo.checkValue) {
-            const checkResult = headerInfo.checkValue(String(headerValue));
-            if (checkResult) {
-                results.push({
-                    category: 'HTTP Security Headers',
-                    type: `${headerName.replace(/-/g, '_-')}_misconfiguration`,
-                    severity: headerInfo.severity,
-                    confidence: 0.8,
-                    title: `${headerInfo.name} Misconfiguration: ${checkResult}`,
-                    description: `The ${headerInfo.name} header is present but misconfigured: ${checkResult}.`,
-                    evidence: {
-                        url: baseUrl,
-                        headers: { [headerName]: String(headerValue) },
-                        statusCode: response.status
-                    },
-                    cwe: headerInfo.cwe,
-                    owasp: headerInfo.owasp,
-                    recommendation: `Correct the ${headerInfo.name} header configuration: ${checkResult}.`,
-                    impact: `A misconfigured ${headerInfo.name} can weaken security protections.`,
-                    references: [
-                        'https://owasp.org/www-project-secure-headers/',
-                        'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers'
-                    ]
-                });
-            }
-        }
-      }
-
-      // Check for information disclosure in headers
-      const disclosureHeaders = ['server', 'x-powered-by', 'x-aspnet-version', 'x-aspnetmvc-version'];
-      
-      for (const headerName of disclosureHeaders) {
-        const headerValue = headers[headerName] || headers[headerName.toLowerCase()];
-        if (headerValue) {
+        } else {
+          if (headerInfo.checkValue) {
+            const issue = headerInfo.checkValue(String(headerValue));
+            if (issue) {
           results.push({
-            category: 'Information Disclosure',
-            type: 'server_information_disclosure',
-            severity: 'LOW',
+                category: 'HTTP Security Headers',
+                type: `insecure_${headerName.replace(/-/g, '_').toUpperCase()}` as VulnerabilityType,
+                severity: headerInfo.severity,
             confidence: 0.8,
-            title: `Server Information Disclosure in ${headerName.toUpperCase()} Header`,
-            description: `The ${headerName.toUpperCase()} header reveals server/technology information that could aid attackers.`,
+                title: `${headerInfo.name} Misconfiguration`,
+                description: `The ${headerInfo.name} header is present but misconfigured: ${issue}.`,
             evidence: {
               url: baseUrl,
-              headers: { [headerName]: headerValue },
+                  headers: Object.fromEntries(
+                    Object.entries(headers).map(([key, value]) => [key, String(value)])
+                  ),
               statusCode: response.status
             },
-            cwe: 'CWE-200',
-            owasp: 'A05:2021 – Security Misconfiguration',
-            recommendation: `Remove or minimize information in the ${headerName.toUpperCase()} header.`,
-            impact: 'Information disclosure can help attackers identify vulnerabilities and plan targeted attacks.',
-            references: [
-              'https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/02-Fingerprint_Web_Server'
-            ]
+                cwe: headerInfo.cwe,
+                owasp: headerInfo.owasp,
+                impact: `Increased susceptibility to attacks related to ${headerInfo.name}.`,
+                references: [],
+                recommendation: this.generateRecommendationForMisconfiguration(
+                  `insecure_${headerName.replace(/-/g, '_').toUpperCase()}` as VulnerabilityType,
+                  headerInfo.severity,
+                  `Correct the configuration of the ${headerInfo.name} header. Refer to documentation for best practices.`
+                )
           });
         }
       }
-
-    } catch (error: any) {
-      logger.warn(`Failed to check security headers: ${error.message}`);
+        }
     }
 
     return results;
+
+    } catch (error: any) {
+      logger.error(`Error checking security headers for ${baseUrl}: ${error.message}`);
+      return [];
+    }
   }
 
   private async checkSensitiveFiles(baseUrl: string): Promise<MisconfigurationResult[]> {
@@ -329,100 +312,78 @@ export class MisconfigurationDetector {
         const fileUrl = `${baseUrl.replace(/\/$/, '')}/${file}`;
         const response = await this.makeRequest(fileUrl);
 
-        if (response.status === 200 && response.data && this.isValidContent(response.data)) {
-          const severity = this.getSensitiveFileSeverity(file);
-          
+        if (response.status === 200 && response.data) {
+          const type = this.getSensitiveFileSeverity(file);
           results.push({
             category: 'Sensitive File Exposure',
-            type: 'exposed_sensitive_file',
-            severity,
+            type: 'FILE_EXPOSURE',
+            severity: type,
             confidence: 0.9,
             title: `Exposed Sensitive File: ${file}`,
-            description: `The sensitive file "${file}" is publicly accessible and may contain confidential information.`,
+            description: `The sensitive file "${file}" is publicly accessible at ${fileUrl}. This could lead to information disclosure.`,
             evidence: {
               url: fileUrl,
-              response: this.truncateContent(response.data),
               statusCode: response.status,
+              response: this.truncateContent(response.data),
               file: file
             },
-            cwe: 'CWE-200',
-            owasp: 'A05:2021 – Security Misconfiguration',
-            recommendation: `Remove or restrict access to the sensitive file "${file}".`,
-            impact: 'Exposed sensitive files can reveal configuration details, credentials, or other confidential information.',
-            references: [
-              'https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/04-Review_Old_Backup_and_Unreferenced_Files_for_Sensitive_Information'
-            ]
+            cwe: 'CWE-538',
+            owasp: 'A01:2021 – Broken Access Control',
+            impact: `Unauthorized access to sensitive information or credentials.`,
+            references: [],
+            recommendation: this.generateRecommendationForMisconfiguration(
+              'FILE_EXPOSURE',
+              type,
+              `Restrict access to sensitive files like "${file}" using server configurations (e.g., .htaccess, Nginx rules) or by placing them outside the web root.`
+            )
           });
         }
       } catch (error: any) {
-        // Expected for most files - they should not be accessible
+        logger.debug(`Failed to check sensitive file ${file}: ${error.message}`);
       }
     }
-
     return results;
   }
 
   private async checkDirectoryMisconfigurations(baseUrl: string): Promise<MisconfigurationResult[]> {
     const results: MisconfigurationResult[] = [];
+    const testPaths = ['/', '/app/', '/src/', '/dist/', '/assets/', '/static/', '/data/'];
 
-    for (const path of this.sensitivePaths) {
+    for (const path of testPaths) {
       try {
-        const dirUrl = `${baseUrl.replace(/\/$/, '')}${path}`;
-        const response = await this.makeRequest(dirUrl);
+        const fullUrl = `${baseUrl.replace(/\/$/, '')}${path}`;
+        const response = await this.makeRequest(fullUrl);
 
-        // Check for directory listing
-        if (response.status === 200 && this.isDirectoryListing(response.data)) {
+        if (response.status === 200 && response.data) {
+          if (this.isDirectoryListing(response.data)) {
           results.push({
-            category: 'Directory Misconfiguration',
-            type: 'directory_listing_enabled',
+              category: 'Directory Listing',
+              type: 'DIRECTORY_LISTING_ENABLED',
             severity: 'MEDIUM',
-            confidence: 0.85,
-            title: `Directory Listing Enabled: ${path}`,
-            description: `Directory listing is enabled for "${path}", potentially exposing sensitive files and directory structure.`,
+              confidence: 0.8,
+              title: `Directory Listing Enabled at ${path}`,
+              description: `Directory listing is enabled at ${fullUrl}, which allows attackers to view the contents of directories and potentially discover sensitive files or application structure.`,
             evidence: {
-              url: dirUrl,
-              response: this.truncateContent(response.data),
-              statusCode: response.status
+                url: fullUrl,
+                statusCode: response.status,
+                response: this.truncateContent(response.data)
             },
             cwe: 'CWE-548',
             owasp: 'A05:2021 – Security Misconfiguration',
-            recommendation: `Disable directory listing for "${path}" and implement proper access controls.`,
-            impact: 'Directory listings can reveal sensitive files and provide reconnaissance information to attackers.',
-            references: [
-              'https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/04-Review_Old_Backup_and_Unreferenced_Files_for_Sensitive_Information'
-            ]
+              impact: `Information disclosure, aiding attackers in reconnaissance.`,
+              references: [],
+              recommendation: this.generateRecommendationForMisconfiguration(
+                'DIRECTORY_LISTING_ENABLED',
+                'MEDIUM',
+                `Disable directory listing on your web server for all directories. Configure the server to return a 403 Forbidden or redirect to an error page.`
+              )
           });
         }
-
-        // Check for accessible admin/management interfaces
-        if (response.status === 200 && this.isAdminInterface(response.data, path)) {
-          results.push({
-            category: 'Administrative Interface',
-            type: 'exposed_admin_interface',
-            severity: 'HIGH',
-            confidence: 0.8,
-            title: `Exposed Administrative Interface: ${path}`,
-            description: `An administrative interface is accessible at "${path}" without proper access restrictions.`,
-            evidence: {
-              url: dirUrl,
-              response: this.truncateContent(response.data),
-              statusCode: response.status
-            },
-            cwe: 'CWE-284',
-            owasp: 'A01:2021 – Broken Access Control',
-            recommendation: `Restrict access to the administrative interface "${path}" using proper authentication and IP restrictions.`,
-            impact: 'Exposed administrative interfaces can provide unauthorized access to sensitive functionality.',
-            references: [
-              'https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/02-Test_Application_Platform_Configuration'
-            ]
-          });
         }
-
       } catch (error: any) {
-        // Expected for most paths
+        logger.debug(`Error checking directory ${path}: ${error.message}`);
       }
     }
-
     return results;
   }
 
@@ -430,512 +391,675 @@ export class MisconfigurationDetector {
     const results: MisconfigurationResult[] = [];
 
     try {
-      // Check for server status/info pages
-      const infoPages = ['/server-status', '/server-info', '/info', '/phpinfo.php', '/info.php'];
-      
-      for (const page of infoPages) {
-        try {
-          const infoUrl = `${baseUrl.replace(/\/$/, '')}${page}`;
-          const response = await this.makeRequest(infoUrl);
+      const response = await this.makeRequest(baseUrl);
+      const headers = response.headers;
 
-          if (response.status === 200 && this.isServerInfoPage(response.data)) {
+      const serverHeader = headers['server'] || headers['Server'];
+      if (serverHeader && serverHeader !== 'unknown') {
             results.push({
               category: 'Information Disclosure',
-              type: 'server_info_page',
-              severity: 'MEDIUM',
-              confidence: 0.9,
-              title: `Server Information Page Exposed: ${page}`,
-              description: `A server information page is accessible at "${page}", revealing detailed system information.`,
+          type: 'SERVER_INFO_DISCLOSURE',
+          severity: 'LOW',
+          confidence: 0.7,
+          title: `Server Information Disclosure: ${serverHeader}`,
+          description: `The 'Server' header is disclosing specific server software and version (${serverHeader}). This information can be used by attackers to identify known vulnerabilities.`,
               evidence: {
-                url: infoUrl,
-                response: this.truncateContent(response.data),
+            url: baseUrl,
+            headers: { 'Server': String(serverHeader) },
                 statusCode: response.status
               },
               cwe: 'CWE-200',
-              owasp: 'A05:2021 – Security Misconfiguration',
-              recommendation: `Remove or restrict access to the server information page "${page}".`,
-              impact: 'Server information pages can reveal system details that aid in targeted attacks.',
-              references: [
-                'https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/02-Fingerprint_Web_Server'
-              ]
-            });
-          }
-        } catch (error: any) {
-          // Expected for most pages
-        }
+          owasp: 'A01:2021 – Broken Access Control',
+          impact: `Facilitates attacker reconnaissance and exploitation of known vulnerabilities.`,
+          references: [],
+          recommendation: this.generateRecommendationForMisconfiguration(
+            'SERVER_INFO_DISCLOSURE',
+            'LOW',
+            'Configure your web server to remove or generalize the \'Server\' header (e.g., set to \'Web Server\').'
+          )
+        });
       }
 
-      // Check for error pages with detailed information
-      try {
-        const errorUrl = `${baseUrl.replace(/\/$/, '')}/nonexistent-page-${Date.now()}`;
-        const response = await this.makeRequest(errorUrl);
-
-        if (response.status >= 400 && this.hasDetailedErrorInfo(response.data)) {
+      const poweredByHeader = headers['x-powered-by'] || headers['X-Powered-By'];
+      if (poweredByHeader) {
           results.push({
             category: 'Information Disclosure',
-            type: 'detailed_error_pages',
+          type: 'X_POWERED_BY_HEADER_DISCLOSURE',
             severity: 'LOW',
             confidence: 0.7,
-            title: 'Detailed Error Pages Enabled',
-            description: 'Error pages contain detailed information that could aid attackers in reconnaissance.',
+          title: `X-Powered-By Header Disclosure: ${poweredByHeader}`,
+          description: `The 'X-Powered-By' header is disclosing the technology stack (${poweredByHeader}). This information can be used by attackers to identify known vulnerabilities.`,
             evidence: {
-              url: errorUrl,
-              response: this.truncateContent(response.data),
+            url: baseUrl,
+            headers: { 'X-Powered-By': String(poweredByHeader) },
               statusCode: response.status
             },
+          cwe: 'CWE-200',
+          owasp: 'A01:2021 – Broken Access Control',
+          impact: `Facilitates attacker reconnaissance and exploitation of known vulnerabilities.`,
+          references: [],
+          recommendation: this.generateRecommendationForMisconfiguration(
+            'X_POWERED_BY_HEADER_DISCLOSURE',
+            'LOW',
+            'Remove the \'X-Powered-By\' header from server responses to prevent technology stack disclosure.'
+          )
+        });
+      }
+
+      if (this.hasDetailedErrorInfo(response.data)) {
+        results.push({
+          category: 'Error Handling',
+          type: 'DETAILED_ERROR_MESSAGES',
+          severity: 'MEDIUM',
+          confidence: 0.8,
+          title: 'Detailed Error Messages Disclosure',
+          description: 'The application is revealing detailed error messages (e.g., stack traces, database errors) which could contain sensitive information or internal application details.',
+          evidence: {
+            url: baseUrl,
+            statusCode: response.status,
+            response: this.truncateContent(response.data)
+            },
             cwe: 'CWE-209',
-            owasp: 'A05:2021 – Security Misconfiguration',
-            recommendation: 'Configure custom error pages that do not reveal detailed system information.',
-            impact: 'Detailed error information can reveal system paths, software versions, and other sensitive details.',
-            references: [
-              'https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/08-Testing_for_Error_Handling/01-Testing_For_Improper_Error_Handling'
-            ]
-          });
-        }
-      } catch (error: any) {
-        // Expected
+          owasp: 'A04:2021 – Insecure Design',
+          impact: `Information disclosure, aiding attackers in understanding application logic or database structure.`,
+          references: [],
+          recommendation: this.generateRecommendationForMisconfiguration(
+            'DETAILED_ERROR_MESSAGES',
+            'MEDIUM',
+            'Configure the application to suppress detailed error messages in production environments. Use generic error messages and log full details securely on the server side.'
+          )
+        });
       }
 
     } catch (error: any) {
-      logger.warn(`Failed to check server information: ${error.message}`);
+      logger.error(`Error checking server information for ${baseUrl}: ${error.message}`);
     }
-
     return results;
   }
 
   private async checkCORSMisconfiguration(baseUrl: string): Promise<MisconfigurationResult[]> {
     const results: MisconfigurationResult[] = [];
-
-    try {
-      // Test CORS with various origins
-      const testOrigins = [
-        'https://evil.com',
-        'http://malicious.com',
-        'null',
-        '*'
-      ];
+    const testOrigins = ['https://evil.com', 'http://attacker.com'];
 
       for (const origin of testOrigins) {
         try {
-          const response = await this.makeRequest(baseUrl, { 'Origin': String(origin) });
+        const response = await axios.options(baseUrl, {
+          timeout: this.options.timeout,
+          validateStatus: (status) => status < 500,
+          headers: {
+            'Origin': origin,
+            'Access-Control-Request-Method': 'GET',
+            'Access-Control-Request-Headers': 'Content-Type, Authorization'
+          }
+        });
 
-          const corsHeader = response.headers['access-control-allow-origin'];
-          
-          if (corsHeader === '*' || corsHeader === origin) {
-            const severity = corsHeader === '*' ? 'HIGH' : 'MEDIUM';
-            
+        const acao = response.headers['access-control-allow-origin'] || response.headers['Access-Control-Allow-Origin'];
+        const exposeHeaders = response.headers['access-control-expose-headers'] || response.headers['Access-Control-Expose-Headers'];
+        const allowCredentials = response.headers['access-control-allow-credentials'] || response.headers['Access-Control-Allow-Credentials'];
+        const allowMethods = response.headers['access-control-allow-methods'] || response.headers['Access-Control-Allow-Methods'];
+
+        if (acao === '*' || (acao && acao.includes(origin))) {
+          if (allowCredentials === 'true') {
             results.push({
               category: 'CORS Misconfiguration',
-              type: 'cors_wildcard_or_reflection',
-              severity,
+              type: 'PERMISSIVE_CORS_WITH_CREDENTIALS',
+              severity: 'CRITICAL',
               confidence: 0.9,
-              title: `CORS Misconfiguration: ${corsHeader === '*' ? 'Wildcard Origin' : 'Origin Reflection'}`,
-              description: `The server accepts ${corsHeader === '*' ? 'wildcard (*) origins' : `reflected origin "${origin}"`}, which could enable cross-origin attacks.`,
+              title: `Overly Permissive CORS with Credentials for Origin: ${origin}`,
+              description: `The API at ${baseUrl} is configured with an overly permissive CORS policy (Access-Control-Allow-Origin: ${acao}) while also allowing credentials. This makes it vulnerable to Cross-Site Request Forgery (CSRF) and information disclosure from malicious origins.`,
               evidence: {
                 url: baseUrl,
                 headers: {
-                  'Origin': origin,
-                  'Access-Control-Allow-Origin': corsHeader
+                  'Access-Control-Allow-Origin': String(acao),
+                  'Access-Control-Allow-Credentials': String(allowCredentials)
                 },
                 statusCode: response.status
               },
               cwe: 'CWE-346',
-              owasp: 'A05:2021 – Security Misconfiguration',
-              recommendation: 'Configure CORS to only allow trusted origins and avoid wildcard or reflected origins.',
-              impact: 'Misconfigured CORS can enable cross-origin attacks and data theft.',
-              references: [
-                'https://owasp.org/www-community/attacks/CORS_OriginHeaderScrutiny'
-              ]
+              owasp: 'A07:2021 – Identification and Authentication Failures',
+              impact: `Cross-site scripting (XSS) attacks, sensitive data exposure, and unauthorized actions.`,
+              references: ['https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS', 'https://portswigger.net/web-security/cors'],
+              recommendation: this.generateRecommendationForMisconfiguration(
+                'PERMISSIVE_CORS_WITH_CREDENTIALS',
+                'CRITICAL',
+                `Restrict Access-Control-Allow-Origin to explicitly trusted domains. Never use '*' with 'Access-Control-Allow-Credentials: true'.`
+              )
             });
-          }
-        } catch (error: any) {
-          // Expected for some requests
+          } else if (acao === '*') {
+            results.push({
+              category: 'CORS Misconfiguration',
+              type: 'PERMISSIVE_CORS',
+              severity: 'HIGH',
+              confidence: 0.8,
+              title: `Overly Permissive CORS for Origin: ${origin}`,
+              description: `The API at ${baseUrl} is configured with an overly permissive CORS policy (Access-Control-Allow-Origin: ${acao}), allowing any domain to access resources. This can lead to information disclosure or unintended cross-origin interactions.`,
+              evidence: {
+                url: baseUrl,
+                headers: { 'Access-Control-Allow-Origin': String(acao) },
+                statusCode: response.status
+              },
+              cwe: 'CWE-346',
+              owasp: 'A07:2021 – Identification and Authentication Failures',
+              impact: `Information disclosure, enabling attacks like CSRF or XSS.`,
+              references: ['https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS', 'https://portswigger.net/web-security/cors'],
+              recommendation: this.generateRecommendationForMisconfiguration(
+                'PERMISSIVE_CORS',
+                'HIGH',
+                `Restrict Access-Control-Allow-Origin to explicitly trusted domains. Avoid using '*'.`
+              )
+            });
         }
       }
 
     } catch (error: any) {
-      logger.warn(`Failed to check CORS configuration: ${error.message}`);
+        logger.error(`Error checking CORS for ${baseUrl}: ${error.message}`);
     }
-
+    }
     return results;
   }
 
   private async checkCSPMisconfiguration(baseUrl: string): Promise<MisconfigurationResult[]> {
     const results: MisconfigurationResult[] = [];
-
     try {
       const response = await this.makeRequest(baseUrl);
-      const cspHeader = response.headers['content-security-policy'] || 
-                       response.headers['content-security-policy-report-only'];
+      const headers = response.headers;
+      const cspHeader = headers['content-security-policy'] || headers['Content-Security-Policy'];
 
       if (cspHeader) {
-        // Check for unsafe CSP directives
-        const unsafeDirectives = [
-          { pattern: /unsafe-inline/, severity: 'MEDIUM' as const, issue: 'unsafe-inline' },
-          { pattern: /unsafe-eval/, severity: 'MEDIUM' as const, issue: 'unsafe-eval' },
-          { pattern: /\*/, severity: 'HIGH' as const, issue: 'wildcard source' },
-          { pattern: /data:/, severity: 'LOW' as const, issue: 'data: protocol allowed' },
-          { pattern: /http:\/\//, severity: 'MEDIUM' as const, issue: 'HTTP sources in HTTPS context' }
-        ];
+        const unsafeInlineRegex = /(script-src|style-src)[^;]*\'unsafe-inline\'/i;
+        const unsafeEvalRegex = /(script-src)[^;]*\'unsafe-eval\'/i;
 
-        for (const directive of unsafeDirectives) {
-          if (directive.pattern.test(cspHeader)) {
+        if (unsafeInlineRegex.test(String(cspHeader))) {
             results.push({
               category: 'Content Security Policy',
-              type: 'csp_misconfiguration',
-              severity: directive.severity,
-              confidence: 0.8,
-              title: `CSP Misconfiguration: ${directive.issue}`,
-              description: `The Content Security Policy contains ${directive.issue}, which weakens security protections.`,
+            type: 'CSP_UNSAFE_INLINE',
+            severity: 'HIGH',
+            confidence: 0.9,
+            title: 'CSP Allows Unsafe Inline Scripts/Styles',
+            description: `The Content Security Policy (CSP) includes 'unsafe-inline' for script-src or style-src, which can allow Cross-Site Scripting (XSS) attacks.`,
               evidence: {
                 url: baseUrl,
-                headers: { 'Content-Security-Policy': cspHeader },
+              headers: { 'Content-Security-Policy': String(cspHeader) },
                 statusCode: response.status
               },
               cwe: 'CWE-79',
               owasp: 'A03:2021 – Injection',
-              recommendation: `Review and strengthen the CSP policy to remove ${directive.issue}.`,
-              impact: 'Weak CSP policies can allow XSS attacks and other content injection vulnerabilities.',
-              references: [
-                'https://owasp.org/www-community/controls/Content_Security_Policy'
-              ]
+            impact: `Increased risk of XSS attacks.`,
+            references: ['https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy', 'https://csp.withgoogle.com/'],
+            recommendation: this.generateRecommendationForMisconfiguration(
+              'CSP_UNSAFE_INLINE',
+              'HIGH',
+              'Remove \'unsafe-inline\' from your Content Security Policy. Use nonces or hashes for inline scripts/styles, or move them to external files.'
+            )
+          });
+        }
+        if (unsafeEvalRegex.test(String(cspHeader))) {
+          results.push({
+            category: 'Content Security Policy',
+            type: 'CSP_UNSAFE_EVAL',
+            severity: 'HIGH',
+            confidence: 0.9,
+            title: 'CSP Allows Unsafe Eval',
+            description: `The Content Security Policy (CSP) includes 'unsafe-eval' for script-src, which can allow Cross-Site Scripting (XSS) attacks through dynamic code execution.`,
+            evidence: {
+              url: baseUrl,
+              headers: { 'Content-Security-Policy': String(cspHeader) },
+              statusCode: response.status
+            },
+            cwe: 'CWE-79',
+            owasp: 'A03:2021 – Injection',
+            impact: `Increased risk of XSS attacks.`,
+            references: ['https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy', 'https://csp.withgoogle.com/'],
+            recommendation: this.generateRecommendationForMisconfiguration(
+              'CSP_UNSAFE_EVAL',
+              'HIGH',
+              'Remove \'unsafe-eval\' from your Content Security Policy. Refactor code to avoid dynamic code execution where possible.'
+            )
+          });
+        }
+
+        const defaultSrcRegex = /default-src\s*[^;]*/i;
+        const defaultSrcMatch = String(cspHeader).match(defaultSrcRegex);
+        if (!defaultSrcMatch || defaultSrcMatch[0].toLowerCase().includes('*')) {
+          results.push({
+            category: 'Content Security Policy',
+            type: 'CSP_WEAK_DEFAULT_SRC',
+            severity: 'MEDIUM',
+            confidence: 0.7,
+            title: 'CSP Has Weak Default Source or is Missing',
+            description: 'The Content Security Policy (CSP) either does not define a default-src, or uses an overly broad wildcard (*), which reduces its effectiveness in mitigating XSS and other content injection attacks.',
+            evidence: {
+              url: baseUrl,
+              headers: { 'Content-Security-Policy': String(cspHeader) },
+              statusCode: response.status
+            },
+            cwe: 'CWE-79',
+            owasp: 'A03:2021 – Injection',
+            impact: `Reduced protection against content injection attacks.`,
+            references: ['https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy', 'https://csp.withgoogle.com/'],
+            recommendation: this.generateRecommendationForMisconfiguration(
+              'CSP_WEAK_DEFAULT_SRC',
+              'MEDIUM',
+              'Define a strict `default-src` directive in your CSP, restricting content sources to trusted origins. Avoid wildcards.'
+            )
+          });
+        }
+      } else {
+        results.push({
+          category: 'Content Security Policy',
+          type: 'CSP_MISSING',
+          severity: 'HIGH',
+          confidence: 0.9,
+          title: 'Content Security Policy (CSP) Missing',
+          description: 'The Content Security Policy (CSP) header is missing, which leaves the application vulnerable to Cross-Site Scripting (XSS) and other client-side injection attacks.',
+          evidence: {
+            url: baseUrl,
+            statusCode: response.status
+          },
+          cwe: 'CWE-79',
+          owasp: 'A03:2021 – Injection',
+          impact: `High risk of XSS and other client-side attacks.`,
+          references: ['https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy', 'https://csp.withgoogle.com/'],
+          recommendation: this.generateRecommendationForMisconfiguration(
+            'CSP_MISSING',
+            'HIGH',
+            'Implement a strong Content Security Policy (CSP) to mitigate client-side attacks. Define trusted sources for all types of content (scripts, styles, images, etc.).'
+          )
             });
           }
-        }
-      }
-
     } catch (error: any) {
-      logger.warn(`Failed to check CSP configuration: ${error.message}`);
+      logger.error(`Error checking CSP for ${baseUrl}: ${error.message}`);
     }
-
     return results;
   }
 
   private async checkSSLConfiguration(baseUrl: string): Promise<MisconfigurationResult[]> {
     const results: MisconfigurationResult[] = [];
-
     try {
-      // Test SSL/TLS redirect
-      const httpUrl = baseUrl.replace('https://', 'http://');
-      
-      try {
-        const response = await this.makeRequest(httpUrl, {}, false); // Don't follow redirects
-        
-        if (response.status !== 301 && response.status !== 302) {
-          results.push({
-            category: 'SSL/TLS Configuration',
-            type: 'missing_https_redirect',
-            severity: 'MEDIUM',
-            confidence: 0.8,
-            title: 'Missing HTTPS Redirect',
-            description: 'The server does not automatically redirect HTTP requests to HTTPS.',
-            evidence: {
-              url: httpUrl,
-              statusCode: response.status
-            },
-            cwe: 'CWE-319',
-            owasp: 'A02:2021 – Cryptographic Failures',
-            recommendation: 'Configure the server to automatically redirect all HTTP requests to HTTPS.',
-            impact: 'Missing HTTPS redirects can allow man-in-the-middle attacks and data interception.',
-            references: [
-              'https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/09-Testing_for_Weak_Cryptography/01-Testing_for_Weak_Transport_Layer_Security'
-            ]
-          });
-        }
-      } catch (error: any) {
-        // Expected if HTTP is completely disabled
+      const response = await this.makeRequest(baseUrl);
+
+      const hstsHeader = response.headers['strict-transport-security'] || response.headers['Strict-Transport-Security'];
+      if (!hstsHeader) {
+        results.push({
+          category: 'SSL/TLS Configuration',
+          type: 'MISSING_HSTS',
+          severity: 'HIGH',
+          confidence: 0.9,
+          title: 'Missing HTTP Strict Transport Security (HSTS) Header',
+          description: 'The application is not enforcing HSTS, making it vulnerable to SSL stripping attacks and cookie hijacking on insecure connections.',
+          evidence: {
+            url: baseUrl,
+            statusCode: response.status,
+            headers: response.headers as Record<string, string>
+          },
+          cwe: 'CWE-319',
+          owasp: 'A06:2021 – Vulnerable and Outdated Components',
+          impact: `Increased risk of man-in-the-middle attacks and data interception.`,
+          references: ['https://owasp.org/www-project-top-10/2021/A06_2021_Vulnerable_and_Outdated_Components.html', 'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security'],
+          recommendation: this.generateRecommendationForMisconfiguration(
+            'MISSING_HSTS',
+            'HIGH',
+            'Implement HSTS with a long max-age and includeSubDomains directive to force secure connections.'
+          )
+        });
       }
 
     } catch (error: any) {
-      logger.warn(`Failed to check SSL configuration: ${error.message}`);
+      logger.error(`Error checking SSL configuration for ${baseUrl}: ${error.message}`);
+      if (axios.isAxiosError(error) && error.code === 'ERR_TLS_CERT_ALTNAME_MISMATCH') {
+        results.push({
+          category: 'SSL/TLS Configuration',
+          type: 'TLS_CERT_HOSTNAME_MISMATCH',
+          severity: 'CRITICAL',
+          confidence: 1.0,
+          title: 'TLS Certificate Hostname Mismatch',
+          description: `The TLS certificate for ${baseUrl} does not match the hostname. This indicates a severe misconfiguration or a potential man-in-the-middle attack.`,
+          evidence: {
+            url: baseUrl,
+            response: (error.message || '').substring(0, 200)
+          },
+          cwe: 'CWE-295',
+          owasp: 'A06:2021 – Vulnerable and Outdated Components',
+          impact: `Enables man-in-the-middle attacks, compromising data confidentiality and integrity.`,
+          references: [],
+          recommendation: this.generateRecommendationForMisconfiguration(
+            'TLS_CERT_HOSTNAME_MISMATCH',
+            'CRITICAL',
+            'Ensure your TLS certificate is valid and issued for the correct hostname. Immediately investigate any hostname mismatches.'
+          )
+        });
+      } else if (axios.isAxiosError(error) && error.code === 'UNABLE_TO_VERIFY_LEAF_SIGNATURE') {
+        results.push({
+          category: 'SSL/TLS Configuration',
+          type: 'TLS_CERT_UNTRUSTED',
+          severity: 'HIGH',
+          confidence: 0.9,
+          title: 'Untrusted TLS Certificate',
+          description: `The TLS certificate for ${baseUrl} is untrusted. This could indicate a self-signed certificate, an expired certificate, or a malicious certificate.`,
+          evidence: {
+            url: baseUrl,
+            response: (error.message || '').substring(0, 200)
+          },
+          cwe: 'CWE-295',
+          owasp: 'A06:2021 – Vulnerable and Outdated Components',
+          impact: `Compromises data confidentiality and integrity, leading to man-in-the-middle attacks.`,
+          references: [],
+          recommendation: this.generateRecommendationForMisconfiguration(
+            'TLS_CERT_UNTRUSTED',
+            'HIGH',
+            'Install a valid TLS certificate from a trusted Certificate Authority. Ensure certificates are not expired and are correctly configured.'
+          )
+        });
+      }
     }
-
     return results;
   }
 
   private async checkRobotsAndSitemap(baseUrl: string): Promise<MisconfigurationResult[]> {
     const results: MisconfigurationResult[] = [];
+    const robotsTxtUrl = `${baseUrl.replace(/\/$/, '')}/robots.txt`;
+    const sitemapXmlUrl = `${baseUrl.replace(/\/$/, '')}/sitemap.xml`;
 
-    try {
-      const normalizedBaseUrl = this.normalizeUrl(baseUrl);
+    const sensitivePathsRegex = new RegExp(this.sensitivePaths.map(p => p.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|'), 'i');
 
-      // Fetch and parse robots.txt
-      const robotsTxtUrl = `${normalizedBaseUrl}/robots.txt`;
-      let robotsTxtContent = '';
+    const checkFileForSensitivePaths = async (fileUrl: string, fileName: string) => {
       try {
-        const robotsResponse = await this.makeRequest(robotsTxtUrl);
-        if (robotsResponse.status === 200 && this.isValidContent(robotsResponse.data)) {
-          robotsTxtContent = String(robotsResponse.data);
-
-          // Parse Disallow rules
-          const disallowedPaths = new Set<string>();
-          const lines = robotsTxtContent.split(/\r?\n/);
-          for (const line of lines) {
-            const match = line.match(/^Disallow:\s*(.*)/i);
-            if (match && match[1] && match[1] !== '/') {
-              disallowedPaths.add(match[1]);
-            }
-          }
-
-          // Check if disallowed paths are actually accessible
-          for (const disallowedPath of Array.from(disallowedPaths)) {
-            const fullDisallowedUrl = `${normalizedBaseUrl}${disallowedPath}`;
-            try {
-              const disallowedResponse = await this.makeRequest(fullDisallowedUrl, {}, false); // Do not follow redirects
-              if (disallowedResponse.status === 200 && this.isValidContent(disallowedResponse.data)) {
-                results.push({
-                  category: 'Information Disclosure',
-                  type: 'exposed_disallowed_path',
-                  severity: 'MEDIUM',
-                  confidence: 0.7,
-                  title: `Exposed Disallowed Path in robots.txt: ${disallowedPath}`,
-                  description: `The path '${disallowedPath}' is disallowed in robots.txt but is still publicly accessible, potentially exposing sensitive information. ` + this.truncateContent(disallowedResponse.data),
-                  evidence: {
-                    url: fullDisallowedUrl,
-                    file: 'robots.txt',
-                    content: `Disallow: ${disallowedPath}`,
-                    statusCode: disallowedResponse.status
-                  },
-                  cwe: 'CWE-538',
-                  owasp: 'A05:2021 – Security Misconfiguration',
-                  recommendation: `Ensure that paths disallowed in robots.txt are properly secured and not publicly accessible. Use server-side access controls (e.g., authentication, authorization) in addition to robots.txt.`,
-                  impact: 'Sensitive information or functionalities may be exposed to unauthorized users or search engines.',
-                  references: [
-                    'https://developers.google.com/search/docs/crawling-indexing/block-indexing',
-                    'https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/10-Search_Engine_Discovery_and_Reconnaissance',                 ]
-                });
-              }
-            } catch (pathError: any) {
-              // Path is truly inaccessible or other error, which is good for security
-            }
-          }
-        }
-      } catch (error: any) {
-        logger.warn(`Failed to fetch or parse robots.txt for ${baseUrl}: ${error.message}`);
-      }
-
-      // Fetch and parse sitemap.xml
-      const sitemapXmlUrl = `${normalizedBaseUrl}/sitemap.xml`;
-      let sitemapXmlContent = '';
-      try {
-        const sitemapResponse = await this.makeRequest(sitemapXmlUrl);
-        if (sitemapResponse.status === 200 && this.isValidContent(sitemapResponse.data)) {
-          sitemapXmlContent = String(sitemapResponse.data);
-          
-          // Check for sensitive paths in sitemap.xml that might be overlooked
-          // A simple regex to find potential paths, more robust XML parsing might be needed for complex sitemaps
-          const sensitivePathPatterns = this.sensitivePaths.map(p => p.replace(/\//g, '\\/')).join('|');
-          const sensitiveSitemapRegex = new RegExp(`(${sensitivePathPatterns})`, 'gi');
-
+        const response = await this.makeRequest(fileUrl);
+        if (response.status === 200 && response.data) {
+          const content = String(response.data);
           let match;
-          while ((match = sensitiveSitemapRegex.exec(sitemapXmlContent)) !== null) {
-              const foundPath = match[1];
-              // Double-check if this path is actually accessible, if not already caught by robots.txt check
-              const fullSensitiveUrl = `${normalizedBaseUrl}${foundPath}`;
-              try {
-                  const sensitivePathResponse = await this.makeRequest(fullSensitiveUrl, {}, false);
-                  if (sensitivePathResponse.status === 200 && this.isValidContent(sensitivePathResponse.data)) {
-                      results.push({
-                          category: 'Information Disclosure',
-                          type: 'exposed_sensitive_path_in_sitemap',
-                          severity: 'MEDIUM',
-                          confidence: 0.6,
-                          title: `Exposed Sensitive Path in sitemap.xml: ${foundPath}`,
-                          description: `A sensitive path '${foundPath}' is listed in sitemap.xml and is publicly accessible, potentially exposing internal structure or sensitive functionalities.`,
-                          evidence: {
-                              url: fullSensitiveUrl,
-                              file: 'sitemap.xml',
-                              content: `<loc>${fullSensitiveUrl}</loc>`,
-                              statusCode: sensitivePathResponse.status
-                          },
-                          cwe: 'CWE-200',
-                          owasp: 'A05:2021 – Security Misconfiguration',
-                          recommendation: `Remove sensitive paths from sitemap.xml and ensure they are protected by access controls.`,
-                          impact: 'Sensitive parts of the application may be indexed by search engines or discovered by attackers.',
-                          references: [
-                              'https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview',
-                              'https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/10-Search_Engine_Discovery_and_Reconnaissance',
-                          ]
-                      });
-                  }
-              } catch (sitemapPathError: any) {
-                  // Path is truly inaccessible
-              }
+          while ((match = sensitivePathsRegex.exec(content)) !== null) {
+            results.push({
+              category: 'Information Disclosure',
+              type: 'EXPOSED_SENSITIVE_PATH_IN_ROBOTS_OR_SITEMAP',
+              severity: 'MEDIUM',
+              confidence: 0.8,
+              title: `Sensitive Path Exposed in ${fileName}: ${match[0]}`,
+              description: `The ${fileName} file exposes a sensitive path (${match[0]}) which might be intended for exclusion from search engines but is still discoverable.`,
+              evidence: {
+                url: fileUrl,
+                statusCode: response.status,
+                response: this.truncateContent(content),
+                content: match[0]
+              },
+              cwe: 'CWE-200',
+              owasp: 'A05:2021 – Security Misconfiguration',
+              impact: `Facilitates attacker reconnaissance, revealing hidden or sensitive areas.`,
+              references: [],
+              recommendation: this.generateRecommendationForMisconfiguration(
+                'EXPOSED_SENSITIVE_PATH_IN_ROBOTS_OR_SITEMAP',
+                'MEDIUM',
+                `Review your ${fileName} file. While robots.txt is advisory for search engines, sensitive paths should not be discoverable by other means. Ensure these paths are properly secured.`
+              )
+            });
           }
         }
       } catch (error: any) {
-        logger.warn(`Failed to fetch or parse sitemap.xml for ${baseUrl}: ${error.message}`);
+        logger.debug(`Error checking ${fileName} for sensitive paths: ${error.message}`);
       }
+    };
 
-    } catch (error: any) {
-      logger.warn(`Failed to perform robots.txt and sitemap.xml checks: ${error.message}`);
-    }
+    await checkFileForSensitivePaths(robotsTxtUrl, 'robots.txt');
+    await checkFileForSensitivePaths(sitemapXmlUrl, 'sitemap.xml');
 
     return results;
   }
 
   private async checkInsecureCookieDirectives(baseUrl: string): Promise<MisconfigurationResult[]> {
     const results: MisconfigurationResult[] = [];
-
     try {
       const response = await this.makeRequest(baseUrl);
-      const setCookieHeaders = response.headers['set-cookie'];
+      const setCookieHeaders = response.headers['set-cookie'] || response.headers['Set-Cookie'];
 
       if (setCookieHeaders && Array.isArray(setCookieHeaders)) {
-        for (const cookieString of setCookieHeaders) {
-          if (typeof cookieString !== 'string') continue;
-
-          let issues = [];
-          if (baseUrl.startsWith('https://') && !cookieString.includes('Secure')) {
-            issues.push('Missing Secure attribute (cookie sent over HTTP)');
-          }
-          if (!cookieString.includes('HttpOnly')) {
-            issues.push('Missing HttpOnly attribute (cookie accessible by JavaScript)');
-          }
-          // Check for SameSite attribute (consider Lax as default secure, but flag None without Secure)
-          if (!cookieString.includes('SameSite')) {
-            issues.push('Missing SameSite attribute (vulnerable to CSRF)');
-          } else {
-            const sameSiteMatch = cookieString.match(/SameSite=(Lax|Strict|None)/i);
-            if (sameSiteMatch && sameSiteMatch[1].toLowerCase() === 'none' && !cookieString.includes('Secure')) {
-                issues.push('SameSite=None without Secure attribute (insecure cross-site cookies)');
+        setCookieHeaders.forEach(cookie => {
+          if (typeof cookie === 'string') {
+            if (!cookie.includes('Secure')) {
+          results.push({
+                category: 'Insecure Cookie',
+                type: 'MISSING_SECURE_COOKIE_FLAG',
+                severity: 'HIGH',
+                confidence: 0.9,
+                title: 'Missing Secure Flag for Cookie',
+                description: `A cookie (${cookie.split(';')[0]}) is being set without the 'Secure' flag. This means the cookie can be transmitted over unencrypted HTTP connections, potentially exposing sensitive information.`,
+                evidence: {
+                  url: baseUrl,
+                  headers: { 'Set-Cookie': cookie },
+                  statusCode: response.status
+                },
+                cwe: 'CWE-614',
+                owasp: 'A07:2021 – Identification and Authentication Failures',
+                impact: `Cookie interception and session hijacking on unencrypted networks.`,
+                references: [],
+                recommendation: this.generateRecommendationForMisconfiguration(
+                  'MISSING_SECURE_COOKIE_FLAG',
+                  'HIGH',
+                  'Ensure all cookies containing sensitive information or session identifiers are set with the \'Secure\' flag. This requires the application to be served over HTTPS.'
+                )
+              });
+            }
+            if (!cookie.includes('HttpOnly')) {
+              results.push({
+                category: 'Insecure Cookie',
+                type: 'MISSING_HTTPONLY_COOKIE_FLAG',
+            severity: 'MEDIUM',
+            confidence: 0.8,
+                title: 'Missing HttpOnly Flag for Cookie',
+                description: `A cookie (${cookie.split(';')[0]}) is being set without the 'HttpOnly' flag. This makes the cookie accessible to client-side scripts, increasing the risk of Cross-Site Scripting (XSS) attacks leading to session hijacking.`,
+            evidence: {
+                  url: baseUrl,
+                  headers: { 'Set-Cookie': cookie },
+              statusCode: response.status
+            },
+                cwe: 'CWE-79',
+                owasp: 'A03:2021 – Injection',
+                impact: `Increased risk of session hijacking via XSS.`,
+                references: [],
+                recommendation: this.generateRecommendationForMisconfiguration(
+                  'MISSING_HTTPONLY_COOKIE_FLAG',
+                  'MEDIUM',
+                  'Ensure all cookies that do not need to be accessed by client-side scripts are set with the \'HttpOnly\' flag.'
+                )
+              });
+            }
+            if (!cookie.includes('SameSite')) {
+              results.push({
+                category: 'Insecure Cookie',
+                type: 'MISSING_SAMESITE_COOKIE_FLAG',
+                severity: 'MEDIUM',
+                confidence: 0.7,
+                title: 'Missing SameSite Flag for Cookie',
+                description: `A cookie (${cookie.split(';')[0]}) is being set without the 'SameSite' flag. This makes the cookie vulnerable to Cross-Site Request Forgery (CSRF) attacks.`,
+                evidence: {
+                  url: baseUrl,
+                  headers: { 'Set-Cookie': cookie },
+                  statusCode: response.status
+                },
+                cwe: 'CWE-352',
+                owasp: 'A04:2021 – Insecure Design',
+                impact: `Increased risk of CSRF attacks.`,
+                references: [],
+                recommendation: this.generateRecommendationForMisconfiguration(
+                  'MISSING_SAMESITE_COOKIE_FLAG',
+                  'MEDIUM',
+                  'Set the \'SameSite\' flag (e.g., `Lax` or `Strict`) for all cookies to mitigate CSRF attacks.'
+                )
+              });
             }
           }
-
-          if (issues.length > 0) {
-            results.push({
-              category: 'Cookie Security',
-              type: 'insecure_cookie_directive',
-              severity: issues.some(i => i.includes('Secure')) ? 'MEDIUM' : 'LOW', // Secure is more critical
-              confidence: 0.9,
-              title: `Insecure Cookie Directives: ${cookieString.split(';')[0]}`,
-              description: `The cookie '${cookieString.split(';')[0]}' has insecure directives: ${issues.join(', ')}.`,
-              evidence: {
-                url: baseUrl,
-                headers: { 'Set-Cookie': cookieString },
-              },
-              cwe: 'CWE-614',
-              owasp: 'A05:2021 – Security Misconfiguration',
-              recommendation: 'Ensure all sensitive cookies use Secure, HttpOnly, and SameSite=Lax/Strict attributes. Use SameSite=None only with Secure.',
-              impact: 'Insecure cookies can lead to session hijacking, cross-site request forgery (CSRF), or sensitive information disclosure.',
-              references: [
-                'https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie',
-                'https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes'
-              ]
-            });
-          }
+          });
         }
-      }
-    } catch (error: any) {
-      logger.warn(`Failed to check insecure cookie directives for ${baseUrl}: ${error.message}`);
+      } catch (error: any) {
+      logger.error(`Error checking insecure cookie directives for ${baseUrl}: ${error.message}`);
     }
-
     return results;
   }
 
+  private async checkHttpMethodEnforcement(url: string): Promise<MisconfigurationResult[]> {
+    const findings: MisconfigurationResult[] = [];
+    const methodsToTest = ['PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD'];
+    const allowedMethods = ['GET', 'POST'];
+
+    for (const method of methodsToTest) {
+      try {
+        const response = await axios({ method, url, validateStatus: (status) => status < 400 || status === 405 || status === 501 });
+        
+        if ((response.status >= 200 && response.status < 300) || response.status === 304) {
+          findings.push({
+            category: 'HTTP Method Enforcement',
+            type: 'UNSAFE_HTTP_METHOD_ALLOWED',
+            severity: 'HIGH',
+            confidence: 0.8,
+            title: `Unsafe HTTP Method ${method.toUpperCase()} Allowed`,
+            description: `The endpoint ${url} allows the ${method.toUpperCase()} method, which could lead to unintended data modification or deletion if not properly secured. Expected methods: ${allowedMethods.join(', ')}.`,
+            evidence: {
+              url: url,
+              statusCode: response.status,
+              response: this.truncateContent(response.data),
+              headers: response.headers as Record<string, string>
+            },
+            cwe: 'CWE-352',
+            owasp: 'A01:2021 – Broken Access Control',
+            impact: `Unintended data modification, deletion, or information disclosure.`,
+            references: ['https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Methods_Cheat_Sheet.html'],
+            recommendation: this.generateRecommendationForMisconfiguration(
+              'UNSAFE_HTTP_METHOD_ALLOWED',
+              'HIGH',
+              `Restrict HTTP methods on ${url} to only those strictly necessary (e.g., GET for retrieval, POST for creation). Implement proper access control checks for all allowed methods.`
+            )
+          });
+        } else if (response.status === 403 || response.status === 401) {
+            findings.push({
+                category: 'HTTP Method Enforcement',
+                type: 'HTTP_METHOD_ALLOWED_WITH_AUTH',
+                severity: 'MEDIUM',
+                confidence: 0.6,
+                title: `HTTP Method ${method.toUpperCase()} Allowed (Requires Auth)`,
+                description: `The endpoint ${url} allows the ${method.toUpperCase()} method but requires authentication/authorization. If this method should be completely disallowed, it indicates a misconfiguration.`,
+                evidence: {
+                    url: url,
+                    statusCode: response.status,
+                    headers: response.headers as Record<string, string>
+                },
+                cwe: 'CWE-284',
+                owasp: 'A01:2021 – Broken Access Control',
+                impact: `Potential for authenticated users to perform unintended actions.`,
+                references: [],
+                recommendation: this.generateRecommendationForMisconfiguration(
+                  'HTTP_METHOD_ALLOWED_WITH_AUTH',
+                  'MEDIUM',
+                  `If the ${method.toUpperCase()} method should not be used on ${url} at all, explicitly disallow it at the server or API gateway level instead of relying solely on authentication/authorization.`
+                )
+            });
+        }
+    } catch (error: any) {
+        logger.debug(`Error checking method ${method} for ${url}:`, (error as Error).message);
+      }
+    }
+
+    return findings;
+  }
+
   private async makeRequest(url: string, headers: Record<string, string> = {}, followRedirects: boolean = true): Promise<AxiosResponse> {
-    return await axios({
-      method: 'GET',
-      url,
+    const axiosConfig: any = {
       timeout: this.options.timeout,
-      maxRedirects: followRedirects ? this.options.maxRedirects : 0,
-      validateStatus: () => true,
+      validateStatus: (status: number) => status < 500,
+      maxRedirects: this.options.followRedirects ? this.options.maxRedirects : 0,
       headers: {
         'User-Agent': this.options.userAgent,
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         ...headers
       }
-    });
+    };
+    return axios.get(url, axiosConfig);
   }
 
   private normalizeUrl(url: string): string {
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      url = 'https://' + url;
+    try {
+      const urlObj = new URL(url);
+      return urlObj.origin + urlObj.pathname.replace(/\/?$/, '');
+    } catch (error) {
+      logger.error(`Invalid URL provided: ${url}`);
+      throw new Error(`Invalid URL: ${url}`);
     }
-    return url.replace(/\/$/, '');
   }
 
   private isValidContent(content: string): boolean {
-    if (!content || content.length < 10) return false;
-    
-    // Check if it's not an error page
-    const errorIndicators = ['404', 'not found', 'error', 'forbidden', 'access denied'];
-    const lowerContent = content.toLowerCase();
-    
-    return !errorIndicators.some(indicator => lowerContent.includes(indicator));
+    return content && content.length > 0 && !content.includes('404 Not Found') && !content.includes('Page Not Found');
   }
 
   private isDirectoryListing(content: string): boolean {
-    if (!content) return false;
-    
-    const listingIndicators = [
-      'index of',
-      'directory listing',
-      'parent directory',
-      '<pre>',
-      'last modified',
-      'size</th>',
-      '[dir]'
-    ];
-    
-    const lowerContent = content.toLowerCase();
-    return listingIndicators.some(indicator => lowerContent.includes(indicator));
+    return (
+      content.includes('<title>Index of /</title>') ||
+      content.includes('<h1>Index of /</h1>') ||
+      content.includes('<pre><a href="?C=N;O=D">Name</a></pre>') ||
+      content.includes('<img src="/icons/folder.gif" alt="[DIR]">')
+    );
   }
 
   private isAdminInterface(content: string, path: string): boolean {
-    if (!content) return false;
-    
-    const adminIndicators = [
-      'admin', 'administrator', 'management', 'dashboard',
-      'login', 'username', 'password', 'sign in',
-      'control panel', 'admin panel'
-    ];
-    
-    const lowerContent = content.toLowerCase();
-    const hasAdminContent = adminIndicators.some(indicator => lowerContent.includes(indicator));
-    const isAdminPath = ['/admin', '/administrator', '/management', '/login'].some(p => path.includes(p));
-    
-    return hasAdminContent && isAdminPath;
+    return (
+      path.includes('/admin') ||
+      path.includes('/administrator') ||
+      content.includes('Admin Panel') ||
+      content.includes('Login to Dashboard')
+    );
   }
 
   private isServerInfoPage(content: string): boolean {
-    if (!content) return false;
-    
-    const infoIndicators = [
-      'phpinfo()', 'php version', 'apache status', 'server status',
-      'system information', 'server information', 'configuration',
-      'loaded modules', 'environment', 'build date'
-    ];
-    
-    const lowerContent = content.toLowerCase();
-    return infoIndicators.some(indicator => lowerContent.includes(indicator));
+    return (
+      content.includes('phpinfo()') ||
+      content.includes('Apache Status') ||
+      content.includes('Nginx Status')
+    );
   }
 
   private hasDetailedErrorInfo(content: string): boolean {
-    if (!content) return false;
-    
-    const errorDetailIndicators = [
-      'stack trace', 'exception', 'error in', 'line number',
-      'file path', 'debug info', 'call stack', 'traceback'
+    const errorPatterns = [
+      'stack trace', 'on line', 'error in', 'exception', 'syntax error',
+      'mysql_connect()', 'sql error', 'pg_connect()', 'failed to connect',
+      'at Function.Module._resolveFilename'
     ];
-    
-    const lowerContent = content.toLowerCase();
-    return errorDetailIndicators.some(indicator => lowerContent.includes(indicator));
+    return errorPatterns.some(pattern => content.toLowerCase().includes(pattern));
   }
 
-  private getSensitiveFileSeverity(filename: string): 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' {
-    const criticalFiles = ['.env', 'private.key', 'id_rsa', 'database.sql', 'backup.sql'];
-    const highFiles = ['config.php', 'config.json', 'secrets.json', 'web.config'];
-    const mediumFiles = ['robots.txt', 'phpinfo.php', 'package.json'];
-    
-    if (criticalFiles.some(f => filename.includes(f))) return 'CRITICAL';
-    if (highFiles.some(f => filename.includes(f))) return 'HIGH';
-    if (mediumFiles.some(f => filename.includes(f))) return 'MEDIUM';
+  private getSensitiveFileSeverity(filename: string): VulnerabilitySeverity {
+    if (filename.includes('.env') || filename.includes('private.key') || filename.includes('secrets')) {
+      return 'CRITICAL';
+    }
+    if (filename.includes('sql') || filename.includes('dump')) {
+      return 'HIGH';
+    }
+    if (filename.includes('phpinfo') || filename.includes('test.php')) {
+      return 'MEDIUM';
+    }
     return 'LOW';
   }
 
   private truncateContent(content: string): string {
-    const str = typeof content === 'string' ? content : JSON.stringify(content);
-    return str.length > 500 ? str.substring(0, 500) + '...[truncated]' : str;
+    const maxLength = 500;
+    return content.length > maxLength ? content.substring(0, maxLength) + '...' : content;
+  }
+
+  private generateRecommendationForMisconfiguration(type: VulnerabilityType | string, severity: VulnerabilitySeverity, description: string): RemediationGuidance {
+    const dummyVulnerability: Vulnerability = {
+      id: '',
+      scanId: '',
+      type: type as VulnerabilityType, // Cast to VulnerabilityType
+      severity: severity,
+      endpoint: '',
+      method: '',
+      description: description,
+      impact: '',
+      confidence: 0,
+      evidence: {},
+      remediation: {
+        priority: 0,
+        effort: 'low',
+        steps: [],
+        automatable: false
+      },
+      discoveredAt: new Date()
+    };
+    return this.recommendationService.generateRecommendation(dummyVulnerability);
   }
 } 
