@@ -12,7 +12,7 @@ Create a tool that scans SaaS APIs to identify security risks (e.g., unprotected
 ## DIR ENUM 
    
 - [x] cli BASE
-- [ ] initialiser
+- [x] initialiser
 - [x] frontend
 - [x] middleware 
 - [x] [web-logic] backend
