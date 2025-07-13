@@ -1,0 +1,80 @@
+!<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Advanced Directory Enumerator</title>
+    <link rel="stylesheet" type="" href="./style.css">
+    <script src="./script.js"> </script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Advanced Directory Enumerator</h1>
+        <p>Discover hidden files and directories on web servers</p>
+      </div>
+
+      <div class="card">
+        <h2>Scan Configuration</h2>
+        <form id="scanForm">  
+          <div class="form-group">
+            <label for="targetUrl">Target URL:</label>
+            <input type="url" name="targetUrl"  placeholder="https://ksurajsingh.github.io" required value="">         
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="wordlistType">Wordlist Type:</label>
+              <select id="wrodlistType">
+                <option value="common">Common (50 words)</option>
+                <option value="directories">Directories Only</option>
+                <option value="files">Files only</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="maxWorkers">Max Workers:</label>
+              <input type="number" name="maxWorkers" value="50" min="1" max="200">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="delay">Request Delay (seconds):</label>
+              <input type="number" id="delay" value="0.1" min="0" max="5" step="0.1">
+            </div>
+            <div class="form-group">
+             <button type="submit" class="btn" id="startBtn">Start Scan⚡</button> 
+             <button type="button" class="btn btn-secondary" id="cancelBtn" style="display:none;">Cancel Scan💦</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+
+      <div class="card hidden" id="progressCard">
+        <h2>Scan Progress</h2>
+        <div id="status" class="status"></div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+        </div>
+        <div id="progressText">0%</div>
+      </div>
+
+      <div class="card hidden" id="statusCard">
+        <h2>Scan Statistics</h2>
+        <div class="stats-grid" id="statsGrid"></div>
+      </div>
+      
+      <div class="card hidden" id="resultCard">
+        <h2>Scan Results</h2>
+        <div id="resutlsTable"></div>
+      </div>
+
+
+    </div>
+
+  </body>
+</html>
