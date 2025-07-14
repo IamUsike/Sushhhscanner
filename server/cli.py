@@ -12,16 +12,18 @@ CLI for Advanced Direcotry Enumeration
 import asyncio # I am still learning this guys - hope this has the same functionality as "async" from js
 import argparse
 import sys
+import os
+import subprocess
 import json
 from datetime import datetime 
-from directory_enum import DirectoryEnumerator # ourmain tool - inorder to keep our prjt minimal and locally deployed + independent of any global requirement
+from dir_enum import DirectoryEnumerator # ourmain tool - inorder to keep our prjt minimal and locally deployed + independent of any global requirement
 from colorama import init,Fore,Style # colors beradar - I like python now - bash can easily keep up with python need to watch Mr.ROBOT again - they use both a lot
 
 # Initalise colorama for cross-platform colored output
 init()
 
 # comments ? just read the function mendokuse 
-def silhouette:
+def silhouette():
    """silhouette : speak english loser"""
    banner = f"""
 {Fore.CYAN}╔══════════════════════════════════════════════════════════════╗
@@ -68,7 +70,7 @@ def print_result(result):
 
     # output info 
     size_str=f"{result.content_length} bytes" if result.content > 0 else "N/A"
-    time_str=f"{result.response_time.3f}s"
+    time_str=f"{result.response_time:.3f}s"
     type_str= "DIR" if result.is_directory else "FILE"
 
     print(f"{status_color}[{status_text}]{Style.RESET_ALL} {url}")
@@ -167,22 +169,22 @@ async def main():
         target_url:'https://'+target_url
 
     print_status(f"Starting scan of: {target_url}","info")
-    subprocess.run(["sleep 5"])
+    subprocess.run(["sleep", "1"])
     print_status(f"Wordlist: {args.wordlist}","info")
-    print_status(f"Workers: {args.workers}","info")
+    print_status(f"Workers: {args.worker}","info")
     print_status(f"Delay: {args.delay}s","info")
     print()
-    subprocess.run(["sleep 10"])
+    subprocess.run(["sleep", "2"])
 
     try:
-        enumer:DirectoryEnumerator() # our striker name
+        enumer=DirectoryEnumerator() # our striker name
 
         start_time=datetime.now()
-        resutls=await enumer.scan_target(
+        results=await enumer.scan_target(
                 target_url=target_url,
                 wordlist_type=args.wordlist,
-                max_workers=args.workers,
-                delays=args.delay
+                max_workers=args.worker,
+                delay=args.delay
                 )
         end_time=datetime.now()
 
@@ -196,7 +198,7 @@ async def main():
                 print_status("Scan completed! Found items: ","success")
                 print()
 
-                for result in enumer.resutls:
+                for result in enumer.results:
                     print_result(result)
 
                 print_summary(
@@ -206,7 +208,7 @@ async def main():
                         args.wordlist
                         )
         if args.output:
-                save_results)(enumer.results,target_url,args.output)
+                save_results()(enumer.results,target_url,args.output)
 
         if len(enumer,results)>0:
                 sys.exit(0)
@@ -219,12 +221,12 @@ async def main():
         sys.exit(1)
 
     except Exception as e:
-        print_status(f"Error during scan:{str{e}}","error")
+        print_status(f"Error during scan:(str{e})","error")
         sys.exit(1)
 
 
 # driver 
-if __name__="__main__":
+if __name__=="__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:

@@ -24,25 +24,25 @@ def main():
             python run.py install                  # install dependencies [ from requirements.txt ]
             """
             )
-    parser.add_arguments("mode",choices=["web","cli","test","install"],help="Mode to run the tool in")
-    parser.add_arguments("target",nargs="?",help="Target URL [for CLI mode]")
-    parser.add_arguments("--port",type=int,default=5000,help="Port for web server (default:5000)")
+    parser.add_argument("mode",choices=["web","cli","test","install"],help="Mode to run the tool in")
+    parser.add_argument("target",nargs="?",help="Target URL [for CLI mode]")
+    parser.add_argument("--port",type=int,default=5000,help="Port for web server (default:5000)")
 
     # parse those args using sysargs [ i guess ]
     args = parser.parse_args()
 
     # cd
-    serve_dir = os.path.join(os.path.dirname(__file__),"server")
+    server_dir = os.path.join(os.path.dirname(__file__),"server")
     os.chdir(server_dir)
 
 # OPTIONS 
 
     if args.mode=="install":
-        printf("✴️ littting up your env by installing dependencies bro")
+        print("✴️ littting up your env by installing dependencies bro")
         try:
             # this is the good part
-            subprocess.run([sys.executables,"-m","pip","install","-r","requirements.txt"],check=True)
-            printf("✅ Dependencies installed bro")
+            subprocess.run([sys.executable,"-m","pip","install","-r","requirements.txt"],check=True)
+            print("✅ Dependencies installed bro")
         except subprocess.CalledProcessError as e:
             print(f"\n\n❌ fix this first: {e}\n\n\nEXITING . . .")
             sys.exit(1)
@@ -68,7 +68,7 @@ def main():
         except KeyboardInterrupt:
             print("Daijobu da?👶\n\n❓What happened❓")
         except Exception as e:
-            printf(f"‼️Error starting webserver: {e}\n\nEXITING . . .")
+            print(f"‼️Error starting webserver: {e}\n\nEXITING . . .")
             sys.exit(1)
 
 
