@@ -11,11 +11,11 @@ Create a tool that scans SaaS APIs to identify security risks (e.g., unprotected
 
 ## DIR ENUM 
    
-- [x] cli BASE
+- [x] cli BASE [Primitive-Stage]
 - [x] initialiser
 - [x] frontend
 - [x] middleware 
-- [x] [web-logic] backend
+- [x] [web-logic] backend [Primitive-Stage]
 - [ ] CLI Enhanced
 
 
@@ -23,3 +23,4 @@ Create a tool that scans SaaS APIs to identify security risks (e.g., unprotected
 
 - [ ] !IMPORTANT handleCaptcha
 - [ ] [cli.py] clean code - the colors using Fore are everywhere - organise it
+- [X] prevent being flagged [partial]

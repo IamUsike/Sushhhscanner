@@ -167,7 +167,7 @@ class DirectoryEnumerator:
             logging.error(f"Error checking {url}:{str(e)}")
             return None 
 
-    async def scan_target(self,target_url:str,wordlist_type:str="common",max_workers:int=50,delay:float=0.1)->Dict:
+    async def scan_target(self,target_url:str,wordlist_type:str="common",max_workers:int=1,delay:float=1.1)->Dict:
         target_url = self.normalize_url(target_url)
         self.scan_stats["start_time"]=time.time()
 
