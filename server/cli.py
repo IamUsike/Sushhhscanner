@@ -20,6 +20,8 @@ from dir_enum import DirectoryEnumerator # ourmain tool - inorder to keep our pr
 from colorama import init,Fore,Style # colors beradar - I like python now - bash can easily keep up with python need to watch Mr.ROBOT again - they use both a lot
 from tabulate import tabulate
 from tqdm import tqdm
+import csv
+import pandas as pd
 
 # Initalise colorama for cross-platform colored output
 init()
@@ -165,6 +167,9 @@ async def main():
     parser.add_argument("--table", action="store_true", help="Display results in a colored table format")
     parser.add_argument("--progress", action="store_true", help="Show progress bar during scan")
     parser.add_argument("--rate-limit", type=float, help="Maximum requests per second (rate limiting, takes precedence over delay)")
+    parser.add_argument("--export-csv", type=str, help="Export results to CSV file")
+    parser.add_argument("--export-excel", type=str, help="Export results to Excel (XLSX) file")
+    # parser.add_argument("--export-pdf", type=str, help="Export results to PDF file")
 
     args=parser.parse_args()
 
@@ -263,6 +268,36 @@ async def main():
                         )
         if args.output:
                 save_results(enumer.results,target_url,args.output)
+
+        if args.export_csv:
+            with open(args.export_csv, 'w', newline='', encoding='utf-8') as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow(["URL", "Status", "Type", "Size", "Time", "Server"])
+                for result in enumer.results:
+                    writer.writerow([
+                        result.url,
+                        result.status_code,
+                        "DIR" if result.is_directory else "FILE",
+                        result.content_length,
+                        f"{result.response_time:.3f}s",
+                        result.server or "N/A"
+                    ])
+            print_status(f"Results exported to CSV: {args.export_csv}", "success")
+
+        if args.export_excel:
+            data = []
+            for result in enumer.results:
+                data.append({
+                    "URL": result.url,
+                    "Status": result.status_code,
+                    "Type": "DIR" if result.is_directory else "FILE",
+                    "Size": result.content_length,
+                    "Time": f"{result.response_time:.3f}s",
+                    "Server": result.server or "N/A"
+                })
+            df = pd.DataFrame(data)
+            df.to_excel(args.export_excel, index=False)
+            print_status(f"Results exported to Excel: {args.export_excel}", "success")
 
         if len(enumer.results)>0:
                 sys.exit(0)

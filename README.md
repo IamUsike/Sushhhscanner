@@ -20,10 +20,10 @@ Create a tool that scans SaaS APIs to identify security risks (e.g., unprotected
 
 ### Features TODO
 - [x] Custom wordlist support (allow user-supplied wordlists)
-- [ ] Recursive directory enumeration (with depth control)
-- [ ] Colored output and table formatting (pretty, aligned, colorized results)
-- [ ] Progress bar (show scan progress)
-- [ ] Rate limiting (requests per second)  
+- [x] Recursive directory enumeration (with depth control)
+- [x] Colored output and table formatting (pretty, aligned, colorized results)
+- [x] Progress bar (show scan progress)
+- [x] Rate limiting (requests per second)  
       # Note: Delay = wait after each request; Rate limiting = max requests per second (e.g., 10 req/sec)
 - [ ] Export formats: CSV, PDF, Excel
 - [ ] Verbose and silent modes
@@ -33,10 +33,7 @@ Create a tool that scans SaaS APIs to identify security risks (e.g., unprotected
 
 ## Progress
 Features currently under testing:
-- [ ] Recursive directory enumeration
-- [ ] Colored output and table formatting
-- [ ] Progress bar
-- [ ] Export formats: CSV, PDF, Excel
+- [x] Export formats: CSV, PDF, Excel
 - [ ] Verbose and silent modes
 - [ ] Error logging to file
 - [ ] Summary statistics

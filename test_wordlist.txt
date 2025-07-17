@@ -1,4 +1,8 @@
 media
+futurediarymedia
+trash
+trashmedia
+index
 tmp
 temp
 docs
