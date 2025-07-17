@@ -174,6 +174,8 @@ async def main():
     parser.add_argument("--export-csv", type=str, help="Export results to CSV file")
     parser.add_argument("--export-excel", type=str, help="Export results to Excel (XLSX) file")
     parser.add_argument("--export-pdf", type=str, help="Export results to PDF file")
+    parser.add_argument("--verbose", action="store_true", help="Show extra details for each result and debug info")
+    parser.add_argument("--silent", action="store_true", help="Suppress all output except errors and summary")
 
     args=parser.parse_args()
 
@@ -205,6 +207,99 @@ async def main():
     print_status(f"Delay: {args.delay}s","info")
     print()
     subprocess.run(["sleep", "2"])
+
+    # If silent, suppress almost all output
+    if args.silent:
+        # Only print errors and summary at the end
+        try:
+            enumer=DirectoryEnumerator()
+            start_time=datetime.now()
+            results=await enumer.scan_target(
+                target_url=target_url,
+                wordlist_type=args.wordlist,
+                max_workers=args.worker,
+                delay=args.delay,
+                custom_wordlist=custom_wordlist,
+                recursive=args.recursive,
+                max_depth=args.max_depth,
+                show_progress=False,
+                rate_limit=args.rate_limit
+            )
+            end_time=datetime.now()
+            enumer.scan_stats["start_time"]=start_time.timestamp()
+            enumer.scan_stats["end_time"]=end_time.timestamp()
+            print_summary(
+                enumer.results,
+                enumer.scan_stats,
+                target_url,
+                args.wordlist
+            )
+            if args.export_csv:
+                with open(args.export_csv, 'w', newline='', encoding='utf-8') as csvfile:
+                    writer = csv.writer(csvfile)
+                    writer.writerow(["URL", "Status", "Type", "Size", "Time", "Server"])
+                    for result in enumer.results:
+                        writer.writerow([
+                            result.url,
+                            result.status_code,
+                            "DIR" if result.is_directory else "FILE",
+                            result.content_length,
+                            f"{result.response_time:.3f}s",
+                            result.server or "N/A"
+                        ])
+                print_status(f"Results exported to CSV: {args.export_csv}", "success")
+            if args.export_excel:
+                data = []
+                for result in enumer.results:
+                    data.append({
+                        "URL": result.url,
+                        "Status": result.status_code,
+                        "Type": "DIR" if result.is_directory else "FILE",
+                        "Size": result.content_length,
+                        "Time": f"{result.response_time:.3f}s",
+                        "Server": result.server or "N/A"
+                    })
+                df = pd.DataFrame(data)
+                df.to_excel(args.export_excel, index=False)
+                print_status(f"Results exported to Excel: {args.export_excel}", "success")
+            if args.export_pdf:
+                pdf_data = [["URL", "Status", "Type", "Size", "Time", "Server"]]
+                for result in enumer.results:
+                    pdf_data.append([
+                        result.url,
+                        str(result.status_code),
+                        "DIR" if result.is_directory else "FILE",
+                        str(result.content_length),
+                        f"{result.response_time:.3f}s",
+                        result.server or "N/A"
+                    ])
+                pdf = SimpleDocTemplate(args.export_pdf, pagesize=letter)
+                table = Table(pdf_data, repeatRows=1)
+                style = TableStyle([
+                    ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                    ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                    ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                    ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                    ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                    ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                    ('GRID', (0, 0), (-1, -1), 1, colors.black),
+                ])
+                table.setStyle(style)
+                elems = [table]
+                pdf.build(elems)
+                print_status(f"Results exported to PDF: {args.export_pdf}", "success")
+            if len(enumer.results)>0:
+                sys.exit(0)
+            else:
+                sys.exit(1)
+        except Exception as e:
+            print_status(f"Error during scan:(str{e})","error")
+            sys.exit(1)
+        return
+
+    # In verbose mode, print extra details for each result
+    if args.verbose:
+        print_status("Verbose mode enabled: showing extra details for each result.", "info")
 
     try:
         enumer=DirectoryEnumerator() # our striker name
@@ -258,11 +353,15 @@ async def main():
                             f"{result.response_time:.3f}s",
                             result.server or "N/A"
                         ])
+                        if args.verbose:
+                            print(f"[VERBOSE] URL: {result.url}\n  Status: {result.status_code}\n  Type: {'DIR' if result.is_directory else 'FILE'}\n  Size: {result.content_length} bytes\n  Time: {result.response_time:.3f}s\n  Server: {result.server or 'N/A'}\n  Content-Type: {getattr(result, 'content_type', 'N/A')}\n  Title: {getattr(result, 'title', 'N/A')}\n")
                     headers = ["URL", "Status", "Type", "Size", "Time", "Server"]
                     print(tabulate(table_data, headers=headers, tablefmt="fancy_grid", stralign="left", numalign="right", showindex=False))
                 else:
                     for result in enumer.results:
                         print_result(result)
+                        if args.verbose:
+                            print(f"[VERBOSE] URL: {result.url}\n  Status: {result.status_code}\n  Type: {'DIR' if result.is_directory else 'FILE'}\n  Size: {result.content_length} bytes\n  Time: {result.response_time:.3f}s\n  Server: {result.server or 'N/A'}\n  Content-Type: {getattr(result, 'content_type', 'N/A')}\n  Title: {getattr(result, 'title', 'N/A')}\n")
 
                 print_summary(
                         enumer.results,
