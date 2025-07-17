@@ -18,6 +18,7 @@ import json
 from datetime import datetime 
 from dir_enum import DirectoryEnumerator # ourmain tool - inorder to keep our prjt minimal and locally deployed + independent of any global requirement
 from colorama import init,Fore,Style # colors beradar - I like python now - bash can easily keep up with python need to watch Mr.ROBOT again - they use both a lot
+from tabulate import tabulate
 
 # Initalise colorama for cross-platform colored output
 init()
@@ -160,6 +161,7 @@ async def main():
     parser.add_argument("-j","--json",action="store_true",help="Output results in JSON format")
     parser.add_argument("--recursive", action="store_true", help="Enable recursive directory enumeration")
     parser.add_argument("--max-depth", type=int, default=2, help="Maximum recursion depth (default: 2)")
+    parser.add_argument("--table", action="store_true", help="Display results in a colored table format")
 
     args=parser.parse_args()
 
@@ -217,8 +219,36 @@ async def main():
                 print_status("Scan completed! Found items: ","success")
                 print()
 
-                for result in enumer.results:
-                    print_result(result)
+                if args.table or not args.quiet:
+                    # Table output
+                    table_data = []
+                    for result in enumer.results:
+                        # Colorize status
+                        if result.status_code in [200,201,202,203,204,205,206,207,208,226]:
+                            status = f"{Fore.GREEN}{result.status_code} OK{Style.RESET_ALL}"
+                        elif result.status_code in [301,302,303,304,305,306,307,308]:
+                            status = f"{Fore.YELLOW}{result.status_code} Redirect{Style.RESET_ALL}"
+                        elif result.status_code == 403:
+                            status = f"{Fore.RED}{result.status_code} Forbidden{Style.RESET_ALL}"
+                        elif result.status_code >= 500:
+                            status = f"{Fore.RED}{result.status_code} Server Error{Style.RESET_ALL}"
+                        else:
+                            status = f"{Fore.WHITE}{result.status_code}{Style.RESET_ALL}"
+                        # Colorize type
+                        type_str = f"{Fore.CYAN}DIR{Style.RESET_ALL}" if result.is_directory else f"{Fore.MAGENTA}FILE{Style.RESET_ALL}"
+                        table_data.append([
+                            result.url,
+                            status,
+                            type_str,
+                            f"{result.content_length} bytes" if result.content_length > 0 else "N/A",
+                            f"{result.response_time:.3f}s",
+                            result.server or "N/A"
+                        ])
+                    headers = ["URL", "Status", "Type", "Size", "Time", "Server"]
+                    print(tabulate(table_data, headers=headers, tablefmt="fancy_grid", stralign="left", numalign="right", showindex=False))
+                else:
+                    for result in enumer.results:
+                        print_result(result)
 
                 print_summary(
                         enumer.results,
