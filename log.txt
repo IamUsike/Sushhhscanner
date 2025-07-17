@@ -1,0 +1,10 @@
+[ERROR] Error during scan:(str[Errno 13] Permission denied: '/root/myfile.xlsx')
+Exception: [Errno 13] Permission denied: '/root/myfile.xlsx'
+[ERROR] Error during scan:(strdivision by zero)
+Exception: division by zero
+[ERROR] Error during scan:(strdivision by zero)
+Exception: division by zero
+[ERROR] Error during scan:(strdivision by zero)
+Exception: division by zero
+[ERROR] Error during scan:(str[Errno 13] Permission denied: '/root/report.xlsx')
+Exception: [Errno 13] Permission denied: '/root/report.xlsx'

@@ -26,8 +26,8 @@ Create a tool that scans SaaS APIs to identify security risks (e.g., unprotected
 - [x] Rate limiting (requests per second)  
       # Note: Delay = wait after each request; Rate limiting = max requests per second (e.g., 10 req/sec)
 - [x] Export formats: CSV, PDF, Excel
-- [ ] Verbose and silent modes
-- [ ] Error logging to file
+- [x] Verbose and silent modes
+- [x] Error logging to file
 - [ ] Summary statistics (status code breakdown, fastest/slowest responses, etc.)
 - [ ] Integration with other tools (optionally run vulnerability scan on found URLs)
 - [ ] Enhanced PDF
