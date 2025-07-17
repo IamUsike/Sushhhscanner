@@ -1,20 +1,35 @@
+Summary
+Target URL,https://ksurajsingh.github.io
+Total Checked,272
+Found Items,16
+Success Rate,5.9%
+Duration,34.54 seconds
+Requests/sec,7.9
+Most common status code,301 (12 times)
+Fastest response time,0.241s
+Slowest response time,0.539s
+Average response time,0.381s
+Smallest content size,162 bytes
+Largest content size,10117 bytes
+Average content size,1379 bytes
+
 URL,Status,Type,Size,Time,Server
-https://ksurajsingh.github.io/media,301,DIR,162,0.383s,GitHub.com
-https://ksurajsingh.github.io/index,200,DIR,2214,0.089s,GitHub.com
-https://ksurajsingh.github.io/tmp,301,DIR,162,0.301s,GitHub.com
-https://ksurajsingh.github.io/docs,301,DIR,162,0.305s,GitHub.com
-https://ksurajsingh.github.io/futurediary,301,DIR,162,0.342s,GitHub.com
-https://ksurajsingh.github.io/media/index,301,DIR,162,0.237s,GitHub.com
-https://ksurajsingh.github.io/media/gifs,301,DIR,162,0.464s,GitHub.com
-https://ksurajsingh.github.io/media/vids,301,DIR,162,0.236s,GitHub.com
-https://ksurajsingh.github.io/media/pics,301,DIR,162,0.243s,GitHub.com
-https://ksurajsingh.github.io/tmp/tmp,200,DIR,3400,0.293s,GitHub.com
-https://ksurajsingh.github.io/futurediary/futurediarymedia,301,DIR,162,0.246s,GitHub.com
-https://ksurajsingh.github.io/futurediary/trash,301,DIR,162,0.244s,GitHub.com
-https://ksurajsingh.github.io/futurediary/futurediary,200,DIR,10117,0.029s,GitHub.com
-https://ksurajsingh.github.io/media/index/gifs,301,DIR,162,0.236s,GitHub.com
-https://ksurajsingh.github.io/media/index/pics,301,DIR,162,0.241s,GitHub.com
-https://ksurajsingh.github.io/futurediary/trash/trash,200,DIR,4400,0.028s,GitHub.com
+https://ksurajsingh.github.io/media,301,DIR,162,0.539s,GitHub.com
+https://ksurajsingh.github.io/index,200,DIR,2214,0.499s,GitHub.com
+https://ksurajsingh.github.io/tmp,301,DIR,162,0.499s,GitHub.com
+https://ksurajsingh.github.io/docs,301,DIR,162,0.499s,GitHub.com
+https://ksurajsingh.github.io/futurediary,301,DIR,162,0.498s,GitHub.com
+https://ksurajsingh.github.io/media/index,301,DIR,162,0.241s,GitHub.com
+https://ksurajsingh.github.io/media/gifs,301,DIR,162,0.478s,GitHub.com
+https://ksurajsingh.github.io/media/vids,301,DIR,162,0.475s,GitHub.com
+https://ksurajsingh.github.io/media/pics,301,DIR,162,0.481s,GitHub.com
+https://ksurajsingh.github.io/tmp/tmp,200,DIR,3400,0.302s,GitHub.com
+https://ksurajsingh.github.io/futurediary/futurediarymedia,301,DIR,162,0.252s,GitHub.com
+https://ksurajsingh.github.io/futurediary/trash,301,DIR,162,0.260s,GitHub.com
+https://ksurajsingh.github.io/futurediary/futurediary,200,DIR,10117,0.256s,GitHub.com
+https://ksurajsingh.github.io/media/index/gifs,301,DIR,162,0.250s,GitHub.com
+https://ksurajsingh.github.io/media/index/pics,301,DIR,162,0.252s,GitHub.com
+https://ksurajsingh.github.io/futurediary/trash/trash,200,DIR,4400,0.316s,GitHub.com
 
 Errors
 [ERROR] Error during scan:(str[Errno 13] Permission denied: '/root/myfile.xlsx')
@@ -25,3 +40,5 @@ Exception: division by zero
 Exception: division by zero
 [ERROR] Error during scan:(strdivision by zero)
 Exception: division by zero
+[ERROR] Error during scan:(str[Errno 13] Permission denied: '/root/report.xlsx')
+Exception: [Errno 13] Permission denied: '/root/report.xlsx'

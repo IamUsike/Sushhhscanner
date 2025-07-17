@@ -152,12 +152,25 @@ async def main():
         print(f"Duration: {duration:.2f} seconds")
         print(f"Requests/sec: {scan_stats['total_requests']/duration:.1f}" if duration > 0 else "Requests/sec: N/A")
         status_codes={}
-        for result in result:
-            status_codes[result.status_code]=status_codes.get(result.status_code,0)+1
+        response_times = []
+        content_sizes = []
+        for r in result:
+            status_codes[r.status_code]=status_codes.get(r.status_code,0)+1
+            response_times.append(r.response_time)
+            content_sizes.append(r.content_length)
         if status_codes:
             print(f"\n{Fore.YELLOW}Status Code Breakdown:{Style.RESET_ALL}")
             for code,count in sorted(status_codes.items()):
                 print(f"{code}:{count}")
+            # Most common status code
+            most_common = max(status_codes.items(), key=lambda x: x[1])
+            print(f"Most common status code: {most_common[0]} ({most_common[1]} times)")
+        if response_times:
+            print(f"\n{Fore.YELLOW}Response Time Stats:{Style.RESET_ALL}")
+            print(f"Fastest: {min(response_times):.3f}s | Slowest: {max(response_times):.3f}s | Average: {sum(response_times)/len(response_times):.3f}s")
+        if content_sizes:
+            print(f"\n{Fore.YELLOW}Content Size Stats:{Style.RESET_ALL}")
+            print(f"Smallest: {min(content_sizes)} bytes | Largest: {max(content_sizes)} bytes | Average: {sum(content_sizes)//len(content_sizes)} bytes")
 
     def save_results(results,target_url,output_file):
         try:
@@ -378,9 +391,44 @@ async def main():
         if args.output:
                 save_results(enumer.results,target_url,args.output)
 
+        # Prepare summary stats for export
+        def get_summary_stats(results, scan_stats):
+            status_codes = {}
+            response_times = []
+            content_sizes = []
+            for r in results:
+                status_codes[r.status_code] = status_codes.get(r.status_code, 0) + 1
+                response_times.append(r.response_time)
+                content_sizes.append(r.content_length)
+            summary = []
+            summary.append(["Target URL", scan_stats.get('target_url', '')])
+            summary.append(["Total Checked", scan_stats.get('total_requests', '')])
+            summary.append(["Found Items", len(results)])
+            summary.append(["Success Rate", f"{(len(results)/scan_stats['total_requests']*100):.1f}%" if scan_stats['total_requests'] else 'N/A'])
+            summary.append(["Duration", f"{(scan_stats['end_time']-scan_stats['start_time']):.2f} seconds" if scan_stats['end_time'] else 'N/A'])
+            summary.append(["Requests/sec", f"{scan_stats['total_requests']/(scan_stats['end_time']-scan_stats['start_time']):.1f}" if scan_stats['end_time'] and (scan_stats['end_time']-scan_stats['start_time']) > 0 else 'N/A'])
+            if status_codes:
+                most_common = max(status_codes.items(), key=lambda x: x[1])
+                summary.append(["Most common status code", f"{most_common[0]} ({most_common[1]} times)"])
+            if response_times:
+                summary.append(["Fastest response time", f"{min(response_times):.3f}s"])
+                summary.append(["Slowest response time", f"{max(response_times):.3f}s"])
+                summary.append(["Average response time", f"{sum(response_times)/len(response_times):.3f}s"])
+            if content_sizes:
+                summary.append(["Smallest content size", f"{min(content_sizes)} bytes"])
+                summary.append(["Largest content size", f"{max(content_sizes)} bytes"])
+                summary.append(["Average content size", f"{sum(content_sizes)//len(content_sizes)} bytes"])
+            return summary
+
         if args.export_csv:
             with open(args.export_csv, 'w', newline='', encoding='utf-8') as csvfile:
                 writer = csv.writer(csvfile)
+                # Write summary stats first
+                summary = get_summary_stats(enumer.results, {**enumer.scan_stats, 'target_url': target_url})
+                writer.writerow(["Summary"])
+                for row in summary:
+                    writer.writerow(row)
+                writer.writerow([])
                 writer.writerow(["URL", "Status", "Type", "Size", "Time", "Server"])
                 for result in enumer.results:
                     writer.writerow([
@@ -414,6 +462,10 @@ async def main():
                     "Server": result.server or "N/A"
                 })
             with pd.ExcelWriter(args.export_excel) as writer:
+                # Write summary sheet
+                summary = get_summary_stats(enumer.results, {**enumer.scan_stats, 'target_url': target_url})
+                summary_df = pd.DataFrame(summary, columns=["Metric", "Value"])
+                summary_df.to_excel(writer, index=False, sheet_name="Summary")
                 df = pd.DataFrame(data)
                 df.to_excel(writer, index=False, sheet_name="Results")
                 # Append errors if error log exists and is non-empty
@@ -438,6 +490,21 @@ async def main():
                 ])
             elems = []
             pdf = SimpleDocTemplate(args.export_pdf, pagesize=letter)
+            # Add summary table first
+            summary = get_summary_stats(enumer.results, {**enumer.scan_stats, 'target_url': target_url})
+            summary_table = Table([["Summary", "Value"]] + summary)
+            summary_style = TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                ('BACKGROUND', (0, 1), (-1, -1), colors.whitesmoke),
+                ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
+                ('GRID', (0, 0), (-1, -1), 1, colors.black),
+            ])
+            summary_table.setStyle(summary_style)
+            elems.append(summary_table)
             table = Table(pdf_data, repeatRows=1)
             style = TableStyle([
                 ('BACKGROUND', (0, 0), (-1, 0), colors.grey),

@@ -8,3 +8,7 @@ Exception: division by zero
 Exception: division by zero
 [ERROR] Error during scan:(str[Errno 13] Permission denied: '/root/report.xlsx')
 Exception: [Errno 13] Permission denied: '/root/report.xlsx'
+[ERROR] Error during scan:(str[Errno 13] Permission denied: '/root/report.xlsx')
+Exception: [Errno 13] Permission denied: '/root/report.xlsx'
+[ERROR] Error during scan:(str[Errno 13] Permission denied: '/root/report.csv')
+Exception: [Errno 13] Permission denied: '/root/report.csv'

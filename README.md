@@ -16,9 +16,6 @@ Create a tool that scans SaaS APIs to identify security risks (e.g., unprotected
 - [x] frontend
 - [x] middleware 
 - [x] [web-logic] backend [Primitive-Stage]
-- [ ] CLI Enhanced
-
-### Features TODO
 - [x] Custom wordlist support (allow user-supplied wordlists)
 - [x] Recursive directory enumeration (with depth control)
 - [x] Colored output and table formatting (pretty, aligned, colorized results)
@@ -28,20 +25,18 @@ Create a tool that scans SaaS APIs to identify security risks (e.g., unprotected
 - [x] Export formats: CSV, PDF, Excel
 - [x] Verbose and silent modes
 - [x] Error logging to file
-- [ ] Summary statistics (status code breakdown, fastest/slowest responses, etc.)
+- [x] Summary statistics (status code breakdown, fastest/slowest responses, etc.)
+
+## Features TODO
+
 - [ ] Integration with other tools (optionally run vulnerability scan on found URLs)
 - [ ] Enhanced PDF
+- [ ] CLI Enhanced
 
-## Progress
-Features currently under testing:
-- [x] Export formats: CSV, PDF, Excel
-- [ ] Verbose and silent modes
-- [ ] Error logging to file
-- [ ] Summary statistics
-- [ ] Integration with other tools
 
 ## fixes
 
+- [ ] Integration with other tools [ fix .xlsx .pdf to include summary and error logs ]
 - [ ] !IMPORTANT handleCaptcha
 - [ ] [cli.py] clean code - the colors using Fore are everywhere - organise it
 - [X] prevent being flagged [partial]
