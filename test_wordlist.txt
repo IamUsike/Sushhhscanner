@@ -4,5 +4,9 @@ temp
 docs
 futurediary
 login
+gif
+gifs
+vids
+pics
 images
 robots.txt

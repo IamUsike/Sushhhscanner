@@ -158,6 +158,8 @@ async def main():
     parser.add_argument("-to","--timeout",type=int,default=10,help="Request timeout in seconds (default:10)")
     parser.add_argument("-q","--quiet",action="store_true",help="Suppress detailed output,show only summary")
     parser.add_argument("-j","--json",action="store_true",help="Output results in JSON format")
+    parser.add_argument("--recursive", action="store_true", help="Enable recursive directory enumeration")
+    parser.add_argument("--max-depth", type=int, default=2, help="Maximum recursion depth (default: 2)")
 
     args=parser.parse_args()
 
@@ -199,7 +201,9 @@ async def main():
                 wordlist_type=args.wordlist,
                 max_workers=args.worker,
                 delay=args.delay,
-                custom_wordlist=custom_wordlist
+                custom_wordlist=custom_wordlist,
+                recursive=args.recursive,
+                max_depth=args.max_depth
                 )
         end_time=datetime.now()
 

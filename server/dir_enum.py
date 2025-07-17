@@ -167,9 +167,9 @@ class DirectoryEnumerator:
             logging.error(f"Error checking {url}:{str(e)}")
             return None 
 
-    async def scan_target(self,target_url:str,wordlist_type:str="common",max_workers:int=50,delay:float=0.1,custom_wordlist=None)->Dict:
+    async def scan_target(self, target_url: str, wordlist_type: str = "common", max_workers: int = 50, delay: float = 0.1, custom_wordlist=None, recursive=False, max_depth=2) -> Dict:
         target_url = self.normalize_url(target_url)
-        self.scan_stats["start_time"]=time.time()
+        self.scan_stats["start_time"] = time.time()
 
         await self.init_session()
 
@@ -177,32 +177,53 @@ class DirectoryEnumerator:
             if custom_wordlist is not None:
                 wordlist = custom_wordlist
             else:
-                wordlist = self.wordLists.get(wordlist_type,self.wordLists["common"])
+                wordlist = self.wordLists.get(wordlist_type, self.wordLists["common"])
 
-            tasks=[]
-            for word in wordlist:
-                task= self.check_url(target_url,word)
-                tasks.append(task)
+            # Use a queue for recursion
+            from collections import deque
+            queue = deque()
+            queue.append((target_url, 0))  # (base_url, current_depth)
+            checked_dirs = set()
+            all_results = []
 
-                if delay>0:
-                    await asyncio.sleep(delay)
+            while queue:
+                base_url, depth = queue.popleft()
+                if (base_url, depth) in checked_dirs or depth > max_depth:
+                    continue
+                checked_dirs.add((base_url, depth))
 
-            results=await asyncio.gather(*tasks,return_exceptions=True)
+                tasks = []
+                for word in wordlist:
+                    # For recursion, join with / if not present
+                    if not base_url.endswith('/'):
+                        base_url += '/'
+                    full_path = urljoin(base_url, word)
+                    # Only scan new URLs
+                    if full_path not in self.found_urls:
+                        tasks.append(self.check_url(base_url, word))
+                    if delay > 0:
+                        await asyncio.sleep(delay)
 
-            valid_results=[]
-            for result in results:
-                if isinstance(result,ScanResult):
-                    valid_results.append(result)
+                results = await asyncio.gather(*tasks, return_exceptions=True)
 
+                valid_results = []
+                for result in results:
+                    if isinstance(result, ScanResult):
+                        valid_results.append(result)
+                        # If recursion enabled and this is a directory, enqueue for next depth
+                        if recursive and result.is_directory and depth < max_depth:
+                            queue.append((result.url, depth + 1))
 
-            self.results=valid_results 
-            self.scan_stats["end_time"]=time.time()
+                all_results.extend(valid_results)
+
+            self.results = all_results
+            self.scan_stats["end_time"] = time.time()
 
             return {
                 "target_url": target_url,
                 "wordlist_type": wordlist_type,
-                "total_checked": len(wordlist),
-                "found_count": len(valid_results),
+                "total_checked": len(all_results),
+                "found_count": len(all_results),
                 "scan_stats": self.scan_stats,
                 "results": [
                     {
@@ -215,7 +236,7 @@ class DirectoryEnumerator:
                         "server": r.server,
                         "content_type": r.content_type
                     }
-                    for r in valid_results
+                    for r in all_results
                 ]
             }
         finally:
