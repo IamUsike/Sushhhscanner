@@ -27,8 +27,8 @@ def silhouette():
    """silhouette : speak english loser"""
    banner = f"""
 {Fore.CYAN}╔══════════════════════════════════════════════════════════════╗
-║                    🔍 Advanced Directory Enumerator 🔍                    ║
-║                        Security Testing Tool                             ║
+║                 🔍 Advanced Directory Enumerator 🔍                    
+║                      Security Testing Tool                             
 ╚══════════════════════════════════════════════════════════════╝{Style.RESET_ALL}
 """
    print(banner)
@@ -69,7 +69,7 @@ def print_result(result):
 
 
     # output info 
-    size_str=f"{result.content_length} bytes" if result.content > 0 else "N/A"
+    size_str=f"{result.content_length} bytes" if result.content_length > 0 else "N/A"
     time_str=f"{result.response_time:.3f}s"
     type_str= "DIR" if result.is_directory else "FILE"
 
@@ -96,13 +96,13 @@ def print_summary(result,scan_stats,target_url,wordlist_type):
     print(f"Wordlist: {wordlist_type}")
     print(f"Total Checked: {scan_stats['total_requests']}")
     print(f"Found Items: {len(result)}")
-    print(f"Success Rate: {(len(results)/scan_stats['total_requests']*100):.1f}%")
+    print(f"Success Rate: {(len(result)/scan_stats['total_requests']*100):.1f}%")
     print(f"Duration: {duration:.2f} seconds")
     print(f"Requests/sec: {scan_stats['total_requests']/duration:.1f}" if duration > 0 else "Requests/sec: N/A")
 
-    status_code={}
-    for result in results:
-        status_codes[result.status_code]=status_codes.get(result.status_code,0)+1 
+    status_codes={}
+    for result in result:
+        status_codes[result.status_code]=status_codes.get(result.status_code,0)+1
 
     if status_codes:
         print(f"\n{Fore.YELLOW}Status Code Breakdown:{Style.RESET_ALL}")
@@ -208,9 +208,9 @@ async def main():
                         args.wordlist
                         )
         if args.output:
-                save_results()(enumer.results,target_url,args.output)
+                save_results(enumer.results,target_url,args.output)
 
-        if len(enumer,results)>0:
+        if len(enumer.results)>0:
                 sys.exit(0)
         else:
                 print_status("No items found","warning")

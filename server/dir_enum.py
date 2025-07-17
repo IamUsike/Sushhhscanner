@@ -49,7 +49,7 @@ class DirectoryEnumerator:
                 "config", "configuration", "settings", "setup", "install", "installation",
                 "test", "testing", "dev", "development", "staging", "prod", "production",
                 "api", "rest", "graphql", "swagger", "docs", "documentation",
-                "images", "img", "css", "js", "assets", "static", "media", "uploads",
+                "images", "img", "css","download", "js", "assets", "static", "media", "uploads",
                 "files", "downloads", "temp", "tmp", "cache", "logs", "log",
                 "robots.txt", "sitemap.xml", ".htaccess", ".htpasswd", "web.config",
                 "favicon.ico", "crossdomain.xml", "clientaccesspolicy.xml"
@@ -110,7 +110,7 @@ class DirectoryEnumerator:
     def get_title_from_html(self,html:str)->str:
         try:
             import re 
-            title_match = re.search(r'<title>[^>]*>([^<]+)</title>',html.re.IGNORECASE)
+            title_match = re.search(r'<title>[^>]*>([^<]+)</title>',html,re.IGNORECASE)
             if title_match:
                 return title_match.group(1).strip()
         except:
@@ -167,7 +167,7 @@ class DirectoryEnumerator:
             logging.error(f"Error checking {url}:{str(e)}")
             return None 
 
-    async def scan_target(self,target_url:str,wordlist_type:str="common",max_workers:int=1,delay:float=1.1)->Dict:
+    async def scan_target(self,target_url:str,wordlist_type:str="common",max_workers:int=50,delay:float=0.1)->Dict:
         target_url = self.normalize_url(target_url)
         self.scan_stats["start_time"]=time.time()
 
@@ -226,12 +226,12 @@ class DirectoryEnumerator:
         content_types={}
         servers={}
 
-        for results in self.results:
+        for result in self.results:
             status_codes[result.status_code]=status_codes.get(result.status_code,0)+1 
             if result.content_type:
-                content_type[result.content_type]=content_types.get(result.content_type,0)+1 
-            if result.sever:
-                servers[result.server]=severs.get(result.server,0)+1
+                content_types[result.content_type]=content_types.get(result.content_type,0)+1 
+            if result.server:
+                servers[result.server]=servers.get(result.server,0)+1
 
         return {
                 "total_found":len(self.results),
