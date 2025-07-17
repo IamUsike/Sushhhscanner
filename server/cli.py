@@ -26,6 +26,35 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.lib import colors
 from reportlab.platypus import Table, TableStyle, SimpleDocTemplate
+import re
+
+def status_to_pdf_color(status_code):
+    if status_code in [200, 201, 202, 203, 204, 205, 206, 207, 208, 226]:
+        return colors.green
+    elif status_code in [301, 302, 303, 304, 305, 306, 307, 308]:
+        return colors.orange
+    elif status_code == 403:
+        return colors.red
+    elif status_code >= 500:
+        return colors.red
+    else:
+        return colors.black
+
+def type_to_pdf_color(is_directory):
+    return colors.cyan if is_directory else colors.magenta
+
+def format_size(num):
+    for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
+        if abs(num) < 1024.0:
+            return f"{num:3.1f} {unit}"
+        num /= 1024.0
+    return f"{num:.1f} PB"
+
+def clean_excel_string(s):
+    if not isinstance(s, str):
+        s = str(s)
+    # Remove all non-printable/control characters except tab, newline, carriage return, and printable ASCII
+    return re.sub(r'[^\x09\x0A\x0D\x20-\x7E]', '', s)
 
 async def main():
     from colorama import init,Fore,Style
@@ -69,7 +98,7 @@ async def main():
     parser.add_argument("target",help="Target URL to scan")
     parser.add_argument("-w","--wordlist",choices=["common","directories","files"],default="common",help="Wordlist type to use")
     parser.add_argument("--wordlist-file", type=str, help="Path to a custom wordlist file")
-    parser.add_argument("--worker",type=int,default=50)
+    parser.add_argument("--workers", type=int, default=50, help="Maximum number of concurrent workers (default: 50)")
     parser.add_argument("--delay",type=float,default=0.1,help="Delay between requests in seconds (default: 0.1)")
     parser.add_argument("-o","--output",help="Specify json file to json")
     parser.add_argument("-to","--timeout",type=int,default=10,help="Request timeout in seconds (default:10)")
@@ -86,6 +115,12 @@ async def main():
     parser.add_argument("--verbose", action="store_true", help="Show extra details for each result and debug info")
     parser.add_argument("--silent", action="store_true", help="Suppress all output except errors and summary")
     parser.add_argument("--error-log", type=str, help="Log errors and exceptions to this file")
+    parser.add_argument("--external-tool", type=str, help="Command template for external tool (use {url} as placeholder)")
+    parser.add_argument("--tool-output", type=str, help="Save raw output (stdout and stderr) from external tool to this file")
+    parser.add_argument("--tool-timeout", type=int, default=300, help="Timeout for external tool execution in seconds (default: 300)")
+    parser.add_argument("--tooloutput-pdf", type=str, help="Export external tool output to PDF file")
+    parser.add_argument("--tooloutput-csv", type=str, help="Export external tool output to CSV file")
+    parser.add_argument("--tooloutput-excel", type=str, help="Export external tool output to Excel file")
 
     args=parser.parse_args()
 
@@ -222,7 +257,7 @@ async def main():
         print_status(f"Wordlist: {args.wordlist_file} (custom)","info")
     else:
         print_status(f"Wordlist: {args.wordlist}","info")
-    print_status(f"Workers: {args.worker}","info")
+    print_status(f"Workers: {args.workers}","info")
     print_status(f"Delay: {args.delay}s","info")
     print()
     subprocess.run(["sleep", "2"])
@@ -236,7 +271,7 @@ async def main():
             results=await enumer.scan_target(
                 target_url=target_url,
                 wordlist_type=args.wordlist,
-                max_workers=args.worker,
+                max_workers=args.workers,
                 delay=args.delay,
                 custom_wordlist=custom_wordlist,
                 recursive=args.recursive,
@@ -262,7 +297,7 @@ async def main():
                             result.url,
                             result.status_code,
                             "DIR" if result.is_directory else "FILE",
-                            result.content_length,
+                            format_size(result.content_length),
                             f"{result.response_time:.3f}s",
                             result.server or "N/A"
                         ])
@@ -274,7 +309,7 @@ async def main():
                         "URL": result.url,
                         "Status": result.status_code,
                         "Type": "DIR" if result.is_directory else "FILE",
-                        "Size": result.content_length,
+                        "Size": format_size(result.content_length),
                         "Time": f"{result.response_time:.3f}s",
                         "Server": result.server or "N/A"
                     })
@@ -327,13 +362,14 @@ async def main():
         results=await enumer.scan_target(
                 target_url=target_url,
                 wordlist_type=args.wordlist,
-                max_workers=args.worker,
+                max_workers=args.workers,
                 delay=args.delay,
                 custom_wordlist=custom_wordlist,
                 recursive=args.recursive,
                 max_depth=args.max_depth,
                 show_progress=args.progress or (not args.quiet),
-                rate_limit=args.rate_limit
+                rate_limit=args.rate_limit,
+                per_dir_cmd_template=None  # Do not run per-dir commands during main scan
                 )
         end_time=datetime.now()
 
@@ -420,44 +456,63 @@ async def main():
                 summary.append(["Average content size", f"{sum(content_sizes)//len(content_sizes)} bytes"])
             return summary
 
+        # After main scan, export internal results (dir-enum) with summary and error log
+        export_locations = []
+        summary_text = ""
+        status_codes = {}
+        response_times = []
+        content_sizes = []
+        for r in enumer.results:
+            status_codes[r.status_code] = status_codes.get(r.status_code, 0) + 1
+            response_times.append(r.response_time)
+            content_sizes.append(r.content_length)
+        most_common = max(status_codes.items(), key=lambda x: x[1]) if status_codes else None
+        if most_common:
+            summary_text += f"Most common status code: {most_common[0]} ({most_common[1]} times)\n"
+        if response_times:
+            summary_text += f"Response Time Stats:\nFastest: {min(response_times):.3f}s | Slowest: {max(response_times):.3f}s | Average: {sum(response_times)/len(response_times):.3f}s\n"
+        if content_sizes:
+            summary_text += f"Content Size Stats:\nSmallest: {min(content_sizes)} bytes | Largest: {max(content_sizes)} bytes | Average: {sum(content_sizes)//len(content_sizes)} bytes\n"
+        if args.error_log and os.path.exists(args.error_log):
+            with open(args.error_log, 'r', encoding='utf-8') as f:
+                error_log_content = f.read()
+        else:
+            error_log_content = "No errors logged."
+        # Export to CSV
         if args.export_csv:
+            import csv
             with open(args.export_csv, 'w', newline='', encoding='utf-8') as csvfile:
                 writer = csv.writer(csvfile)
-                # Write summary stats first
-                summary = get_summary_stats(enumer.results, {**enumer.scan_stats, 'target_url': target_url})
-                writer.writerow(["Summary"])
-                for row in summary:
-                    writer.writerow(row)
-                writer.writerow([])
                 writer.writerow(["URL", "Status", "Type", "Size", "Time", "Server"])
                 for result in enumer.results:
                     writer.writerow([
                         result.url,
                         result.status_code,
                         "DIR" if result.is_directory else "FILE",
-                        result.content_length,
+                        format_size(result.content_length),
                         f"{result.response_time:.3f}s",
                         result.server or "N/A"
                     ])
-                # Append errors if error log exists and is non-empty
-                if args.error_log and os.path.exists(args.error_log):
-                    with open(args.error_log, 'r', encoding='utf-8') as errfile:
-                        errors = [line.strip() for line in errfile if line.strip()]
-                    if errors:
-                        writer.writerow([])
-                        writer.writerow(["Errors"])
-                        for err in errors:
-                            writer.writerow([err])
+                writer.writerow([])
+                writer.writerow(["SUMMARY"])
+                for line in summary_text.splitlines():
+                    writer.writerow([line])
+                writer.writerow([])
+                writer.writerow(["ERROR LOG"])
+                for line in error_log_content.splitlines():
+                    writer.writerow([line])
             print_status(f"Results exported to CSV: {args.export_csv}", "success")
-
+            export_locations.append(f"CSV: {args.export_csv}")
+        # Export to Excel
         if args.export_excel:
+            import pandas as pd
             data = []
             for result in enumer.results:
                 data.append({
                     "URL": result.url,
                     "Status": result.status_code,
                     "Type": "DIR" if result.is_directory else "FILE",
-                    "Size": result.content_length,
+                    "Size": format_size(result.content_length),
                     "Time": f"{result.response_time:.3f}s",
                     "Server": result.server or "N/A"
                 })
@@ -476,67 +531,207 @@ async def main():
                         err_df = pd.DataFrame({"Errors": errors})
                         err_df.to_excel(writer, index=False, sheet_name="Errors")
             print_status(f"Results exported to Excel: {args.export_excel}", "success")
-
+            export_locations.append(f"Excel: {args.export_excel}")
+        # Export main scan results to PDF (internal tool only)
         if args.export_pdf:
-            pdf_data = [["URL", "Status", "Type", "Size", "Time", "Server"]]
-            for result in enumer.results:
-                pdf_data.append([
-                    result.url,
-                    str(result.status_code),
-                    "DIR" if result.is_directory else "FILE",
-                    str(result.content_length),
-                    f"{result.response_time:.3f}s",
-                    result.server or "N/A"
-                ])
-            elems = []
-            pdf = SimpleDocTemplate(args.export_pdf, pagesize=letter)
-            # Add summary table first
-            summary = get_summary_stats(enumer.results, {**enumer.scan_stats, 'target_url': target_url})
-            summary_table = Table([["Summary", "Value"]] + summary)
-            summary_style = TableStyle([
-                ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
-                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-                ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-                ('BACKGROUND', (0, 1), (-1, -1), colors.whitesmoke),
-                ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
-                ('GRID', (0, 0), (-1, -1), 1, colors.black),
-            ])
-            summary_table.setStyle(summary_style)
-            elems.append(summary_table)
-            table = Table(pdf_data, repeatRows=1)
-            style = TableStyle([
-                ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-                ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-                ('GRID', (0, 0), (-1, -1), 1, colors.black),
-            ])
-            table.setStyle(style)
-            elems.append(table)
-            # Append errors if error log exists and is non-empty
-            if args.error_log and os.path.exists(args.error_log):
-                with open(args.error_log, 'r', encoding='utf-8') as errfile:
-                    errors = [line.strip() for line in errfile if line.strip()]
-                if errors:
-                    error_table = Table([["Errors"]] + [[err] for err in errors])
-                    error_style = TableStyle([
-                        ('BACKGROUND', (0, 0), (-1, 0), colors.red),
-                        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-                        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-                        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-                        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-                        ('BACKGROUND', (0, 1), (-1, -1), colors.whitesmoke),
-                        ('TEXTCOLOR', (0, 1), (-1, -1), colors.red),
-                        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-                    ])
-                    error_table.setStyle(error_style)
-                    elems.append(error_table)
-            pdf.build(elems)
+            from reportlab.lib.pagesizes import letter
+            from reportlab.pdfgen import canvas
+            pdf = canvas.Canvas(args.export_pdf, pagesize=letter)
+            pdf.setFont("Helvetica", 10)
+            y = 750
+            headers = ["URL", "Status", "Type", "Size", "Time", "Server"]
+            pdf.drawString(30, y, "Scan Results:")
+            y -= 15
+            for header in headers:
+                pdf.setFillColor(colors.darkblue)
+                pdf.drawString(30 + headers.index(header)*120, y, header)
+            y -= 12
+            for r in enumer.results:
+                if y < 40:
+                    pdf.showPage()
+                    y = 750
+                pdf.setFillColor(colors.black)
+                pdf.drawString(30, y, r.url[:60])
+                pdf.setFillColor(status_to_pdf_color(r.status_code))
+                pdf.drawString(150, y, str(r.status_code))
+                pdf.setFillColor(type_to_pdf_color(r.is_directory))
+                pdf.drawString(210, y, "DIR" if r.is_directory else "FILE")
+                pdf.setFillColor(colors.black)
+                pdf.drawString(270, y, format_size(r.content_length))
+                pdf.drawString(320, y, f"{r.response_time:.3f}s")
+                pdf.drawString(390, y, r.server or "N/A")
+                y -= 12
+            y -= 20
+            # Summary section
+            pdf.setFillColor(colors.darkblue)
+            pdf.drawString(30, y, "Summary:")
+            y -= 15
+            pdf.setFillColor(colors.black)
+            for line in summary_text.splitlines():
+                if y < 40:
+                    pdf.showPage()
+                    y = 750
+                pdf.drawString(40, y, line)
+                y -= 12
+            y -= 20
+            # Error log section
+            pdf.setFillColor(colors.darkblue)
+            pdf.drawString(30, y, "Error Log:")
+            y -= 15
+            pdf.setFillColor(colors.red)
+            for line in error_log_content.splitlines():
+                if y < 40:
+                    pdf.showPage()
+                    y = 750
+                pdf.drawString(40, y, line)
+                y -= 12
+            pdf.save()
             print_status(f"Results exported to PDF: {args.export_pdf}", "success")
+            export_locations.append(f"PDF: {args.export_pdf}")
+
+        # Notify user that internal scan and exports are complete
+        print_status("Internal scan and all exports complete. Proceeding to external tool phase (if specified)...", "info")
+
+        # Remove --per-dir-cmd and related logic
+        # After main scan, if --external-tool is set, run it on every found directory
+        external_tool_outputs = []
+        external_export_locations = []
+        external_errors = []
+        if args.external_tool:
+            print_status(f"[EXTERNAL TOOL] Running on all found directories...", "info")
+            for r in enumer.results:
+                if r.is_directory:
+                    tool_cmd = args.external_tool.format(url=r.url)
+                    try:
+                        tool_result = subprocess.run(tool_cmd, shell=True, capture_output=True, text=True, timeout=getattr(args, 'tool_timeout', 300))
+                        tool_output = {
+                            "directory": r.url,
+                            "command": tool_cmd,
+                            "returncode": tool_result.returncode,
+                            "stdout": tool_result.stdout,
+                            "stderr": tool_result.stderr
+                        }
+                        print_status(f"[EXTERNAL TOOL] Ran: {tool_cmd}", "info")
+                    except Exception as e:
+                        tool_output = {
+                            "directory": r.url,
+                            "command": tool_cmd,
+                            "error": str(e)
+                        }
+                        print_status(f"[EXTERNAL TOOL] Error running: {tool_cmd} - {e}", "error")
+                        external_errors.append(f"{tool_cmd}: {e}")
+                    external_tool_outputs.append(tool_output)
+            print_status(f"[EXTERNAL TOOL] Completed for all directories.", "success")
+        # Export external tool outputs if requested
+        if args.external_tool and external_tool_outputs:
+            # TXT
+            if args.tool_output:
+                with open(args.tool_output, 'w', encoding='utf-8') as f:
+                    for out in external_tool_outputs:
+                        f.write(f"[DIRECTORY] {out['directory']}\n[COMMAND] {out['command']}\n")
+                        f.write("[STDOUT]\n" + out.get('stdout', ''))
+                        f.write("\n[STDERR]\n" + out.get('stderr', ''))
+                        if out.get('error'):
+                            f.write(f"\n[ERROR]\n{out['error']}\n")
+                        f.write("\n" + ("="*40) + "\n")
+                print_status(f"[SUCCESS] External tool output saved to: {args.tool_output}", "success")
+                external_export_locations.append(f"TXT: {args.tool_output}")
+            # PDF
+            if args.tooloutput_pdf:
+                from reportlab.lib.pagesizes import letter
+                from reportlab.pdfgen import canvas
+                pdf = canvas.Canvas(args.tooloutput_pdf, pagesize=letter)
+                pdf.setFont("Helvetica", 10)
+                y = 750
+                for out in external_tool_outputs:
+                    pdf.setFillColor(colors.darkblue)
+                    pdf.drawString(30, y, f"Directory: {out['directory']}")
+                    y -= 15
+                    pdf.setFillColor(colors.black)
+                    pdf.drawString(30, y, f"Command: {out['command']}")
+                    y -= 15
+                    if out.get('stdout'):
+                        pdf.setFillColor(colors.black)
+                        pdf.drawString(30, y, "STDOUT:")
+                        y -= 12
+                        for line in out['stdout'].splitlines():
+                            if y < 40:
+                                pdf.showPage()
+                                y = 750
+                            pdf.drawString(40, y, line[:100])
+                            y -= 12
+                    if out.get('stderr'):
+                        pdf.setFillColor(colors.red)
+                        pdf.drawString(30, y, "STDERR:")
+                        y -= 12
+                        for line in out['stderr'].splitlines():
+                            if y < 40:
+                                pdf.showPage()
+                                y = 750
+                            pdf.drawString(40, y, line[:100])
+                            y -= 12
+                    if out.get('error'):
+                        pdf.setFillColor(colors.red)
+                        pdf.drawString(30, y, f"Error: {out['error']}")
+                        y -= 12
+                    y -= 20
+                pdf.save()
+                print_status(f"[SUCCESS] External tool output exported to PDF: {args.tooloutput_pdf}", "success")
+                external_export_locations.append(f"PDF: {args.tooloutput_pdf}")
+            # CSV
+            if args.tooloutput_csv:
+                import csv
+                with open(args.tooloutput_csv, 'w', newline='', encoding='utf-8') as csvfile:
+                    writer = csv.writer(csvfile)
+                    writer.writerow(["Directory", "Command", "Stdout", "Stderr", "Error"])
+                    for out in external_tool_outputs:
+                        writer.writerow([
+                            out['directory'],
+                            out['command'],
+                            out.get('stdout', ''),
+                            out.get('stderr', ''),
+                            out.get('error', '')
+                        ])
+                print_status(f"[SUCCESS] External tool output exported to CSV: {args.tooloutput_csv}", "success")
+                external_export_locations.append(f"CSV: {args.tooloutput_csv}")
+            # Excel
+            if args.tooloutput_excel:
+                import pandas as pd
+                data = []
+                for out in external_tool_outputs:
+                    data.append({
+                        "Directory": clean_excel_string(out['directory']),
+                        "Command": clean_excel_string(out['command']),
+                        "Stdout": clean_excel_string(out.get('stdout', '')),
+                        "Stderr": clean_excel_string(out.get('stderr', '')),
+                        "Error": clean_excel_string(out.get('error', ''))
+                    })
+                df = pd.DataFrame(data)
+                df.to_excel(args.tooloutput_excel, index=False)
+                print_status(f"[SUCCESS] External tool output exported to Excel: {args.tooloutput_excel}", "success")
+                external_export_locations.append(f"Excel: {args.tooloutput_excel}")
+
+        # Print final summary of all exports
+        print("\n" + "="*60)
+        print(f"{Fore.CYAN}FINAL SUMMARY{Style.RESET_ALL}")
+        print("="*60)
+        print(f"{Fore.GREEN}Internal scan exports:{Style.RESET_ALL}")
+        if export_locations:
+            for loc in export_locations:
+                print(f"  - {loc}")
+        else:
+            print("  (No internal scan exports requested)")
+        print(f"{Fore.MAGENTA}External tool exports:{Style.RESET_ALL}")
+        if external_export_locations:
+            for loc in external_export_locations:
+                print(f"  - {loc}")
+        else:
+            print("  (No external tool exports requested)")
+        if external_errors:
+            print(f"{Fore.RED}External tool errors encountered:{Style.RESET_ALL}")
+            for err in external_errors:
+                print(f"  - {err}")
+        print("="*60 + "\n")
 
         if len(enumer.results)>0:
                 sys.exit(0)
@@ -564,5 +759,9 @@ if __name__=="__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        print_status("Daijobu da?👶\n\n❓What happened bro❓","warning")
+        try:
+            from colorama import Fore, Style
+            print(f"{Fore.YELLOW}Scan interrupted by user. Exiting gracefully...{Style.RESET_ALL}")
+        except ImportError:
+            print("Scan interrupted by user. Exiting gracefully...")
         sys.exit(1)

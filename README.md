@@ -37,7 +37,8 @@ Create a tool that scans SaaS APIs to identify security risks (e.g., unprotected
 ## fixes
 
 - [ ] Summary statistics [ fix .xlsx .pdf to include summary and error logs ]
-- [ ] del rdundancy overwrite the files on every scanf
+- [x] del rdundancy overwrite the files on every scanf
+- [ ] look for 429 or 403 and lower the speed
 - [ ] !IMPORTANT handleCaptcha
 - [ ] [cli.py] clean code - the colors using Fore are everywhere - organise it
 - [X] prevent being flagged [partial]

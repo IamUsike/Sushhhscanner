@@ -1,0 +1,402 @@
+Directory,Command,Stdout,Stderr,Error
+https://ksurajsingh.github.io/media,nuclei -u https://ksurajsingh.github.io/media,"[[92mmissing-sri[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media [[96m""https://github.github.com/pages-staticassets/primer-tiny.css""[0m]
+[[92mwaf-detect[0m:[1;92mvarnish[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls12""[0m]
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls13""[0m]
+[[92mhttp-missing-security-headers[0m:[1;92mx-frame-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media
+[[92mhttp-missing-security-headers[0m:[1;92mx-content-type-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media
+[[92mhttp-missing-security-headers[0m:[1;92mx-permitted-cross-domain-policies[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-embedder-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media
+[[92mhttp-missing-security-headers[0m:[1;92mstrict-transport-security[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media
+[[92mhttp-missing-security-headers[0m:[1;92mcontent-security-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media
+[[92mhttp-missing-security-headers[0m:[1;92mreferrer-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media
+[[92mhttp-missing-security-headers[0m:[1;92mclear-site-data[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-opener-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-resource-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media
+[[92mhttp-missing-security-headers[0m:[1;92mpermissions-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media
+[[92mcaa-fingerprint[0m] [[94mdns[0m] [[34minfo[0m] ksurajsingh.github.io [[96m""sectigo.com""[0m,[96m""digicert.com""[0m,[96m""letsencrypt.org""[0m]
+[[92mssl-issuer[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""Sectigo Limited""[0m]
+[[92mssl-dns-names[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""github.io""[0m,[96m""githubusercontent.com""[0m,[96m""www.github.com""[0m,[96m""*.github.io""[0m,[96m""*.github.com""[0m,[96m""*.githubusercontent.com""[0m,[96m""github.com""[0m]
+[[92mwildcard-tls[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""CN: *.github.io""[0m,[96m""SAN: [*.github.io *.github.com *.githubusercontent.com github.com github.io githubusercontent.com www.github.com]""[0m]
+","
+                     __     _
+   ____  __  _______/ /__  (_)
+  / __ \/ / / / ___/ / _ \/ /
+ / / / / /_/ / /__/ /  __/ /
+/_/ /_/\__,_/\___/_/\___/_/   v3.4.7
+
+		projectdiscovery.io
+
+[[31mWRN[0m] Found 2 templates with runtime error (use -validate flag for further examination)
+[[34mINF[0m] Current nuclei version: v3.4.7 ([92mlatest[0m)
+[[34mINF[0m] Current nuclei-templates version: v10.2.5 ([92mlatest[0m)
+[[93mWRN[0m] Scan results upload to cloud is disabled.
+[[34mINF[0m] New templates added in latest release: 75
+[[34mINF[0m] Templates loaded for current scan: 8198
+[[34mINF[0m] Executing 7998 signed templates from projectdiscovery/nuclei-templates
+[[93mWRN[0m] Loading 200 unsigned templates for scan. Use with caution.
+[[34mINF[0m] Targets loaded for current scan: 1
+[[34mINF[0m] Templates clustered: 1765 (Reduced 1658 Requests)
+[[34mINF[0m] Using Interactsh Server: oast.live
+[[34mINF[0m] Scan completed in 2m. 19 matches found.
+",
+https://ksurajsingh.github.io/futurediary,nuclei -u https://ksurajsingh.github.io/futurediary,"[[92mmissing-sri[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary [[96m""https://github.github.com/pages-staticassets/primer-tiny.css""[0m]
+[[92mwaf-detect[0m:[1;92mvarnish[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls12""[0m]
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls13""[0m]
+[[92mhttp-missing-security-headers[0m:[1;92mstrict-transport-security[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mcontent-security-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mreferrer-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-embedder-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-opener-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mpermissions-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mx-frame-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mx-content-type-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mx-permitted-cross-domain-policies[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mclear-site-data[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-resource-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary
+[[92mcaa-fingerprint[0m] [[94mdns[0m] [[34minfo[0m] ksurajsingh.github.io [[96m""digicert.com""[0m,[96m""letsencrypt.org""[0m,[96m""sectigo.com""[0m]
+[[92mssl-issuer[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""Sectigo Limited""[0m]
+[[92mssl-dns-names[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""*.github.io""[0m,[96m""*.github.com""[0m,[96m""*.githubusercontent.com""[0m,[96m""github.com""[0m,[96m""github.io""[0m,[96m""githubusercontent.com""[0m,[96m""www.github.com""[0m]
+[[92mwildcard-tls[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""CN: *.github.io""[0m,[96m""SAN: [*.github.io *.github.com *.githubusercontent.com github.com github.io githubusercontent.com www.github.com]""[0m]
+","
+                     __     _
+   ____  __  _______/ /__  (_)
+  / __ \/ / / / ___/ / _ \/ /
+ / / / / /_/ / /__/ /  __/ /
+/_/ /_/\__,_/\___/_/\___/_/   v3.4.7
+
+		projectdiscovery.io
+
+[[31mWRN[0m] Found 2 templates with runtime error (use -validate flag for further examination)
+[[34mINF[0m] Current nuclei version: v3.4.7 ([92mlatest[0m)
+[[34mINF[0m] Current nuclei-templates version: v10.2.5 ([92mlatest[0m)
+[[93mWRN[0m] Scan results upload to cloud is disabled.
+[[34mINF[0m] New templates added in latest release: 75
+[[34mINF[0m] Templates loaded for current scan: 8198
+[[34mINF[0m] Executing 7998 signed templates from projectdiscovery/nuclei-templates
+[[93mWRN[0m] Loading 200 unsigned templates for scan. Use with caution.
+[[34mINF[0m] Targets loaded for current scan: 1
+[[34mINF[0m] Templates clustered: 1765 (Reduced 1658 Requests)
+[[34mINF[0m] Using Interactsh Server: oast.site
+[[34mINF[0m] Scan completed in 2m. 19 matches found.
+",
+https://ksurajsingh.github.io/media/index,nuclei -u https://ksurajsingh.github.io/media/index,"[[92mmissing-sri[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index [[96m""https://github.github.com/pages-staticassets/primer-tiny.css""[0m]
+[[92mwaf-detect[0m:[1;92mvarnish[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls12""[0m]
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls13""[0m]
+[[92mhttp-missing-security-headers[0m:[1;92mpermissions-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/
+[[92mhttp-missing-security-headers[0m:[1;92mx-frame-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/
+[[92mhttp-missing-security-headers[0m:[1;92mx-permitted-cross-domain-policies[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-embedder-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/
+[[92mhttp-missing-security-headers[0m:[1;92mx-content-type-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/
+[[92mhttp-missing-security-headers[0m:[1;92mreferrer-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/
+[[92mhttp-missing-security-headers[0m:[1;92mclear-site-data[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-opener-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-resource-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/
+[[92mcaa-fingerprint[0m] [[94mdns[0m] [[34minfo[0m] ksurajsingh.github.io [[96m""digicert.com""[0m,[96m""sectigo.com""[0m,[96m""letsencrypt.org""[0m]
+[[92mssl-issuer[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""Sectigo Limited""[0m]
+[[92mssl-dns-names[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""*.github.io""[0m,[96m""*.github.com""[0m,[96m""*.githubusercontent.com""[0m,[96m""github.com""[0m,[96m""github.io""[0m,[96m""githubusercontent.com""[0m,[96m""www.github.com""[0m]
+[[92mwildcard-tls[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""SAN: [*.github.io *.github.com *.githubusercontent.com github.com github.io githubusercontent.com www.github.com]""[0m,[96m""CN: *.github.io""[0m]
+","
+                     __     _
+   ____  __  _______/ /__  (_)
+  / __ \/ / / / ___/ / _ \/ /
+ / / / / /_/ / /__/ /  __/ /
+/_/ /_/\__,_/\___/_/\___/_/   v3.4.7
+
+		projectdiscovery.io
+
+[[31mWRN[0m] Found 2 templates with runtime error (use -validate flag for further examination)
+[[34mINF[0m] Current nuclei version: v3.4.7 ([92mlatest[0m)
+[[34mINF[0m] Current nuclei-templates version: v10.2.5 ([92mlatest[0m)
+[[93mWRN[0m] Scan results upload to cloud is disabled.
+[[34mINF[0m] New templates added in latest release: 75
+[[34mINF[0m] Templates loaded for current scan: 8198
+[[34mINF[0m] Executing 7998 signed templates from projectdiscovery/nuclei-templates
+[[93mWRN[0m] Loading 200 unsigned templates for scan. Use with caution.
+[[34mINF[0m] Targets loaded for current scan: 1
+[[34mINF[0m] Templates clustered: 1765 (Reduced 1658 Requests)
+[[34mINF[0m] Using Interactsh Server: oast.pro
+[[34mINF[0m] Scan completed in 2m. 17 matches found.
+",
+https://ksurajsingh.github.io/media/gifs,nuclei -u https://ksurajsingh.github.io/media/gifs,"[[92mwaf-detect[0m:[1;92mvarnish[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/gifs
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls12""[0m]
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls13""[0m]
+[[92mhttp-missing-security-headers[0m:[1;92mreferrer-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-opener-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-resource-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mx-frame-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mx-permitted-cross-domain-policies[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mclear-site-data[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-embedder-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mstrict-transport-security[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mcontent-security-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mpermissions-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mx-content-type-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/gifs
+[[92mcaa-fingerprint[0m] [[94mdns[0m] [[34minfo[0m] ksurajsingh.github.io [[96m""digicert.com""[0m,[96m""letsencrypt.org""[0m,[96m""sectigo.com""[0m]
+[[92mssl-issuer[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""Sectigo Limited""[0m]
+[[92mssl-dns-names[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""github.com""[0m,[96m""github.io""[0m,[96m""githubusercontent.com""[0m,[96m""www.github.com""[0m,[96m""*.github.io""[0m,[96m""*.github.com""[0m,[96m""*.githubusercontent.com""[0m]
+[[92mwildcard-tls[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""CN: *.github.io""[0m,[96m""SAN: [*.github.io *.github.com *.githubusercontent.com github.com github.io githubusercontent.com www.github.com]""[0m]
+","
+                     __     _
+   ____  __  _______/ /__  (_)
+  / __ \/ / / / ___/ / _ \/ /
+ / / / / /_/ / /__/ /  __/ /
+/_/ /_/\__,_/\___/_/\___/_/   v3.4.7
+
+		projectdiscovery.io
+
+[[31mWRN[0m] Found 2 templates with runtime error (use -validate flag for further examination)
+[[34mINF[0m] Current nuclei version: v3.4.7 ([92mlatest[0m)
+[[34mINF[0m] Current nuclei-templates version: v10.2.5 ([92mlatest[0m)
+[[93mWRN[0m] Scan results upload to cloud is disabled.
+[[34mINF[0m] New templates added in latest release: 75
+[[34mINF[0m] Templates loaded for current scan: 8198
+[[34mINF[0m] Executing 7998 signed templates from projectdiscovery/nuclei-templates
+[[93mWRN[0m] Loading 200 unsigned templates for scan. Use with caution.
+[[34mINF[0m] Targets loaded for current scan: 1
+[[34mINF[0m] Templates clustered: 1765 (Reduced 1658 Requests)
+[[34mINF[0m] Using Interactsh Server: oast.pro
+[[34mINF[0m] Scan completed in 2m. 18 matches found.
+",
+https://ksurajsingh.github.io/futurediary/futurediarymedia,nuclei -u https://ksurajsingh.github.io/futurediary/futurediarymedia,"[[92mmissing-sri[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediarymedia [[96m""https://github.github.com/pages-staticassets/primer-tiny.css""[0m]
+[[92mwaf-detect[0m:[1;92mvarnish[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediarymedia
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls12""[0m]
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls13""[0m]
+[[92mhttp-missing-security-headers[0m:[1;92mclear-site-data[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediarymedia
+[[92mhttp-missing-security-headers[0m:[1;92mstrict-transport-security[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediarymedia
+[[92mhttp-missing-security-headers[0m:[1;92mpermissions-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediarymedia
+[[92mhttp-missing-security-headers[0m:[1;92mx-content-type-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediarymedia
+[[92mhttp-missing-security-headers[0m:[1;92mx-permitted-cross-domain-policies[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediarymedia
+[[92mhttp-missing-security-headers[0m:[1;92mreferrer-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediarymedia
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-embedder-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediarymedia
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-opener-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediarymedia
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-resource-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediarymedia
+[[92mhttp-missing-security-headers[0m:[1;92mcontent-security-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediarymedia
+[[92mhttp-missing-security-headers[0m:[1;92mx-frame-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediarymedia
+[[92mcaa-fingerprint[0m] [[94mdns[0m] [[34minfo[0m] ksurajsingh.github.io [[96m""digicert.com""[0m,[96m""letsencrypt.org""[0m,[96m""sectigo.com""[0m]
+[[92mssl-issuer[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""Sectigo Limited""[0m]
+[[92mssl-dns-names[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""*.github.io""[0m,[96m""*.github.com""[0m,[96m""*.githubusercontent.com""[0m,[96m""github.com""[0m,[96m""github.io""[0m,[96m""githubusercontent.com""[0m,[96m""www.github.com""[0m]
+[[92mwildcard-tls[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""CN: *.github.io""[0m,[96m""SAN: [*.github.io *.github.com *.githubusercontent.com github.com github.io githubusercontent.com www.github.com]""[0m]
+","
+                     __     _
+   ____  __  _______/ /__  (_)
+  / __ \/ / / / ___/ / _ \/ /
+ / / / / /_/ / /__/ /  __/ /
+/_/ /_/\__,_/\___/_/\___/_/   v3.4.7
+
+		projectdiscovery.io
+
+[[31mWRN[0m] Found 2 templates with runtime error (use -validate flag for further examination)
+[[34mINF[0m] Current nuclei version: v3.4.7 ([92mlatest[0m)
+[[34mINF[0m] Current nuclei-templates version: v10.2.5 ([92mlatest[0m)
+[[93mWRN[0m] Scan results upload to cloud is disabled.
+[[34mINF[0m] New templates added in latest release: 75
+[[34mINF[0m] Templates loaded for current scan: 8198
+[[34mINF[0m] Executing 7998 signed templates from projectdiscovery/nuclei-templates
+[[93mWRN[0m] Loading 200 unsigned templates for scan. Use with caution.
+[[34mINF[0m] Targets loaded for current scan: 1
+[[34mINF[0m] Templates clustered: 1765 (Reduced 1658 Requests)
+[[34mINF[0m] Using Interactsh Server: oast.site
+[[34mINF[0m] Scan completed in 2m. 19 matches found.
+",
+https://ksurajsingh.github.io/futurediary/trash,nuclei -u https://ksurajsingh.github.io/futurediary/trash,"[[92mmissing-sri[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash [[96m""https://github.github.com/pages-staticassets/primer-tiny.css""[0m]
+[[92mwaf-detect[0m:[1;92mvarnish[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls12""[0m]
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls13""[0m]
+[[92mhttp-missing-security-headers[0m:[1;92mx-content-type-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-resource-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/
+[[92mhttp-missing-security-headers[0m:[1;92mx-frame-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/
+[[92mhttp-missing-security-headers[0m:[1;92mx-permitted-cross-domain-policies[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/
+[[92mhttp-missing-security-headers[0m:[1;92mreferrer-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/
+[[92mhttp-missing-security-headers[0m:[1;92mclear-site-data[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-embedder-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-opener-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/
+[[92mhttp-missing-security-headers[0m:[1;92mpermissions-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/
+[[92mcaa-fingerprint[0m] [[94mdns[0m] [[34minfo[0m] ksurajsingh.github.io [[96m""sectigo.com""[0m,[96m""letsencrypt.org""[0m,[96m""digicert.com""[0m]
+[[92mssl-issuer[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""Sectigo Limited""[0m]
+[[92mssl-dns-names[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""github.com""[0m,[96m""github.io""[0m,[96m""githubusercontent.com""[0m,[96m""www.github.com""[0m,[96m""*.github.io""[0m,[96m""*.github.com""[0m,[96m""*.githubusercontent.com""[0m]
+[[92mwildcard-tls[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""CN: *.github.io""[0m,[96m""SAN: [*.github.io *.github.com *.githubusercontent.com github.com github.io githubusercontent.com www.github.com]""[0m]
+","
+                     __     _
+   ____  __  _______/ /__  (_)
+  / __ \/ / / / ___/ / _ \/ /
+ / / / / /_/ / /__/ /  __/ /
+/_/ /_/\__,_/\___/_/\___/_/   v3.4.7
+
+		projectdiscovery.io
+
+[[31mWRN[0m] Found 2 templates with runtime error (use -validate flag for further examination)
+[[34mINF[0m] Current nuclei version: v3.4.7 ([92mlatest[0m)
+[[34mINF[0m] Current nuclei-templates version: v10.2.5 ([92mlatest[0m)
+[[93mWRN[0m] Scan results upload to cloud is disabled.
+[[34mINF[0m] New templates added in latest release: 75
+[[34mINF[0m] Templates loaded for current scan: 8198
+[[34mINF[0m] Executing 7998 signed templates from projectdiscovery/nuclei-templates
+[[93mWRN[0m] Loading 200 unsigned templates for scan. Use with caution.
+[[34mINF[0m] Targets loaded for current scan: 1
+[[34mINF[0m] Templates clustered: 1765 (Reduced 1658 Requests)
+[[34mINF[0m] Using Interactsh Server: oast.online
+[[34mINF[0m] Scan completed in 2m. 17 matches found.
+",
+https://ksurajsingh.github.io/futurediary/futurediary,nuclei -u https://ksurajsingh.github.io/futurediary/futurediary,"[[92mwaf-detect[0m:[1;92mvarnish[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediary
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls12""[0m]
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls13""[0m]
+[[92mhttp-missing-security-headers[0m:[1;92mx-content-type-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mreferrer-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-opener-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mx-frame-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mx-permitted-cross-domain-policies[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mclear-site-data[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-embedder-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-resource-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mstrict-transport-security[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mcontent-security-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediary
+[[92mhttp-missing-security-headers[0m:[1;92mpermissions-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/futurediary
+[[92mcaa-fingerprint[0m] [[94mdns[0m] [[34minfo[0m] ksurajsingh.github.io [[96m""digicert.com""[0m,[96m""sectigo.com""[0m,[96m""letsencrypt.org""[0m]
+[[92mssl-issuer[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""Sectigo Limited""[0m]
+[[92mssl-dns-names[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""*.github.io""[0m,[96m""*.github.com""[0m,[96m""*.githubusercontent.com""[0m,[96m""github.com""[0m,[96m""github.io""[0m,[96m""githubusercontent.com""[0m,[96m""www.github.com""[0m]
+[[92mwildcard-tls[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""CN: *.github.io""[0m,[96m""SAN: [*.github.io *.github.com *.githubusercontent.com github.com github.io githubusercontent.com www.github.com]""[0m]
+","
+                     __     _
+   ____  __  _______/ /__  (_)
+  / __ \/ / / / ___/ / _ \/ /
+ / / / / /_/ / /__/ /  __/ /
+/_/ /_/\__,_/\___/_/\___/_/   v3.4.7
+
+		projectdiscovery.io
+
+[[31mWRN[0m] Found 2 templates with runtime error (use -validate flag for further examination)
+[[34mINF[0m] Current nuclei version: v3.4.7 ([92mlatest[0m)
+[[34mINF[0m] Current nuclei-templates version: v10.2.5 ([92mlatest[0m)
+[[93mWRN[0m] Scan results upload to cloud is disabled.
+[[34mINF[0m] New templates added in latest release: 75
+[[34mINF[0m] Templates loaded for current scan: 8198
+[[34mINF[0m] Executing 7998 signed templates from projectdiscovery/nuclei-templates
+[[93mWRN[0m] Loading 200 unsigned templates for scan. Use with caution.
+[[34mINF[0m] Targets loaded for current scan: 1
+[[34mINF[0m] Templates clustered: 1765 (Reduced 1658 Requests)
+[[34mINF[0m] Using Interactsh Server: oast.fun
+[[34mINF[0m] Scan completed in 2m. 18 matches found.
+",
+https://ksurajsingh.github.io/media/index/gifs,nuclei -u https://ksurajsingh.github.io/media/index/gifs,"[[92mmissing-sri[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/gifs [[96m""https://github.github.com/pages-staticassets/primer-tiny.css""[0m]
+[[92mwaf-detect[0m:[1;92mvarnish[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/gifs
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls12""[0m]
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls13""[0m]
+[[92mhttp-missing-security-headers[0m:[1;92mcontent-security-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mpermissions-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mx-frame-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-embedder-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-opener-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-resource-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mstrict-transport-security[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mx-content-type-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mx-permitted-cross-domain-policies[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mreferrer-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/gifs
+[[92mhttp-missing-security-headers[0m:[1;92mclear-site-data[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/gifs
+[[92mcaa-fingerprint[0m] [[94mdns[0m] [[34minfo[0m] ksurajsingh.github.io [[96m""letsencrypt.org""[0m,[96m""sectigo.com""[0m,[96m""digicert.com""[0m]
+[[92mssl-issuer[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""Sectigo Limited""[0m]
+[[92mssl-dns-names[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""github.io""[0m,[96m""githubusercontent.com""[0m,[96m""www.github.com""[0m,[96m""*.github.io""[0m,[96m""*.github.com""[0m,[96m""*.githubusercontent.com""[0m,[96m""github.com""[0m]
+[[92mwildcard-tls[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""CN: *.github.io""[0m,[96m""SAN: [*.github.io *.github.com *.githubusercontent.com github.com github.io githubusercontent.com www.github.com]""[0m]
+","
+                     __     _
+   ____  __  _______/ /__  (_)
+  / __ \/ / / / ___/ / _ \/ /
+ / / / / /_/ / /__/ /  __/ /
+/_/ /_/\__,_/\___/_/\___/_/   v3.4.7
+
+		projectdiscovery.io
+
+[[31mWRN[0m] Found 2 templates with runtime error (use -validate flag for further examination)
+[[34mINF[0m] Current nuclei version: v3.4.7 ([92mlatest[0m)
+[[34mINF[0m] Current nuclei-templates version: v10.2.5 ([92mlatest[0m)
+[[93mWRN[0m] Scan results upload to cloud is disabled.
+[[34mINF[0m] New templates added in latest release: 75
+[[34mINF[0m] Templates loaded for current scan: 8198
+[[34mINF[0m] Executing 7998 signed templates from projectdiscovery/nuclei-templates
+[[93mWRN[0m] Loading 200 unsigned templates for scan. Use with caution.
+[[34mINF[0m] Targets loaded for current scan: 1
+[[34mINF[0m] Templates clustered: 1765 (Reduced 1658 Requests)
+[[34mINF[0m] Using Interactsh Server: oast.live
+[[34mINF[0m] Scan completed in 2m. 19 matches found.
+",
+https://ksurajsingh.github.io/media/index/pics,nuclei -u https://ksurajsingh.github.io/media/index/pics,"[[92mmissing-sri[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/pics [[96m""https://github.github.com/pages-staticassets/primer-tiny.css""[0m]
+[[92mwaf-detect[0m:[1;92mvarnish[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/pics
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls12""[0m]
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls13""[0m]
+[[92mhttp-missing-security-headers[0m:[1;92mx-permitted-cross-domain-policies[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/pics/
+[[92mhttp-missing-security-headers[0m:[1;92mclear-site-data[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/pics/
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-embedder-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/pics/
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-opener-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/pics/
+[[92mhttp-missing-security-headers[0m:[1;92mx-frame-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/pics/
+[[92mhttp-missing-security-headers[0m:[1;92mreferrer-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/pics/
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-resource-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/pics/
+[[92mhttp-missing-security-headers[0m:[1;92mpermissions-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/pics/
+[[92mhttp-missing-security-headers[0m:[1;92mx-content-type-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/media/index/pics/
+[[92mcaa-fingerprint[0m] [[94mdns[0m] [[34minfo[0m] ksurajsingh.github.io [[96m""digicert.com""[0m,[96m""letsencrypt.org""[0m,[96m""sectigo.com""[0m]
+[[92mssl-issuer[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""Sectigo Limited""[0m]
+[[92mssl-dns-names[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""*.githubusercontent.com""[0m,[96m""github.com""[0m,[96m""github.io""[0m,[96m""githubusercontent.com""[0m,[96m""www.github.com""[0m,[96m""*.github.io""[0m,[96m""*.github.com""[0m]
+[[92mwildcard-tls[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""CN: *.github.io""[0m,[96m""SAN: [*.github.io *.github.com *.githubusercontent.com github.com github.io githubusercontent.com www.github.com]""[0m]
+","
+                     __     _
+   ____  __  _______/ /__  (_)
+  / __ \/ / / / ___/ / _ \/ /
+ / / / / /_/ / /__/ /  __/ /
+/_/ /_/\__,_/\___/_/\___/_/   v3.4.7
+
+		projectdiscovery.io
+
+[[31mWRN[0m] Found 2 templates with runtime error (use -validate flag for further examination)
+[[34mINF[0m] Current nuclei version: v3.4.7 ([92mlatest[0m)
+[[34mINF[0m] Current nuclei-templates version: v10.2.5 ([92mlatest[0m)
+[[93mWRN[0m] Scan results upload to cloud is disabled.
+[[34mINF[0m] New templates added in latest release: 75
+[[34mINF[0m] Templates loaded for current scan: 8198
+[[34mINF[0m] Executing 7998 signed templates from projectdiscovery/nuclei-templates
+[[93mWRN[0m] Loading 200 unsigned templates for scan. Use with caution.
+[[34mINF[0m] Targets loaded for current scan: 1
+[[34mINF[0m] Templates clustered: 1765 (Reduced 1658 Requests)
+[[34mINF[0m] Using Interactsh Server: oast.me
+[[34mINF[0m] Scan completed in 2m. 17 matches found.
+",
+https://ksurajsingh.github.io/futurediary/trash/trash,nuclei -u https://ksurajsingh.github.io/futurediary/trash/trash,"[[92mwaf-detect[0m:[1;92mvarnish[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/trash
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls12""[0m]
+[[92mtls-version[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""tls13""[0m]
+[[92mhttp-missing-security-headers[0m:[1;92mreferrer-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/trash
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-embedder-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/trash
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-opener-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/trash
+[[92mhttp-missing-security-headers[0m:[1;92mstrict-transport-security[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/trash
+[[92mhttp-missing-security-headers[0m:[1;92mpermissions-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/trash
+[[92mhttp-missing-security-headers[0m:[1;92mx-content-type-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/trash
+[[92mhttp-missing-security-headers[0m:[1;92mx-permitted-cross-domain-policies[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/trash
+[[92mhttp-missing-security-headers[0m:[1;92mclear-site-data[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/trash
+[[92mhttp-missing-security-headers[0m:[1;92mcross-origin-resource-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/trash
+[[92mhttp-missing-security-headers[0m:[1;92mcontent-security-policy[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/trash
+[[92mhttp-missing-security-headers[0m:[1;92mx-frame-options[0m] [[94mhttp[0m] [[34minfo[0m] https://ksurajsingh.github.io/futurediary/trash/trash
+[[92mcaa-fingerprint[0m] [[94mdns[0m] [[34minfo[0m] ksurajsingh.github.io [[96m""sectigo.com""[0m,[96m""digicert.com""[0m,[96m""letsencrypt.org""[0m]
+[[92mssl-issuer[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""Sectigo Limited""[0m]
+[[92mssl-dns-names[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""github.io""[0m,[96m""githubusercontent.com""[0m,[96m""www.github.com""[0m,[96m""*.github.io""[0m,[96m""*.github.com""[0m,[96m""*.githubusercontent.com""[0m,[96m""github.com""[0m]
+[[92mwildcard-tls[0m] [[94mssl[0m] [[34minfo[0m] ksurajsingh.github.io:443 [[96m""CN: *.github.io""[0m,[96m""SAN: [*.github.io *.github.com *.githubusercontent.com github.com github.io githubusercontent.com www.github.com]""[0m]
+","
+                     __     _
+   ____  __  _______/ /__  (_)
+  / __ \/ / / / ___/ / _ \/ /
+ / / / / /_/ / /__/ /  __/ /
+/_/ /_/\__,_/\___/_/\___/_/   v3.4.7
+
+		projectdiscovery.io
+
+[[31mWRN[0m] Found 2 templates with runtime error (use -validate flag for further examination)
+[[34mINF[0m] Current nuclei version: v3.4.7 ([92mlatest[0m)
+[[34mINF[0m] Current nuclei-templates version: v10.2.5 ([92mlatest[0m)
+[[93mWRN[0m] Scan results upload to cloud is disabled.
+[[34mINF[0m] New templates added in latest release: 75
+[[34mINF[0m] Templates loaded for current scan: 8198
+[[34mINF[0m] Executing 7998 signed templates from projectdiscovery/nuclei-templates
+[[93mWRN[0m] Loading 200 unsigned templates for scan. Use with caution.
+[[34mINF[0m] Targets loaded for current scan: 1
+[[34mINF[0m] Templates clustered: 1765 (Reduced 1658 Requests)
+[[34mINF[0m] Using Interactsh Server: oast.me
+[[34mINF[0m] Scan completed in 2m. 18 matches found.
+",

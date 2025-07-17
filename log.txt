@@ -12,3 +12,22 @@ Exception: [Errno 13] Permission denied: '/root/report.xlsx'
 Exception: [Errno 13] Permission denied: '/root/report.xlsx'
 [ERROR] Error during scan:(str[Errno 13] Permission denied: '/root/report.csv')
 Exception: [Errno 13] Permission denied: '/root/report.csv'
+[ERROR] Error during scan:(strDirectoryEnumerator.scan_target() got an unexpected keyword argument 'custom_wordlist')
+Exception: DirectoryEnumerator.scan_target() got an unexpected keyword argument 'custom_wordlist'
+[ERROR] Error during scan:(strDirectoryEnumerator.scan_target() got an unexpected keyword argument 'recursive')
+Exception: DirectoryEnumerator.scan_target() got an unexpected keyword argument 'recursive'
+[ERROR] Error running per-dir command: Command 'nuclei -u https://ksurajsingh.github.io/media' timed out after 120 seconds
+KeyboardInterrupt: Scan interrupted by user.
+KeyboardInterrupt: Scan interrupted by user.
+[ERROR] Error running per-dir command: Command 'nuclei -u https://ksurajsingh.github.io/media' timed out after 120 seconds
+[ERROR] Error running per-dir command: Command 'nuclei -u https://ksurajsingh.github.io/futurediary' timed out after 120 seconds
+KeyboardInterrupt: Scan interrupted by user.
+[ERROR] Error during scan:(strname 'status_to_pdf_color' is not defined)
+Exception: name 'status_to_pdf_color' is not defined
+[ERROR] Error during scan:(strname 'status_to_pdf_color' is not defined)
+Exception: name 'status_to_pdf_color' is not defined
+[ERROR] Error during scan:(strname 'type_to_pdf_color' is not defined)
+Exception: name 'type_to_pdf_color' is not defined
+[ERROR] Error running per-dir command: Command 'nuclei -u https://ksurajsingh.github.io/media' timed out after 120 seconds
+[ERROR] Error running per-dir command: Command 'nuclei -u https://ksurajsingh.github.io/index' timed out after 120 seconds
+KeyboardInterrupt: Scan interrupted by user.

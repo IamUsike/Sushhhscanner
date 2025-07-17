@@ -11,6 +11,9 @@ from enum import Enum
 import threading 
 from concurrent.futures import ThreadPoolExecutor 
 import logging 
+import subprocess
+import collections
+from tqdm import tqdm
 
 class StatusCode(Enum):
     SUCCESS="success"
@@ -117,103 +120,129 @@ class DirectoryEnumerator:
             pass 
         return ""
 
-    async def check_url(self,base_url:str,path:str)->Optional[ScanResult]:
-        url=urljoin(base_url+'/',path)
-
+    async def check_url(self, base_url: str, path: str, per_dir_cmd_template: str = None) -> Optional[ScanResult]:
+        url = urljoin(base_url + '/', path)
         if url in self.found_urls:
-            return None 
-
+            return None
         start_time = time.time()
-
         try:
-            async with self.session.get(url,allow_redirects=False) as response:
-                response_time=time.time() - start_time 
-
-                status_code=response.status 
-                content_length=len(await response.read())
-                server=response.headers.get('Server','')
-                content_type=response.headers.get('Content-Type','')
-
+            async with self.session.get(url, allow_redirects=False) as response:
+                response_time = time.time() - start_time
+                status_code = response.status
+                content_length = len(await response.read())
+                server = response.headers.get('Server', '')
+                content_type = response.headers.get('Content-Type', '')
                 is_directory = path.endswith('/') or '.' not in path.split('/')[-1]
-
-                title=""
+                title = ""
                 if content_type and 'text/html' in content_type:
-                    html=await response.text()
-
-                    title=self.get_title_from_html(html)
-
-                result=ScanResult(
-                        url=url,
-                        status_code=status_code,
-                        response_time=response_time,
-                        content_length=content_length,
-                        is_directory=is_directory,
-                        title=title,
-                        server=server,
-                        content_type=content_type
+                    html = await response.text()
+                    title = self.get_title_from_html(html)
+                result = ScanResult(
+                    url=url,
+                    status_code=status_code,
+                    response_time=response_time,
+                    content_length=content_length,
+                    is_directory=is_directory,
+                    title=title,
+                    server=server,
+                    content_type=content_type
                 )
-
                 self.scan_stats["total_requests"] += 1
-                
                 if status_code in self.success_codes or status_code in self.redirect_codes:
                     self.scan_stats["successful_requests"] += 1
                     self.found_urls.add(url)
+                    # If a per-directory command is provided and this is a directory, run it
+                    per_dir_output = None
+                    if is_directory and per_dir_cmd_template:
+                        per_dir_cmd = per_dir_cmd_template.format(url=url)
+                        try:
+                            per_dir_result = subprocess.run(per_dir_cmd, shell=True, capture_output=True, text=True, timeout=120)
+                            per_dir_output = {
+                                "command": per_dir_cmd,
+                                "returncode": per_dir_result.returncode,
+                                "stdout": per_dir_result.stdout,
+                                "stderr": per_dir_result.stderr
+                            }
+                        except Exception as e:
+                            per_dir_output = {"command": per_dir_cmd, "error": str(e)}
+                        # Attach the output to the result
+                        result.per_dir_output = per_dir_output
                     return result
                 else:
                     self.scan_stats["failed_requests"] += 1
-                    return None 
+                    return None
         except Exception as e:
-            self.scan_stats["failed_requests"]+=1 
+            self.scan_stats["failed_requests"] += 1
             logging.error(f"Error checking {url}:{str(e)}")
-            return None 
+            return None
 
-    async def scan_target(self, target_url: str, wordlist_type: str = "common", max_workers: int = 50, delay: float = 0.1, custom_wordlist=None, recursive=False, max_depth=2, show_progress=False, rate_limit=None) -> Dict:
+    def run_external_tool(self, tool_cmd_template: str, url: str) -> dict:
+        """
+        Run an external tool command with {url} placeholder replaced by the target URL.
+        Returns a dictionary with the command, output, and return code.
+        """
+        cmd = tool_cmd_template.format(url=url)
+        try:
+            result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=300)
+            return {
+                "engine": "external",
+                "command": cmd,
+                "returncode": result.returncode,
+                "stdout": result.stdout,
+                "stderr": result.stderr
+            }
+        except Exception as e:
+            return {
+                "engine": "external",
+                "command": cmd,
+                "error": str(e)
+            }
+
+    async def scan_target(self, target_url: str, wordlist_type: str = "common", max_workers: int = 50, delay: float = 0.1, engine: str = "internal", tool_cmd_template: str = None, per_dir_cmd_template: str = None, custom_wordlist=None, recursive=False, max_depth=2, show_progress=False, rate_limit=None) -> dict:
         target_url = self.normalize_url(target_url)
         self.scan_stats["start_time"] = time.time()
-
+        if engine == "external" and tool_cmd_template:
+            tool_result = self.run_external_tool(tool_cmd_template, target_url)
+            self.scan_stats["end_time"] = time.time()
+            return {
+                "target_url": target_url,
+                "engine": "external",
+                "tool_command": tool_result.get("command"),
+                "returncode": tool_result.get("returncode"),
+                "stdout": tool_result.get("stdout"),
+                "stderr": tool_result.get("stderr"),
+                "error": tool_result.get("error"),
+                "scan_stats": self.scan_stats
+            }
         await self.init_session()
-
         try:
             if custom_wordlist is not None:
                 wordlist = custom_wordlist
             else:
                 wordlist = self.wordLists.get(wordlist_type, self.wordLists["common"])
-
-            from collections import deque
-            from tqdm import tqdm
-            import asyncio
-            queue = deque()
+            queue = collections.deque()
             queue.append((target_url, 0))  # (base_url, current_depth)
             checked_dirs = set()
             all_results = []
-
-            # Estimate total tasks for progress bar
             est_total = len(wordlist)
             if recursive:
                 est_total = est_total * (max_depth + 1)
             pbar = tqdm(total=est_total, desc="Scanning", disable=not show_progress)
-
-            # Rate limiting setup
             last_reset = time.time()
             reqs_this_sec = 0
             if rate_limit:
                 min_interval = 1.0 / rate_limit
             else:
                 min_interval = None
-
             while queue:
                 base_url, depth = queue.popleft()
                 if (base_url, depth) in checked_dirs or depth > max_depth:
                     continue
                 checked_dirs.add((base_url, depth))
-
                 tasks = []
                 for word in wordlist:
-                    if not base_url.endswith('/'):
-                        base_url += '/'
-                    full_path = urljoin(base_url, word)
-                    if full_path not in self.found_urls:
-                        tasks.append(self.check_url(base_url, word))
+                    task = self.check_url(base_url, word, per_dir_cmd_template=per_dir_cmd_template)
+                    tasks.append(task)
                     # Rate limiting logic
                     if rate_limit:
                         now = time.time()
@@ -226,9 +255,7 @@ class DirectoryEnumerator:
                         reqs_this_sec += 1
                     elif delay > 0:
                         await asyncio.sleep(delay)
-
                 results = await asyncio.gather(*tasks, return_exceptions=True)
-
                 valid_results = []
                 for result in results:
                     if isinstance(result, ScanResult):
@@ -236,13 +263,10 @@ class DirectoryEnumerator:
                         if recursive and result.is_directory and depth < max_depth:
                             queue.append((result.url, depth + 1))
                     pbar.update(1)
-
                 all_results.extend(valid_results)
-
             pbar.close()
             self.results = all_results
             self.scan_stats["end_time"] = time.time()
-
             return {
                 "target_url": target_url,
                 "wordlist_type": wordlist_type,
@@ -258,7 +282,8 @@ class DirectoryEnumerator:
                         "is_directory": r.is_directory,
                         "title": r.title,
                         "server": r.server,
-                        "content_type": r.content_type
+                        "content_type": r.content_type,
+                        "per_dir_output": getattr(r, "per_dir_output", None)
                     }
                     for r in all_results
                 ]
