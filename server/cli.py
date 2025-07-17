@@ -164,6 +164,7 @@ async def main():
     parser.add_argument("--max-depth", type=int, default=2, help="Maximum recursion depth (default: 2)")
     parser.add_argument("--table", action="store_true", help="Display results in a colored table format")
     parser.add_argument("--progress", action="store_true", help="Show progress bar during scan")
+    parser.add_argument("--rate-limit", type=float, help="Maximum requests per second (rate limiting, takes precedence over delay)")
 
     args=parser.parse_args()
 
@@ -208,7 +209,8 @@ async def main():
                 custom_wordlist=custom_wordlist,
                 recursive=args.recursive,
                 max_depth=args.max_depth,
-                show_progress=args.progress or (not args.quiet)
+                show_progress=args.progress or (not args.quiet),
+                rate_limit=args.rate_limit
                 )
         end_time=datetime.now()
 

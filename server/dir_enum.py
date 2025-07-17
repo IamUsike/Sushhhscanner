@@ -167,7 +167,7 @@ class DirectoryEnumerator:
             logging.error(f"Error checking {url}:{str(e)}")
             return None 
 
-    async def scan_target(self, target_url: str, wordlist_type: str = "common", max_workers: int = 50, delay: float = 0.1, custom_wordlist=None, recursive=False, max_depth=2, show_progress=False) -> Dict:
+    async def scan_target(self, target_url: str, wordlist_type: str = "common", max_workers: int = 50, delay: float = 0.1, custom_wordlist=None, recursive=False, max_depth=2, show_progress=False, rate_limit=None) -> Dict:
         target_url = self.normalize_url(target_url)
         self.scan_stats["start_time"] = time.time()
 
@@ -181,6 +181,7 @@ class DirectoryEnumerator:
 
             from collections import deque
             from tqdm import tqdm
+            import asyncio
             queue = deque()
             queue.append((target_url, 0))  # (base_url, current_depth)
             checked_dirs = set()
@@ -191,6 +192,14 @@ class DirectoryEnumerator:
             if recursive:
                 est_total = est_total * (max_depth + 1)
             pbar = tqdm(total=est_total, desc="Scanning", disable=not show_progress)
+
+            # Rate limiting setup
+            last_reset = time.time()
+            reqs_this_sec = 0
+            if rate_limit:
+                min_interval = 1.0 / rate_limit
+            else:
+                min_interval = None
 
             while queue:
                 base_url, depth = queue.popleft()
@@ -205,7 +214,17 @@ class DirectoryEnumerator:
                     full_path = urljoin(base_url, word)
                     if full_path not in self.found_urls:
                         tasks.append(self.check_url(base_url, word))
-                    if delay > 0:
+                    # Rate limiting logic
+                    if rate_limit:
+                        now = time.time()
+                        if reqs_this_sec >= rate_limit:
+                            sleep_time = 1.0 - (now - last_reset)
+                            if sleep_time > 0:
+                                await asyncio.sleep(sleep_time)
+                            last_reset = time.time()
+                            reqs_this_sec = 0
+                        reqs_this_sec += 1
+                    elif delay > 0:
                         await asyncio.sleep(delay)
 
                 results = await asyncio.gather(*tasks, return_exceptions=True)
