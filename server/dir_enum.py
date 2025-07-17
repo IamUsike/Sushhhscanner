@@ -167,14 +167,17 @@ class DirectoryEnumerator:
             logging.error(f"Error checking {url}:{str(e)}")
             return None 
 
-    async def scan_target(self,target_url:str,wordlist_type:str="common",max_workers:int=50,delay:float=0.1)->Dict:
+    async def scan_target(self,target_url:str,wordlist_type:str="common",max_workers:int=50,delay:float=0.1,custom_wordlist=None)->Dict:
         target_url = self.normalize_url(target_url)
         self.scan_stats["start_time"]=time.time()
 
         await self.init_session()
 
         try:
-            wordlist = self.wordLists.get(wordlist_type,self.wordLists["common"])
+            if custom_wordlist is not None:
+                wordlist = custom_wordlist
+            else:
+                wordlist = self.wordLists.get(wordlist_type,self.wordLists["common"])
 
             tasks=[]
             for word in wordlist:

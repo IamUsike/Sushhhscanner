@@ -1,0 +1,8 @@
+media
+tmp
+temp
+docs
+futurediary
+login
+images
+robots.txt

@@ -151,6 +151,7 @@ async def main():
 
     parser.add_argument("target",help="Target URL to scan")
     parser.add_argument("-w","--wordlist",choices=["common","directories","files"],default="common",help="Wordlist type to use")
+    parser.add_argument("--wordlist-file", type=str, help="Path to a custom wordlist file")
     parser.add_argument("--worker",type=int,default=50)
     parser.add_argument("--delay",type=float,default=0.1,help="Delay between requests in seconds (default: 0.1)")
     parser.add_argument("-o","--output",help="Specify json file to json")
@@ -160,6 +161,16 @@ async def main():
 
     args=parser.parse_args()
 
+    # Load custom wordlist if provided
+    custom_wordlist = None
+    if args.wordlist_file:
+        try:
+            with open(args.wordlist_file, 'r') as f:
+                custom_wordlist = [line.strip() for line in f if line.strip() and not line.startswith('#')]
+            print_status(f"Loaded custom wordlist with {len(custom_wordlist)} entries from {args.wordlist_file}", "info")
+        except Exception as e:
+            print_status(f"Failed to load custom wordlist: {e}", "error")
+            sys.exit(1)
 
     # real output on console 
     silhouette()
@@ -170,7 +181,10 @@ async def main():
 
     print_status(f"Starting scan of: {target_url}","info")
     subprocess.run(["sleep", "1"])
-    print_status(f"Wordlist: {args.wordlist}","info")
+    if args.wordlist_file:
+        print_status(f"Wordlist: {args.wordlist_file} (custom)","info")
+    else:
+        print_status(f"Wordlist: {args.wordlist}","info")
     print_status(f"Workers: {args.worker}","info")
     print_status(f"Delay: {args.delay}s","info")
     print()
@@ -184,7 +198,8 @@ async def main():
                 target_url=target_url,
                 wordlist_type=args.wordlist,
                 max_workers=args.worker,
-                delay=args.delay
+                delay=args.delay,
+                custom_wordlist=custom_wordlist
                 )
         end_time=datetime.now()
 

@@ -18,6 +18,29 @@ Create a tool that scans SaaS APIs to identify security risks (e.g., unprotected
 - [x] [web-logic] backend [Primitive-Stage]
 - [ ] CLI Enhanced
 
+### Features TODO
+- [x] Custom wordlist support (allow user-supplied wordlists)
+- [ ] Recursive directory enumeration (with depth control)
+- [ ] Colored output and table formatting (pretty, aligned, colorized results)
+- [ ] Progress bar (show scan progress)
+- [ ] Rate limiting (requests per second)  
+      # Note: Delay = wait after each request; Rate limiting = max requests per second (e.g., 10 req/sec)
+- [ ] Export formats: CSV, PDF, Excel
+- [ ] Verbose and silent modes
+- [ ] Error logging to file
+- [ ] Summary statistics (status code breakdown, fastest/slowest responses, etc.)
+- [ ] Integration with other tools (optionally run vulnerability scan on found URLs)
+
+## Progress
+Features currently under testing:
+- [ ] Recursive directory enumeration
+- [ ] Colored output and table formatting
+- [ ] Progress bar
+- [ ] Export formats: CSV, PDF, Excel
+- [ ] Verbose and silent modes
+- [ ] Error logging to file
+- [ ] Summary statistics
+- [ ] Integration with other tools
 
 ## fixes
 
