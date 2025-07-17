@@ -167,7 +167,7 @@ class DirectoryEnumerator:
             logging.error(f"Error checking {url}:{str(e)}")
             return None 
 
-    async def scan_target(self, target_url: str, wordlist_type: str = "common", max_workers: int = 50, delay: float = 0.1, custom_wordlist=None, recursive=False, max_depth=2) -> Dict:
+    async def scan_target(self, target_url: str, wordlist_type: str = "common", max_workers: int = 50, delay: float = 0.1, custom_wordlist=None, recursive=False, max_depth=2, show_progress=False) -> Dict:
         target_url = self.normalize_url(target_url)
         self.scan_stats["start_time"] = time.time()
 
@@ -179,12 +179,18 @@ class DirectoryEnumerator:
             else:
                 wordlist = self.wordLists.get(wordlist_type, self.wordLists["common"])
 
-            # Use a queue for recursion
             from collections import deque
+            from tqdm import tqdm
             queue = deque()
             queue.append((target_url, 0))  # (base_url, current_depth)
             checked_dirs = set()
             all_results = []
+
+            # Estimate total tasks for progress bar
+            est_total = len(wordlist)
+            if recursive:
+                est_total = est_total * (max_depth + 1)
+            pbar = tqdm(total=est_total, desc="Scanning", disable=not show_progress)
 
             while queue:
                 base_url, depth = queue.popleft()
@@ -194,11 +200,9 @@ class DirectoryEnumerator:
 
                 tasks = []
                 for word in wordlist:
-                    # For recursion, join with / if not present
                     if not base_url.endswith('/'):
                         base_url += '/'
                     full_path = urljoin(base_url, word)
-                    # Only scan new URLs
                     if full_path not in self.found_urls:
                         tasks.append(self.check_url(base_url, word))
                     if delay > 0:
@@ -210,12 +214,13 @@ class DirectoryEnumerator:
                 for result in results:
                     if isinstance(result, ScanResult):
                         valid_results.append(result)
-                        # If recursion enabled and this is a directory, enqueue for next depth
                         if recursive and result.is_directory and depth < max_depth:
                             queue.append((result.url, depth + 1))
+                    pbar.update(1)
 
                 all_results.extend(valid_results)
 
+            pbar.close()
             self.results = all_results
             self.scan_stats["end_time"] = time.time()
 

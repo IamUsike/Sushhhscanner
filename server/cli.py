@@ -19,6 +19,7 @@ from datetime import datetime
 from dir_enum import DirectoryEnumerator # ourmain tool - inorder to keep our prjt minimal and locally deployed + independent of any global requirement
 from colorama import init,Fore,Style # colors beradar - I like python now - bash can easily keep up with python need to watch Mr.ROBOT again - they use both a lot
 from tabulate import tabulate
+from tqdm import tqdm
 
 # Initalise colorama for cross-platform colored output
 init()
@@ -162,6 +163,7 @@ async def main():
     parser.add_argument("--recursive", action="store_true", help="Enable recursive directory enumeration")
     parser.add_argument("--max-depth", type=int, default=2, help="Maximum recursion depth (default: 2)")
     parser.add_argument("--table", action="store_true", help="Display results in a colored table format")
+    parser.add_argument("--progress", action="store_true", help="Show progress bar during scan")
 
     args=parser.parse_args()
 
@@ -205,7 +207,8 @@ async def main():
                 delay=args.delay,
                 custom_wordlist=custom_wordlist,
                 recursive=args.recursive,
-                max_depth=args.max_depth
+                max_depth=args.max_depth,
+                show_progress=args.progress or (not args.quiet)
                 )
         end_time=datetime.now()
 
