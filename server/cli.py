@@ -22,6 +22,10 @@ from tabulate import tabulate
 from tqdm import tqdm
 import csv
 import pandas as pd
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from reportlab.lib import colors
+from reportlab.platypus import Table, TableStyle, SimpleDocTemplate
 
 # Initalise colorama for cross-platform colored output
 init()
@@ -169,7 +173,7 @@ async def main():
     parser.add_argument("--rate-limit", type=float, help="Maximum requests per second (rate limiting, takes precedence over delay)")
     parser.add_argument("--export-csv", type=str, help="Export results to CSV file")
     parser.add_argument("--export-excel", type=str, help="Export results to Excel (XLSX) file")
-    # parser.add_argument("--export-pdf", type=str, help="Export results to PDF file")
+    parser.add_argument("--export-pdf", type=str, help="Export results to PDF file")
 
     args=parser.parse_args()
 
@@ -298,6 +302,33 @@ async def main():
             df = pd.DataFrame(data)
             df.to_excel(args.export_excel, index=False)
             print_status(f"Results exported to Excel: {args.export_excel}", "success")
+
+        if args.export_pdf:
+            pdf_data = [["URL", "Status", "Type", "Size", "Time", "Server"]]
+            for result in enumer.results:
+                pdf_data.append([
+                    result.url,
+                    str(result.status_code),
+                    "DIR" if result.is_directory else "FILE",
+                    str(result.content_length),
+                    f"{result.response_time:.3f}s",
+                    result.server or "N/A"
+                ])
+            pdf = SimpleDocTemplate(args.export_pdf, pagesize=letter)
+            table = Table(pdf_data, repeatRows=1)
+            style = TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                ('GRID', (0, 0), (-1, -1), 1, colors.black),
+            ])
+            table.setStyle(style)
+            elems = [table]
+            pdf.build(elems)
+            print_status(f"Results exported to PDF: {args.export_pdf}", "success")
 
         if len(enumer.results)>0:
                 sys.exit(0)
