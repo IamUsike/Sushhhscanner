@@ -6,3 +6,10 @@ asyncio==3.4.3
 colorama==0.4.6
 tqdm==4.66.1
 python-dotenv==1.0.0 
+aiohttp
+colorama
+tabulate
+tqdm
+pandas
+openpyxl
+reportlab 
