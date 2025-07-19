@@ -1,4 +1,5 @@
 import { AxiosResponse } from 'axios';
+import { RemediationGuidance, VulnerabilityType, VulnerabilitySeverity } from '../types';
 export interface Parameter {
     name: string;
     type: 'string' | 'number' | 'boolean' | 'array' | 'object' | 'unknown';
@@ -18,10 +19,10 @@ export interface Parameter {
 export interface ParameterVulnerability {
     parameter: Parameter;
     vulnerability: {
-        type: string;
+        type: VulnerabilityType;
         name: string;
         description: string;
-        severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+        severity: VulnerabilitySeverity;
         confidence: number;
         cwe: string;
         owasp: string;
@@ -39,9 +40,10 @@ export interface ParameterVulnerability {
         responseTime: number;
         differenceDetected: boolean;
         errorSignatures?: string[];
+        timeDelayDetected?: boolean;
     };
     impact: string;
-    recommendation: string;
+    recommendation: RemediationGuidance;
 }
 export interface PayloadGenerationOptions {
     useAI: boolean;
@@ -52,6 +54,7 @@ export interface PayloadGenerationOptions {
 }
 export declare class ParameterTester {
     private options;
+    private recommendationService;
     private readonly sqlInjectionPayloads;
     private readonly nosqlInjectionPayloads;
     private readonly xssPayloads;

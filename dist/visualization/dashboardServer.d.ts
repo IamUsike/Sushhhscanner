@@ -1,4 +1,4 @@
-import { RiskScoringEngine } from '../ai/riskScoringEngine';
+import { RiskScoringEngine, VulnerabilityData } from '../ai/riskScoringEngine';
 export interface DashboardConfig {
     port: number;
     host: string;
@@ -22,6 +22,7 @@ export declare class DashboardServer {
     private updateTimer;
     private vulnerabilities;
     private lastUpdate;
+    private hasRealScanData;
     constructor(config: DashboardConfig, riskEngine: RiskScoringEngine);
     private setupMiddleware;
     private setupRoutes;
@@ -35,5 +36,7 @@ export declare class DashboardServer {
     stop(): Promise<void>;
     getConnectedClients(): ClientConnection[];
     broadcastMessage(channel: string, message: any): void;
+    updateWithRealScanData(vulnerabilities: VulnerabilityData[]): void;
+    resetToSampleData(): void;
 }
 //# sourceMappingURL=dashboardServer.d.ts.map

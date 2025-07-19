@@ -1,0 +1,140 @@
+{
+  "version": "2.0",
+  "elements": [
+    {
+      "type": "scene",
+      "version": "2.0",
+      "id": "scene",
+      "elements": [
+        {
+          "type": "rectangle",
+          "version": "2.0",
+          "id": "backend",
+          "x": 100,
+          "y": 100,
+          "width": 200,
+          "height": 100,
+          "backgroundColor": "#f0f0f0",
+          "strokeColor": "#000000",
+          "strokeWidth": 1,
+          "text": "Backend Server",
+          "fontSize": 20
+        },
+        {
+          "type": "rectangle",
+          "version": "2.0",
+          "id": "ui",
+          "x": 100,
+          "y": 250,
+          "width": 200,
+          "height": 100,
+          "backgroundColor": "#f0f0f0",
+          "strokeColor": "#000000",
+          "strokeWidth": 1,
+          "text": "User Interface",
+          "fontSize": 20
+        },
+        {
+          "type": "rectangle",
+          "version": "2.0",
+          "id": "db",
+          "x": 400,
+          "y": 100,
+          "width": 200,
+          "height": 100,
+          "backgroundColor": "#f0f0f0",
+          "strokeColor": "#000000",
+          "strokeWidth": 1,
+          "text": "Database",
+          "fontSize": 20
+        },
+        {
+          "type": "rectangle",
+          "version": "2.0",
+          "id": "n8n",
+          "x": 400,
+          "y": 250,
+          "width": 200,
+          "height": 100,
+          "backgroundColor": "#f0f0f0",
+          "strokeColor": "#000000",
+          "strokeWidth": 1,
+          "text": "n8n Workflow",
+          "fontSize": 20
+        },
+        {
+          "type": "rectangle",
+          "version": "2.0",
+          "id": "slack",
+          "x": 700,
+          "y": 100,
+          "width": 200,
+          "height": 100,
+          "backgroundColor": "#f0f0f0",
+          "strokeColor": "#000000",
+          "strokeWidth": 1,
+          "text": "Slack Notifications",
+          "fontSize": 20
+        },
+        {
+          "type": "rectangle",
+          "version": "2.0",
+          "id": "jira",
+          "x": 700,
+          "y": 250,
+          "width": 200,
+          "height": 100,
+          "backgroundColor": "#f0f0f0",
+          "strokeColor": "#000000",
+          "strokeWidth": 1,
+          "text": "Jira Issues",
+          "fontSize": 20
+        },
+        {
+          "type": "line",
+          "version": "2.0",
+          "id": "line1",
+          "points": [
+            { "x": 200, "y": 200 },
+            { "x": 400, "y": 200 }
+          ],
+          "strokeColor": "#000000",
+          "strokeWidth": 2
+        },
+        {
+          "type": "line",
+          "version": "2.0",
+          "id": "line2",
+          "points": [
+            { "x": 200, "y": 300 },
+            { "x": 400, "y": 300 }
+          ],
+          "strokeColor": "#000000",
+          "strokeWidth": 2
+        },
+        {
+          "type": "line",
+          "version": "2.0",
+          "id": "line3",
+          "points": [
+            { "x": 600, "y": 150 },
+            { "x": 700, "y": 150 }
+          ],
+          "strokeColor": "#000000",
+          "strokeWidth": 2
+        },
+        {
+          "type": "line",
+          "version": "2.0",
+          "id": "line4",
+          "points": [
+            { "x": 600, "y": 300 },
+            { "x": 700, "y": 300 }
+          ],
+          "strokeColor": "#000000",
+          "strokeWidth": 2
+        }
+      ]
+    }
+  ]
+}

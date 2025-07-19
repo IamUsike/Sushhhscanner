@@ -52,7 +52,7 @@ class BruteForceDiscovery {
         // HTTP methods to test
         this.httpMethods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
     }
-    async discoverEndpoints(baseUrl, options = {}, progressCallback) {
+    async discoverEndpoints(baseUrl, options = {}, progressCallback, onEndpointDiscovered) {
         const { timeout = 10000, maxConcurrent = 5, testMethods = this.httpMethods } = options;
         this.loggerInstance.info('Starting brute force endpoint discovery', { baseUrl });
         const endpoints = [];
@@ -107,6 +107,9 @@ class BruteForceDiscovery {
                             };
                         }
                         endpoints.push(endpoint);
+                        if (onEndpointDiscovered) {
+                            onEndpointDiscovered(endpoint);
+                        }
                         this.loggerInstance.debug('Found endpoint via brute force', {
                             method,
                             path,

@@ -7,7 +7,7 @@ export declare class BruteForceDiscovery {
         timeout?: number;
         maxConcurrent?: number;
         testMethods?: string[];
-    }, progressCallback?: (progress: DiscoveryProgress) => void): Promise<APIEndpoint[]>;
+    }, progressCallback?: (progress: DiscoveryProgress) => void, onEndpointDiscovered?: (endpoint: APIEndpoint) => void): Promise<APIEndpoint[]>;
     private normalizeUrl;
     private sanitizeHeaders;
     private extractParametersFromResponse;

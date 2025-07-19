@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🛡️ CywAyz Enterprise Security Dashboard v2.0</title>
+    <title>🛡️ API Risk Visualisation Dashboard</title>
     
     <!-- External Libraries -->
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
@@ -289,6 +289,58 @@
             font-size: 1.1rem;
         }
         
+        .btn-export {
+            background: var(--info-gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(116, 185, 255, 0.3);
+        }
+        
+        .btn-export:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(116, 185, 255, 0.4);
+        }
+        
+        /* Notification System */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--glass-shadow);
+            z-index: var(--z-toast);
+            transform: translateX(100%);
+            transition: transform var(--transition-normal);
+            max-width: 400px;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+        
+        .notification.error {
+            border-color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+        }
+        
+        .notification.warning {
+            border-color: #feca57;
+            background: rgba(254, 202, 87, 0.1);
+        }
+        
+        .notification-content {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
         /* Advanced Form Controls */
         .form-group {
             margin-bottom: var(--spacing-lg);
@@ -398,7 +450,8 @@
                 "header header header header"
                 "controls controls progress progress"
                 "realtime realtime analytics analytics"
-                "network network network network"
+                "scan-progress scan-progress network network"
+                "ml-metrics ml-metrics network network"
                 "results results results results";
             grid-template-columns: repeat(4, 1fr);
             gap: var(--spacing-lg);
@@ -410,6 +463,8 @@
         .progress-section { grid-area: progress; }
         .realtime-section { grid-area: realtime; }
         .analytics-section { grid-area: analytics; }
+        .scan-progress-section { grid-area: scan-progress; }
+        .ml-metrics-section { grid-area: ml-metrics; }
         .network-section { grid-area: network; }
         .results-section { grid-area: results; }
         
@@ -1087,7 +1142,7 @@
             <section class="header-section card card-elevated">
                 <h1 class="heading-1">
                     <i class="fas fa-shield-alt"></i>
-                    CywAyz Enterprise Security v2.0
+                   API Risk Visualisation Dashboard
                 </h1>
                 <p class="text-muted" style="font-size: 1.1rem; margin-bottom: var(--spacing-lg);">
                     Next-Generation AI-Powered API Vulnerability Scanner & Risk Analytics Platform
@@ -1249,6 +1304,11 @@
                         <div class="stat-change" id="riskChange">0% change</div>
                     </div>
                     <div class="stat-card">
+                        <div class="stat-number" id="cvssScore">0</div>
+                        <div class="stat-label">CVSS Score</div>
+                        <div class="stat-change" id="cvssChange">Standardized</div>
+                    </div>
+                    <div class="stat-card">
                         <div class="stat-number" id="scanDuration">0s</div>
                         <div class="stat-label">Scan Duration</div>
                         <div class="stat-change" id="durationChange">Real-time</div>
@@ -1272,6 +1332,16 @@
                     </h4>
                     <div class="chart-container">
                         <canvas id="radarChart" class="chart-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- ML Model Performance Chart -->
+                <div style="margin-top: var(--spacing-xl);">
+                    <h4 style="color: var(--text-primary); margin-bottom: var(--spacing-md);">
+                        <i class="fas fa-brain"></i> AI/ML Model Performance
+                    </h4>
+                    <div class="chart-container">
+                        <canvas id="mlPerformanceChart" class="chart-canvas"></canvas>
                     </div>
                 </div>
 
@@ -1316,6 +1386,9 @@
                         <button class="btn btn-sm btn-primary" id="exportCSV">
                             <i class="fas fa-table"></i> CSV
                         </button>
+                        <button class="btn btn-sm btn-export" id="exportPDF" onclick="dashboard.generatePDFReport()">
+                            <i class="fas fa-file-pdf"></i> AI PDF Report
+                        </button>
                         <!-- <button class="btn btn-sm btn-secondary" id="clearResults">
                             <i class="fas fa-trash"></i> Clear
                         </button> -->
@@ -1354,6 +1427,48 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Scan Progress Section -->
+            <section class="scan-progress-section card">
+                <div class="flex justify-between items-center" style="margin-bottom: var(--spacing-lg);">
+                    <h3 class="heading-3" style="margin-bottom: 0;">
+                        <i class="fas fa-chart-line"></i> Scan Progress Insights
+                    </h3>
+                    <div class="btn btn-sm btn-outline" id="scanProgressDetails">
+                        <i class="fas fa-info-circle"></i> Detailed Metrics
+                    </div>
+                </div>
+                
+                <!-- URL Discovery Progress -->
+                <div style="margin-top: var(--spacing-xl);">
+                    <h4 style="color: var(--text-primary); margin-bottom: var(--spacing-md);">
+                        <i class="fas fa-link"></i> URL Discovery Progress
+                    </h4>
+                    <div class="chart-container">
+                        <canvas id="urlDiscoveryChart" class="chart-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Vulnerability Detection Progress -->
+                <div style="margin-top: var(--spacing-xl);">
+                    <h4 style="color: var(--text-primary); margin-bottom: var(--spacing-md);">
+                        <i class="fas fa-bug"></i> Vulnerability Detection
+                    </h4>
+                    <div class="chart-container">
+                        <canvas id="vulnerabilityDetectionChart" class="chart-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Scan Performance Metrics -->
+                <div style="margin-top: var(--spacing-xl);">
+                    <h4 style="color: var(--text-primary); margin-bottom: var(--spacing-md);">
+                        <i class="fas fa-tachometer-alt"></i> Scan Performance
+                    </h4>
+                    <div class="chart-container">
+                        <canvas id="scanPerformanceChart" class="chart-canvas"></canvas>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
     
@@ -1368,9 +1483,17 @@
                 this.vulnerabilities = [];
                 this.chart = null; // Doughnut chart for vulnerability distribution
                 this.radarChart = null; // New radar chart for risk categories
+                this.mlPerformanceChart = null; // ML model performance chart
                 this.heatmapVisualization = null; // New heatmap visualization
                 this.networkVisualization = null;
                 this.scanTimer = null;
+                this.enhancedRiskEngine = null; // Enhanced ML risk scoring engine
+                this.mlModelMetrics = null; // ML model performance metrics
+
+                // New scan progress charts
+                this.urlDiscoveryChart = null;
+                this.vulnerabilityDetectionChart = null;
+                this.scanPerformanceChart = null;
 
                 this.dom = {
                     connectionStatus: document.getElementById('connectionStatus'),
@@ -1389,22 +1512,25 @@
                     progressFill: document.getElementById('progressFill'),
                     progressMessage: document.getElementById('progressMessage'),
                     progressPercentage: document.getElementById('progressPercentage'),
-                    timelineProgress: document.getElementById('timelineProgress')
+                    timelineProgress: document.getElementById('timelineProgress'),
+                    cvssScore: document.getElementById('cvssScore'),
+                    cvssChange: document.getElementById('cvssChange')
                 };
                 this.currentNetworkView = 'topology'; // Default view
             }
 
             initialize() {
-                    this.setupEventListeners();
-                    this.initializeCharts();
-                    this.initializeNetworkVisualization();
+                this.setupEventListeners();
+                this.initializeCharts();
+                this.initializeNetworkVisualization();
                 this.initializeHeatmap(); // Initialize the heatmap
+                this.initializeEnhancedML(); // Initialize enhanced ML engine
                 this.connectWebSocket();
                 this.updateNetworkVisualization();
                 // Add export button handlers
                 document.getElementById('exportJSON')?.addEventListener('click', () => this.downloadReport('json'));
                 document.getElementById('exportCSV')?.addEventListener('click', () => this.downloadReport('csv'));
-                // document.getElementById('exportPDF')?.addEventListener('click', () => this.downloadReport('pdf'));
+                document.getElementById('exportPDF')?.addEventListener('click', () => this.downloadReport('pdf'));
             }
 
             // New method to initialize the heatmap
@@ -1452,9 +1578,12 @@
 
             async downloadReport(format) {
                 if (!this.currentScanId) {
-                    alert('No scan in progress. Please run a scan first.');
+                    this.showNotification('No scan in progress. Please run a scan first.', 'warning');
                     return;
                 }
+                
+                this.showNotification(`Generating ${format.toUpperCase()} report...`, 'info');
+                
                 try {
                     // Step 1: Request report generation
                     const response = await fetch(`/api/v1/reports/${this.currentScanId}`, {
@@ -1462,18 +1591,23 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ format })
                     });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
                     const result = await response.json();
                     if (!result.success || !result.data?.downloadUrl) {
-                        alert('Failed to generate report.');
-                        return;
+                        throw new Error(result.message || 'Failed to generate report');
                     }
+                    
                     // Step 2: Download the report
                     const downloadUrl = result.data.downloadUrl;
                     const fileResponse = await fetch(downloadUrl);
                     if (!fileResponse.ok) {
-                        alert('Failed to download report.');
-                        return;
+                        throw new Error('Failed to download report file');
                     }
+                    
                     const blob = await fileResponse.blob();
                     const url = window.URL.createObjectURL(blob);
                     const a = document.createElement('a');
@@ -1485,9 +1619,11 @@
                         window.URL.revokeObjectURL(url);
                         a.remove();
                     }, 100);
+                    
+                    this.showNotification(`${format.toUpperCase()} report generated successfully!`, 'success');
                 } catch (err) {
-                    alert('Error generating or downloading report.');
-                    console.error(err);
+                    console.error('Report generation error:', err);
+                    this.showNotification(`Error generating ${format.toUpperCase()} report: ${err.message}`, 'error');
                 }
             }
 
@@ -1714,10 +1850,9 @@
                 if (this.dom.timelineProgress) this.dom.timelineProgress.style.width = `${progress}%`;
             }
 
+            // This method is now replaced by the async version below
             updateStatistics() {
-                this.animateCounter(this.dom.endpointsFound, this.endpoints.length);
-                this.animateCounter(this.dom.vulnerabilitiesFound, this.vulnerabilities.length);
-                this.animateCounter(this.dom.riskScore, this.calculateRiskScore());
+                this.updateStatisticsAsync();
             }
 
             animateCounter(element, targetValue) {
@@ -1803,8 +1938,213 @@
                         }
                     }
                 });
+
+                // Initialize ML Performance Chart
+                const mlCtx = document.getElementById('mlPerformanceChart')?.getContext('2d');
+                if(!mlCtx) return;
+                this.mlPerformanceChart = new Chart(mlCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Accuracy', 'Precision', 'Recall', 'F1 Score', 'CVSS Correlation'],
+                        datasets: [{
+                            label: 'Model Performance (%)',
+                            data: [0, 0, 0, 0, 0],
+                            backgroundColor: [
+                                'rgba(79, 172, 254, 0.8)',
+                                'rgba(240, 147, 251, 0.8)',
+                                'rgba(255, 107, 107, 0.8)',
+                                'rgba(72, 219, 251, 0.8)',
+                                'rgba(76, 175, 80, 0.8)'
+                            ],
+                            borderColor: [
+                                'rgba(79, 172, 254, 1)',
+                                'rgba(240, 147, 251, 1)',
+                                'rgba(255, 107, 107, 1)',
+                                'rgba(72, 219, 251, 1)',
+                                'rgba(76, 175, 80, 1)'
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    color: 'rgba(255, 255, 255, 0.7)',
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.2)'
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: 'rgba(255, 255, 255, 0.7)'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'rgba(255, 255, 255, 0.7)'
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // URL Discovery Progress Chart
+                const urlDiscoveryCtx = document.getElementById('urlDiscoveryChart')?.getContext('2d');
+                if (urlDiscoveryCtx) {
+                    this.urlDiscoveryChart = new Chart(urlDiscoveryCtx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Start', '25%', '50%', '75%', 'Complete'],
+                            datasets: [{
+                                label: 'URLs Discovered',
+                                data: [0, 0, 0, 0, 0],
+                                borderColor: 'rgba(79, 172, 254, 0.8)',
+                                backgroundColor: 'rgba(79, 172, 254, 0.2)',
+                                borderWidth: 2,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Number of URLs'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Vulnerability Detection Progress Chart
+                const vulnerabilityDetectionCtx = document.getElementById('vulnerabilityDetectionChart')?.getContext('2d');
+                if (vulnerabilityDetectionCtx) {
+                    this.vulnerabilityDetectionChart = new Chart(vulnerabilityDetectionCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Critical', 'High', 'Medium', 'Low'],
+                            datasets: [{
+                                label: 'Vulnerabilities Detected',
+                                data: [0, 0, 0, 0],
+                                backgroundColor: ['#ff6b6b', '#feca57', '#48dbfb', '#4CAF50'],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Number of Vulnerabilities'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Scan Performance Metrics Chart
+                const scanPerformanceCtx = document.getElementById('scanPerformanceChart')?.getContext('2d');
+                if (scanPerformanceCtx) {
+                    this.scanPerformanceChart = new Chart(scanPerformanceCtx, {
+                        type: 'radar',
+                        data: {
+                            labels: ['Speed', 'Depth', 'Coverage', 'Accuracy', 'Efficiency'],
+                            datasets: [{
+                                label: 'Scan Performance',
+                                data: [0, 0, 0, 0, 0],
+                                backgroundColor: 'rgba(240, 147, 251, 0.2)',
+                                borderColor: 'rgba(240, 147, 251, 0.8)',
+                                pointBackgroundColor: 'rgba(240, 147, 251, 0.8)',
+                                pointBorderColor: '#fff'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                r: {
+                                    beginAtZero: true,
+                                    max: 100,
+                                    ticks: {
+                                        stepSize: 20
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
             }
-            
+
+            updateScanProgressCharts() {
+                // URL Discovery Progress
+                if (this.urlDiscoveryChart) {
+                    const urlCount = this.endpoints.length;
+                    this.urlDiscoveryChart.data.datasets[0].data = [
+                        0, 
+                        Math.floor(urlCount * 0.25), 
+                        Math.floor(urlCount * 0.5), 
+                        Math.floor(urlCount * 0.75), 
+                        urlCount
+                    ];
+                    this.urlDiscoveryChart.update();
+                }
+
+                // Vulnerability Detection Progress
+                if (this.vulnerabilityDetectionChart) {
+                    const severityCounts = this.vulnerabilities.reduce((acc, vuln) => {
+                        acc[vuln.severity] = (acc[vuln.severity] || 0) + 1;
+                        return acc;
+                    }, {});
+
+                    this.vulnerabilityDetectionChart.data.datasets[0].data = [
+                        severityCounts['CRITICAL'] || 0,
+                        severityCounts['HIGH'] || 0,
+                        severityCounts['MEDIUM'] || 0,
+                        severityCounts['LOW'] || 0
+                    ];
+                    this.vulnerabilityDetectionChart.update();
+                }
+
+                // Scan Performance Metrics
+                if (this.scanPerformanceChart) {
+                    // Simulate performance metrics based on scan data
+                    const totalEndpoints = this.endpoints.length;
+                    const totalVulnerabilities = this.vulnerabilities.length;
+                    const scanDuration = this.scanStartTime ? (Date.now() - this.scanStartTime) / 1000 : 0;
+
+                    this.scanPerformanceChart.data.datasets[0].data = [
+                        Math.min(scanDuration > 0 ? (totalEndpoints / scanDuration) * 20 : 0, 100), // Speed
+                        Math.min(totalEndpoints * 2, 100), // Depth
+                        Math.min(totalEndpoints / 10, 100), // Coverage
+                        Math.min(totalVulnerabilities > 0 ? (totalEndpoints / totalVulnerabilities) * 10 : 0, 100), // Accuracy
+                        Math.min((totalEndpoints + totalVulnerabilities) / 10, 100) // Efficiency
+                    ];
+                    this.scanPerformanceChart.update();
+                }
+            }
+
             updateCharts() {
                 if(!this.chart) return;
                 const counts = this.vulnerabilities.reduce((acc, v) => { acc[v.severity] = (acc[v.severity] || 0) + 1; return acc; }, {});
@@ -1812,6 +2152,7 @@
                 this.chart.update();
 
                 this.updateRadarChart(); // Call the new radar chart update method
+                this.updateMLPerformanceChart(); // Update ML performance chart
             }
 
             // New method to update the radar chart based on risk categories
@@ -2149,6 +2490,283 @@
                 // Add tooltips (optional but highly recommended for detail)
                 bars.append("title")
                     .text(d => `Endpoint: ${d.url}\nRisk: ${d.risk.toUpperCase()}`);
+            }
+
+            // Enhanced ML Methods
+            async initializeEnhancedML() {
+                try {
+                    this.addActivity('🧠 Initializing AI/ML Engine', 'Loading enhanced risk scoring models...');
+                    
+                    // Initialize enhanced risk scoring engine via API
+                    const response = await fetch('/api/v1/ml/initialize', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        this.mlModelMetrics = result.metrics;
+                        this.addActivity('✅ AI/ML Engine Ready', 'Enhanced risk scoring models loaded successfully');
+                        this.updateMLPerformanceChart();
+                    } else {
+                        this.addActivity('⚠️ AI/ML Engine Fallback', 'Using standard risk scoring (enhanced models unavailable)');
+                    }
+                } catch (error) {
+                    console.warn('Enhanced ML initialization failed, using fallback:', error);
+                    this.addActivity('⚠️ AI/ML Engine Fallback', 'Using standard risk scoring (enhanced models unavailable)');
+                }
+            }
+
+            async calculateEnhancedRiskScore(vulnerability) {
+                try {
+                    const response = await fetch('/api/v1/ml/risk-score', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ vulnerability })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        return result.riskScore;
+                    }
+                } catch (error) {
+                    console.warn('Enhanced risk scoring failed, using fallback:', error);
+                }
+                
+                // Fallback to standard risk calculation
+                return this.calculateStandardRiskScore(vulnerability);
+            }
+
+            calculateStandardRiskScore(vulnerability) {
+                // Ensure vulnerability is defined and has a severity
+                if (!vulnerability || !vulnerability.severity) {
+                    return 0;
+                }
+
+                const severityScores = {
+                    'CRITICAL': 100,
+                    'HIGH': 75,
+                    'MEDIUM': 50,
+                    'LOW': 25,
+                    'INFO': 10
+                };
+                
+                return severityScores[vulnerability.severity] || 0;
+            }
+
+            updateMLPerformanceChart() {
+                if (!this.mlPerformanceChart || !this.mlModelMetrics) return;
+                
+                const metrics = this.mlModelMetrics;
+                this.mlPerformanceChart.data.datasets[0].data = [
+                    Math.round(metrics.accuracy * 100),
+                    Math.round(metrics.precision * 100),
+                    Math.round(metrics.recall * 100),
+                    Math.round(metrics.f1Score * 100),
+                    Math.round(metrics.cvssCorrelation * 100)
+                ];
+                
+                this.mlPerformanceChart.update();
+            }
+
+            async updateStatistics() {
+                this.animateCounter(this.dom.endpointsFound, this.endpoints.length);
+                this.animateCounter(this.dom.vulnerabilitiesFound, this.vulnerabilities.length);
+                
+                // Calculate enhanced risk score with CVSS
+                const totalRiskScore = await this.calculateTotalRiskScore();
+                this.animateCounter(this.dom.riskScore, totalRiskScore.overall);
+                
+                // Update CVSS score
+                if (this.dom.cvssScore) {
+                    this.animateCounter(this.dom.cvssScore, Math.round(totalRiskScore.cvssAdjusted));
+                }
+                
+                // Update change indicators
+                if (this.dom.riskChange) {
+                    const change = totalRiskScore.overall > 0 ? '+' + totalRiskScore.overall : totalRiskScore.overall;
+                    this.dom.riskChange.textContent = `${change} points`;
+                }
+                
+                if (this.dom.cvssChange) {
+                    this.dom.cvssChange.textContent = `CVSS: ${totalRiskScore.cvssMetrics?.baseScore?.toFixed(1) || 'N/A'}`;
+                }
+
+                this.updateScanProgressCharts(); // Add this line
+            }
+
+            async calculateTotalRiskScore() {
+                // Ensure vulnerabilities is an array and not undefined
+                const vulnerabilities = Array.isArray(this.vulnerabilities) ? this.vulnerabilities : [];
+
+                if (vulnerabilities.length === 0) {
+                    return {
+                        overall: 0,
+                        cvssAdjusted: 0,
+                        cvssMetrics: null
+                    };
+                }
+
+                try {
+                    const response = await fetch('/api/v1/ml/bulk-risk-score', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ vulnerabilities })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        return result.riskScore;
+                    }
+                } catch (error) {
+                    console.warn('Enhanced bulk risk scoring failed:', error);
+                }
+                
+                // Fallback calculation
+                const totalScore = vulnerabilities.reduce((sum, v) => {
+                    return sum + this.calculateStandardRiskScore(v);
+                }, 0);
+                
+                return {
+                    overall: totalScore,
+                    cvssAdjusted: totalScore,
+                    cvssMetrics: null
+                };
+            }
+
+            showNotification(message, type = 'info') {
+                const notification = document.getElementById('notification');
+                const content = notification.querySelector('.notification-content');
+                
+                if (!notification || !content) return;
+                
+                // Remove existing classes
+                notification.className = 'notification';
+                
+                // Add type-specific class
+                notification.classList.add(type);
+                
+                // Set content
+                content.textContent = message;
+                
+                // Show notification
+                notification.classList.add('show');
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
+            }
+
+            // Enhanced vulnerability processing with ML insights
+            async addVulnerability(vulnerability) {
+                if (!vulnerability || !vulnerability.endpoint) return;
+                
+                // Calculate enhanced risk score
+                const enhancedRiskScore = await this.calculateEnhancedRiskScore(vulnerability);
+                vulnerability.enhancedRiskScore = enhancedRiskScore;
+                
+                this.vulnerabilities.push(vulnerability);
+                this.updateStatistics();
+                this.updateCharts();
+                this.updateNetworkVisualization();
+                
+                console.log('Received vulnerability with enhanced scoring:', vulnerability);
+                this.addToList(this.dom.vulnerabilitiesList, this.createVulnerabilityItemHtml(vulnerability));
+                this.addActivity('🚨 Vulnerability Found', `${vulnerability.severity} - ${vulnerability.type} (Risk: ${enhancedRiskScore})`);
+                this.updateHeatmap();
+            }
+
+            // PDF Report Generation
+            async generatePDFReport() {
+                try {
+                    this.addActivity('📄 Generating AI PDF Report', 'Creating comprehensive security assessment...');
+                    
+                    // Validate scan data
+                    if (this.vulnerabilities.length === 0) {
+                        this.showNotification('No vulnerabilities found. Cannot generate PDF.', 'warning');
+                        return;
+                    }
+
+                    // Prepare scan data for PDF generation
+                    const scanData = {
+                        id: this.currentScanId || `scan-${Date.now()}`,
+                        userId: 'mock-user-id',
+                        target: { baseUrl: this.dom.targetUrlInput.value },
+                        status: 'completed',
+                        progress: 100,
+                        currentStep: 'Scan Complete',
+                        vulnerabilities: this.vulnerabilities,
+                        metadata: {
+                            startedAt: new Date(this.scanStartTime || Date.now()),
+                            endedAt: new Date(),
+                            endpointsDiscovered: this.endpoints.length,
+                            aiAnalysisEnabled: true
+                        },
+                        configuration: {
+                            depth: 'comprehensive',
+                            includeAI: true
+                        },
+                        endpoints: this.endpoints
+                    };
+
+                    // Validate scan data
+                    console.log('Preparing PDF with scan data:', scanData);
+
+                    // Generate PDF report via API
+                    const response = await fetch(`/api/v1/reports/${scanData.id}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            format: 'pdf',
+                            scanData: scanData  // Pass full scan data
+                        })
+                    });
+
+                    // Log the raw response for debugging
+                    const responseText = await response.text();
+                    console.log('Raw API Response:', responseText);
+
+                    // Parse the response
+                    let result;
+                    try {
+                        result = JSON.parse(responseText);
+                    } catch (parseError) {
+                        console.error('Failed to parse response:', parseError);
+                        throw new Error(`Invalid server response: ${responseText}`);
+                    }
+
+                    if (!response.ok) {
+                        throw new Error(result.error?.message || 'Unknown server error');
+                    }
+
+                    if (result.success && result.data.downloadUrl) {
+                        // Download the PDF
+                        const downloadResponse = await fetch(result.data.downloadUrl);
+                        if (downloadResponse.ok) {
+                            const blob = await downloadResponse.blob();
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = `security-assessment-${scanData.id}.pdf`;
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            window.URL.revokeObjectURL(url);
+                            
+                            this.addActivity('✅ PDF Report Generated', 'AI-powered security assessment downloaded successfully');
+                            this.showNotification('PDF report generated and downloaded successfully!', 'success');
+                        } else {
+                            throw new Error('Failed to download PDF');
+                        }
+                    } else {
+                        throw new Error('PDF generation failed: Invalid response');
+                    }
+                } catch (error) {
+                    console.error('PDF generation failed:', error);
+                    this.addActivity('❌ PDF Generation Failed', error.message || 'Failed to generate PDF report');
+                    this.showNotification(`PDF Report Generation Error: ${error.message}`, 'error');
+                }
             }
         }
 

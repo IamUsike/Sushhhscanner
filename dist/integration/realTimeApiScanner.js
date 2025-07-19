@@ -980,6 +980,8 @@ class RealTimeApiScanner {
     updateDashboardWithRealData() {
         if (!this.activeScan || !this.dashboardServer)
             return;
+        // **CRITICAL**: Replace dashboard's sample data with real scan data
+        this.dashboardServer.updateWithRealScanData(this.activeScan.vulnerabilities);
         // Broadcast complete dashboard update
         this.dashboardServer.broadcastMessage('dashboard_update', {
             type: 'real_data_loaded',

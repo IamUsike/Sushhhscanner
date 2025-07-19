@@ -22,6 +22,7 @@ class DashboardServer {
         // Sample data for demonstration - will be replaced with real scan data
         this.vulnerabilities = [];
         this.lastUpdate = new Date();
+        this.hasRealScanData = false; // Track if we have real scan data vs sample data
         this.config = config;
         this.riskEngine = riskEngine;
         this.analytics = new riskAnalyticsDashboard_1.RiskAnalyticsDashboard(riskEngine);
@@ -600,7 +601,14 @@ class DashboardServer {
     startRealTimeUpdates() {
         this.updateTimer = setInterval(async () => {
             try {
-                // Generate fresh insights and metrics
+                // Check if we have real scan data from an actual scan
+                const activeScan = this.realTimeScanner.getActiveScan();
+                // If we have real scan data or an active scan, don't send sample data updates
+                if (activeScan || this.hasRealScanData) {
+                    logger_1.logger.debug('Skipping sample data update - real scan data available');
+                    return;
+                }
+                // Only send sample data updates if no real scan data exists
                 const metrics = await this.generateDashboardMetrics();
                 const insights = await this.analytics.generateMLInsights(this.vulnerabilities);
                 // Broadcast to all connected clients
@@ -615,7 +623,7 @@ class DashboardServer {
                     timestamp: new Date().toISOString()
                 });
                 this.lastUpdate = new Date();
-                logger_1.logger.info(`Real-time update sent to ${this.clients.size} clients`);
+                logger_1.logger.info(`Sample data update sent to ${this.clients.size} clients`);
             }
             catch (error) {
                 logger_1.logger.error(`Real-time update failed: ${error.message}`);
@@ -675,6 +683,22 @@ class DashboardServer {
                 timestamp: new Date().toISOString()
             });
         }
+    }
+    // Method to update dashboard with real scan data
+    updateWithRealScanData(vulnerabilities) {
+        logger_1.logger.info(`Updating dashboard with ${vulnerabilities.length} real vulnerabilities`);
+        // Replace sample data with real scan data
+        this.vulnerabilities = vulnerabilities;
+        this.hasRealScanData = true;
+        this.lastUpdate = new Date();
+        // Stop sending sample data updates since we now have real data
+        logger_1.logger.info('Real scan data received - stopping sample data updates');
+    }
+    // Method to reset to sample data (for testing/demo purposes)
+    resetToSampleData() {
+        logger_1.logger.info('Resetting to sample data');
+        this.hasRealScanData = false;
+        this.loadSampleData();
     }
 }
 exports.DashboardServer = DashboardServer;

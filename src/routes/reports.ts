@@ -27,7 +27,7 @@ router.use((req, res, next) => {
 
 // Validation schema for report generation
 const generateReportSchema = Joi.object({
-  format: Joi.string().valid('json', 'csv').required(), // Only allow json and csv for now
+  format: Joi.string().valid('json', 'csv', 'pdf').required(), // Added PDF support
 });
 
 // POST /api/v1/reports/:scanId - Generate a report for a scan
@@ -90,6 +90,65 @@ router.post('/:scanId',
           reportData = generateCSVReport(scan);
           contentType = 'text/csv';
           break;
+        case 'pdf':
+          try {
+            const { PDFReportGenerator } = await import('../ai/pdfReportGenerator');
+            // Use Gemini by default, can be configured via environment variable
+            const llmProvider = (process.env.LLM_PROVIDER as 'gemini' | 'groq') || 'gemini';
+            const pdfGenerator = new PDFReportGenerator(llmProvider);
+            
+            // Check if scan data was passed in the request body
+            const passedScanData = req.body.scanData || scan;
+
+            // Log the scan data for debugging
+            logger.info('PDF Generation - Scan Data:', JSON.stringify({
+              id: passedScanData.id,
+              target: passedScanData.target,
+              vulnerabilitiesCount: passedScanData.vulnerabilities?.length || 0,
+              endpointsCount: passedScanData.endpoints?.length || 0
+            }, null, 2));
+
+            // Validate scan data
+            if (!passedScanData) {
+              throw new Error('No scan data provided for PDF generation');
+            }
+
+            // Ensure vulnerabilities exist
+            if (!passedScanData.vulnerabilities || passedScanData.vulnerabilities.length === 0) {
+              // Create a minimal report with a message if no vulnerabilities
+              passedScanData.vulnerabilities = [{
+                type: 'NO_VULNERABILITIES',
+                severity: 'INFO',
+                description: 'No vulnerabilities were detected during the scan.',
+                endpoint: passedScanData.target?.baseUrl || 'Unknown Target'
+              }];
+            }
+
+            const pdfBuffer = await pdfGenerator.generatePDFReport(passedScanData);
+            
+            // Additional PDF validation
+            if (!pdfBuffer || pdfBuffer.length === 0) {
+              throw new Error('Generated PDF buffer is empty');
+            }
+
+            // Log PDF buffer details for verification
+            logger.info(`PDF Generation - Buffer Details`, {
+              bufferSize: pdfBuffer.length,
+              base64Length: pdfBuffer.toString('base64').length
+            });
+
+            reportData = pdfBuffer.toString('base64');
+            contentType = 'application/pdf';
+          } catch (pdfError) {
+            logger.error('PDF Generation Error:', {
+              message: pdfError.message,
+              stack: pdfError.stack,
+              name: pdfError.name,
+              scanId: req.params.scanId
+            });
+            throw pdfError; // Re-throw to be caught by the outer catch block
+          }
+          break;
         default:
           return res.status(400).json({
             success: false,
@@ -142,35 +201,77 @@ router.post('/:scanId',
 // GET /api/v1/reports/:reportId/download - Download a generated report
 router.get('/:reportId/download', async (req, res) => {
     const { reportId } = req.params;
-  const userId = req.user?.id || 'anonymous'; // Use mock user id
+    const userId = req.user?.id || 'anonymous'; // Use mock user id
 
-  logger.info(`Attempting to download report ${reportId} by user: ${userId}`);
+    logger.info(`Attempting to download report ${reportId} by user: ${userId}`);
 
     try {
-    const report = reportFileStorage.get(reportId);
-      
-    if (!report) {
-      logger.warn(`Report ${reportId} not found in file storage.`);
-        return res.status(404).json({
-          success: false,
-          error: { message: 'Report not found or expired' },
-          timestamp: new Date().toISOString(),
-        } as APIResponse);
-      }
+        const report = reportFileStorage.get(reportId);
+        
+        if (!report) {
+            logger.warn(`Report ${reportId} not found in file storage.`);
+            return res.status(404).json({
+                success: false,
+                error: { message: 'Report not found or expired' },
+                timestamp: new Date().toISOString(),
+            } as APIResponse);
+        }
 
-    res.setHeader('Content-Type', report.contentType);
-    res.setHeader('Content-Disposition', `attachment; filename="security-report-${reportId}.${report.format}"`);
-    res.send(report.data);
+        // Log detailed report information
+        logger.info('Report Download Details', {
+            reportId,
+            format: report.format,
+            contentType: report.contentType,
+            dataLength: report.data.length,
+            createdAt: report.createdAt
+        });
 
-    logger.info(`Report ${reportId} downloaded successfully.`);
+        // Validate report data
+        if (!report.data || report.data.length === 0) {
+            logger.error(`Report ${reportId} has empty data`);
+            return res.status(500).json({
+                success: false,
+                error: { message: 'Report data is empty' },
+                timestamp: new Date().toISOString(),
+            } as APIResponse);
+        }
+
+        // Attempt to decode base64 data
+        let decodedData;
+        try {
+            decodedData = Buffer.from(report.data, 'base64');
+        } catch (decodeError) {
+            logger.error(`Failed to decode report ${reportId}:`, {
+                message: decodeError.message,
+                dataType: typeof report.data,
+                dataLength: report.data.length
+            });
+            return res.status(500).json({
+                success: false,
+                error: { message: 'Failed to decode report data' },
+                timestamp: new Date().toISOString(),
+            } as APIResponse);
+        }
+
+        res.setHeader('Content-Type', report.contentType);
+        res.setHeader('Content-Disposition', `attachment; filename="security-report-${reportId}.${report.format}"`);
+        res.send(decodedData);
+
+        logger.info(`Report ${reportId} downloaded successfully.`);
     } catch (error) {
-      logger.error(`Failed to download report ${reportId}:`, error);
-      
-      res.status(500).json({
-        success: false,
-        error: { message: 'Failed to download report' },
-        timestamp: new Date().toISOString(),
-      } as APIResponse);
+        logger.error(`Failed to download report ${reportId}:`, {
+            message: error.message,
+            stack: error.stack
+        });
+        
+        res.status(500).json({
+            success: false,
+            error: { 
+                message: 'Failed to download report',
+                details: error instanceof Error ? error.message : 'Unknown error'
+            },
+            timestamp: new Date().toISOString(),
+        } as APIResponse);
     }
 });
 

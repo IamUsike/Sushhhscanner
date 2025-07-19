@@ -41,14 +41,17 @@ const axios_1 = __importDefault(require("axios"));
 const url_1 = require("url");
 const cheerio = __importStar(require("cheerio"));
 const logger_1 = require("../utils/logger");
+const sensitiveDataDetector_1 = require("../security/sensitiveDataDetector");
 class PassiveCrawler {
-    constructor(target, options) {
+    constructor(target, options, onVulnerabilityFound) {
         this.visitedUrls = new Set();
         this.discoveredEndpoints = new Set();
         this.maxDepth = 2;
         this.maxUrls = 50;
         this.target = target;
         this.options = options;
+        this.sensitiveDataDetector = new sensitiveDataDetector_1.SensitiveDataDetector();
+        this.onVulnerabilityFound = onVulnerabilityFound;
     }
     async discover() {
         const endpoints = [];
@@ -105,7 +108,7 @@ class PassiveCrawler {
         }
         this.visitedUrls.add(url);
         try {
-            const response = await axios_1.default.get(url, {
+            const response = await this.retryRequest(url, {
                 timeout: this.options.timeout || 10000,
                 headers: {
                     'User-Agent': this.options.userAgent || 'API-Risk-Visualizer/1.0',
@@ -114,7 +117,26 @@ class PassiveCrawler {
                 },
                 validateStatus: (status) => status < 400,
             });
+            if (!response) {
+                logger_1.logger.debug(`No response received for ${url} after retries.`);
+                return;
+            }
             const contentType = response.headers['content-type'] || '';
+            // Scan response body for sensitive data
+            const bodyFindings = this.sensitiveDataDetector.scan(response.data, 'response_body');
+            if (bodyFindings.length > 0) {
+                sensitiveDataDetector_1.SensitiveDataDetector.findingsToVulnerabilities(bodyFindings, url, 'GET').forEach(v => this.onVulnerabilityFound(v));
+            }
+            // Scan response headers for sensitive data
+            for (const headerName in response.headers) {
+                const headerValue = response.headers[headerName];
+                if (typeof headerValue === 'string') {
+                    const headerFindings = this.sensitiveDataDetector.scan(headerValue, `header: ${headerName}`);
+                    if (headerFindings.length > 0) {
+                        sensitiveDataDetector_1.SensitiveDataDetector.findingsToVulnerabilities(headerFindings, url, 'GET').forEach(v => this.onVulnerabilityFound(v));
+                    }
+                }
+            }
             if (contentType.includes('text/html')) {
                 await this.parseHtmlPage(response.data, url, depth);
             }
@@ -375,17 +397,33 @@ class PassiveCrawler {
     async createEndpointInfo(url) {
         return {
             url,
-            method: 'GET', // Default method, will be enhanced later
+            method: 'GET', // Default to GET for discovered URLs
             parameters: [],
-            authentication: {
-                required: false,
-                methods: [],
-                tested: false,
-                bypassed: false,
-            },
+            authentication: { required: false },
             discoveryMethod: 'crawling',
             responseTypes: [],
         };
+    }
+    // Helper method for retrying requests with exponential back-off
+    async retryRequest(url, config, retries = 3, delay = 1000) {
+        try {
+            const response = await axios_1.default.get(url, config);
+            return response;
+        }
+        catch (error) {
+            if (axios_1.default.isAxiosError(error) && error.response && error.response.status === 429 && retries > 0) {
+                logger_1.logger.warn(`Rate limit hit for ${url}. Retrying in ${delay / 1000}s... (Attempts left: ${retries})`);
+                await new Promise(resolve => setTimeout(resolve, delay));
+                return this.retryRequest(url, config, retries - 1, delay * 2); // Exponential back-off
+            }
+            else if (axios_1.default.isAxiosError(error) && error.response) {
+                logger_1.logger.debug(`HTTP Error for ${url}: ${error.response.status}`);
+            }
+            else if (error instanceof Error) {
+                logger_1.logger.debug(`Request failed for ${url}: ${error.message}`);
+            }
+            return null; // Return null on non-retriable errors or after exhausting retries
+        }
     }
 }
 exports.PassiveCrawler = PassiveCrawler;

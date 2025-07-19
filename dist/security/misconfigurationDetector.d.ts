@@ -1,7 +1,8 @@
+import { VulnerabilitySeverity, RemediationGuidance } from '../types';
 export interface MisconfigurationResult {
     category: string;
     type: string;
-    severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'INFO';
+    severity: VulnerabilitySeverity;
     confidence: number;
     title: string;
     description: string;
@@ -15,7 +16,7 @@ export interface MisconfigurationResult {
     };
     cwe: string;
     owasp: string;
-    recommendation: string;
+    recommendation: RemediationGuidance;
     impact: string;
     references: string[];
 }
@@ -34,6 +35,7 @@ export interface MisconfigurationScanOptions {
 }
 export declare class MisconfigurationDetector {
     private options;
+    private recommendationService;
     private readonly defaultOptions;
     private readonly sensitiveFiles;
     private readonly sensitivePaths;
@@ -46,6 +48,9 @@ export declare class MisconfigurationDetector {
     private checkCORSMisconfiguration;
     private checkCSPMisconfiguration;
     private checkSSLConfiguration;
+    private checkRobotsAndSitemap;
+    private checkInsecureCookieDirectives;
+    private checkHttpMethodEnforcement;
     private makeRequest;
     private normalizeUrl;
     private isValidContent;
@@ -55,5 +60,6 @@ export declare class MisconfigurationDetector {
     private hasDetailedErrorInfo;
     private getSensitiveFileSeverity;
     private truncateContent;
+    private generateRecommendationForMisconfiguration;
 }
 //# sourceMappingURL=misconfigurationDetector.d.ts.map

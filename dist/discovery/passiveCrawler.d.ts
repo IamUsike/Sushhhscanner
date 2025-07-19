@@ -1,4 +1,4 @@
-import { EndpointInfo, ScanTarget } from '../types';
+import { EndpointInfo, ScanTarget, Vulnerability } from '../types';
 import { DiscoveryOptions } from './endpointDiscovery';
 export declare class PassiveCrawler {
     private target;
@@ -7,7 +7,9 @@ export declare class PassiveCrawler {
     private discoveredEndpoints;
     private maxDepth;
     private maxUrls;
-    constructor(target: ScanTarget, options: DiscoveryOptions);
+    private sensitiveDataDetector;
+    private onVulnerabilityFound;
+    constructor(target: ScanTarget, options: DiscoveryOptions, onVulnerabilityFound: (vulnerability: Vulnerability) => void);
     discover(): Promise<EndpointInfo[]>;
     private crawlPage;
     private parseHtmlPage;
@@ -19,5 +21,6 @@ export declare class PassiveCrawler {
     private extractApiEndpointsFromUrl;
     private isSameDomain;
     private createEndpointInfo;
+    private retryRequest;
 }
 //# sourceMappingURL=passiveCrawler.d.ts.map

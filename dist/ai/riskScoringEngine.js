@@ -263,8 +263,8 @@ class RiskScoringEngine {
             // Generate synthetic training data based on real vulnerability patterns
             const trainingData = this.generateTrainingData(1000);
             // Train Severity Model
-            const severityFeatures = tf.tensor2d(trainingData.severity.features);
-            const severityLabels = tf.tensor2d(trainingData.severity.labels, [trainingData.severity.labels.length, 1]);
+            const severityFeatures = tf.tensor2d(trainingData.features);
+            const severityLabels = tf.tensor2d(trainingData.severityLabels, [trainingData.severityLabels.length, 1]);
             await this.severityModel.fit(severityFeatures, severityLabels, {
                 epochs: 50,
                 batchSize: 32,
@@ -272,8 +272,8 @@ class RiskScoringEngine {
                 verbose: 0
             });
             // Train Exploitability Model
-            const exploitFeatures = tf.tensor2d(trainingData.exploitability.features);
-            const exploitLabels = tf.tensor2d(trainingData.exploitability.labels, [trainingData.exploitability.labels.length, 1]);
+            const exploitFeatures = tf.tensor2d(trainingData.features);
+            const exploitLabels = tf.tensor2d(trainingData.exploitabilityLabels, [trainingData.exploitabilityLabels.length, 1]);
             await this.exploitabilityModel.fit(exploitFeatures, exploitLabels, {
                 epochs: 40,
                 batchSize: 32,
@@ -281,8 +281,8 @@ class RiskScoringEngine {
                 verbose: 0
             });
             // Train Business Impact Model
-            const businessFeatures = tf.tensor2d(trainingData.businessImpact.features);
-            const businessLabels = tf.tensor2d(trainingData.businessImpact.labels, [trainingData.businessImpact.labels.length, 1]);
+            const businessFeatures = tf.tensor2d(trainingData.features);
+            const businessLabels = tf.tensor2d(trainingData.businessImpactLabels, [trainingData.businessImpactLabels.length, 1]);
             await this.businessImpactModel.fit(businessFeatures, businessLabels, {
                 epochs: 30,
                 batchSize: 16,
@@ -290,8 +290,8 @@ class RiskScoringEngine {
                 verbose: 0
             });
             // Train Ensemble Model
-            const ensembleFeatures = tf.tensor2d(trainingData.ensemble.features);
-            const ensembleLabels = tf.tensor2d(trainingData.ensemble.labels, [trainingData.ensemble.labels.length, 1]);
+            const ensembleFeatures = tf.tensor2d(trainingData.features);
+            const ensembleLabels = tf.tensor2d(trainingData.businessImpactLabels, [trainingData.businessImpactLabels.length, 1]); // Ensemble label is business impact
             await this.ensembleModel.fit(ensembleFeatures, ensembleLabels, {
                 epochs: 25,
                 batchSize: 16,
@@ -523,55 +523,56 @@ class RiskScoringEngine {
         };
     }
     generateTrainingData(samples) {
-        // Generate synthetic training data based on real vulnerability patterns
-        const severityData = { features: [], labels: [] };
-        const exploitabilityData = { features: [], labels: [] };
-        const businessImpactData = { features: [], labels: [] };
-        const ensembleData = { features: [], labels: [] };
+        const features = [];
+        const severityLabels = [];
+        const exploitabilityLabels = [];
+        const businessImpactLabels = [];
+        const vulnerabilityTypes = [
+            'SQL_INJECTION', 'XSS', 'COMMAND_INJECTION', 'DENIAL_OF_SERVICE',
+            'MISSING_SECURITY_HEADER', 'INSECURE_COOKIE_DIRECTIVE', 'EXPOSED_DISALLOWED_PATH',
+            'NOSQL_INJECTION', 'PATH_TRAVERSAL', 'LDAP_INJECTION', 'XXE'
+        ];
+        const severities = Object.keys(this.severityWeights);
+        const cwes = Object.keys(this.cweRiskScores);
+        const owasps = Object.keys(this.owaspRiskFactors);
+        const businessCriticalities = ['HIGH', 'MEDIUM', 'LOW'];
+        const dataClassifications = ['CONFIDENTIAL', 'INTERNAL', 'PUBLIC'];
+        const userAccesses = ['EXTERNAL', 'INTERNAL', 'ADMIN'];
+        const attackComplexities = ['LOW', 'MEDIUM', 'HIGH'];
         for (let i = 0; i < samples; i++) {
-            // Generate synthetic vulnerability
-            const severity = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'][Math.floor(Math.random() * 4)];
-            const cwe = Object.keys(this.cweRiskScores)[Math.floor(Math.random() * Object.keys(this.cweRiskScores).length)];
-            const syntheticVuln = {
-                type: 'synthetic',
-                severity: severity,
+            const vuln = {
+                type: vulnerabilityTypes[Math.floor(Math.random() * vulnerabilityTypes.length)],
+                severity: severities[Math.floor(Math.random() * severities.length)],
                 confidence: Math.random(),
-                cwe,
-                owasp: Object.keys(this.owaspRiskFactors)[Math.floor(Math.random() * Object.keys(this.owaspRiskFactors).length)],
-                endpoint: '/api/test',
-                method: 'GET',
-                responseTime: Math.random() * 5000,
-                statusCode: 200,
-                errorSignatures: [],
-                businessCriticality: ['HIGH', 'MEDIUM', 'LOW'][Math.floor(Math.random() * 3)],
-                dataClassification: ['CONFIDENTIAL', 'INTERNAL', 'PUBLIC'][Math.floor(Math.random() * 3)],
-                userAccess: ['EXTERNAL', 'INTERNAL', 'ADMIN'][Math.floor(Math.random() * 3)],
+                cwe: cwes[Math.floor(Math.random() * cwes.length)],
+                owasp: owasps[Math.floor(Math.random() * owasps.length)],
+                endpoint: `/api/v${Math.floor(Math.random() * 3) + 1}/resource/${Math.floor(Math.random() * 100)}`,
+                method: ['GET', 'POST', 'PUT', 'DELETE'][Math.floor(Math.random() * 4)],
+                responseTime: Math.random() * 5000 + 50,
+                statusCode: [200, 400, 401, 403, 500][Math.floor(Math.random() * 5)],
+                errorSignatures: Math.random() > 0.7 ? [['Error', 'SQL Error'][Math.floor(Math.random() * 2)]] : [],
+                businessCriticality: businessCriticalities[Math.floor(Math.random() * businessCriticalities.length)],
+                dataClassification: dataClassifications[Math.floor(Math.random() * dataClassifications.length)],
+                userAccess: userAccesses[Math.floor(Math.random() * userAccesses.length)],
                 authentication: Math.random() > 0.5,
-                encryption: Math.random() > 0.3,
-                attackComplexity: ['LOW', 'MEDIUM', 'HIGH'][Math.floor(Math.random() * 3)],
+                encryption: Math.random() > 0.5,
                 exploitability: Math.random(),
-                impact: Math.random()
+                impact: Math.random(),
+                attackComplexity: attackComplexities[Math.floor(Math.random() * attackComplexities.length)],
             };
-            const features = this.extractFeatures(syntheticVuln);
-            // Generate realistic labels based on features
-            const severityLabel = this.severityWeights[severity];
-            const exploitLabel = Math.random() * (features[12] || 0.5); // Based on complexity
-            const businessLabel = (features[7] || 0.5) * (features[8] || 0.5); // Business * data classification
-            const ensembleLabel = (severityLabel + exploitLabel + businessLabel) / 3;
-            severityData.features.push(features.slice(0, 15));
-            severityData.labels.push(severityLabel);
-            exploitabilityData.features.push(features.slice(0, 12));
-            exploitabilityData.labels.push(exploitLabel);
-            businessImpactData.features.push(features.slice(5, 15));
-            businessImpactData.labels.push(businessLabel);
-            ensembleData.features.push([severityLabel, exploitLabel, businessLabel, 0.5, 0.5]);
-            ensembleData.labels.push(ensembleLabel);
+            const calculatedSeverityScore = this.severityWeights[vuln.severity];
+            const calculatedExploitabilityScore = vuln.exploitability || 0.5;
+            const calculatedBusinessImpactScore = (this.calculateContextualRisk(vuln) + this.calculateTemporalRisk(vuln)) / 2; // Simplified
+            features.push(this.extractFeatures(vuln));
+            severityLabels.push(calculatedSeverityScore);
+            exploitabilityLabels.push(calculatedExploitabilityScore);
+            businessImpactLabels.push(calculatedBusinessImpactScore);
         }
         return {
-            severity: severityData,
-            exploitability: exploitabilityData,
-            businessImpact: businessImpactData,
-            ensemble: ensembleData
+            features,
+            severityLabels,
+            exploitabilityLabels,
+            businessImpactLabels
         };
     }
     getModelMetrics() {

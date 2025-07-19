@@ -1,4 +1,4 @@
-import { User, Scan, Vulnerability } from '@/types';
+import { User, Scan, Vulnerability, Report } from '@/types';
 declare class Database {
     private sqliteDb?;
     private pgClient?;
@@ -24,6 +24,13 @@ declare class Database {
     getUserScans(userId: string, limit?: number): Promise<Scan[]>;
     createVulnerability(vulnerability: Vulnerability): Promise<void>;
     getScanVulnerabilities(scanId: string): Promise<Vulnerability[]>;
+    saveReport(report: Report, reportData: string): Promise<void>;
+    getReport(reportId: string): Promise<{
+        data: string;
+        format: string;
+    } | null>;
+    deleteReport(reportId: string): Promise<void>;
+    getReportsByScanId(scanId: string): Promise<Report[]>;
     close(): Promise<void>;
 }
 export declare const database: Database;
