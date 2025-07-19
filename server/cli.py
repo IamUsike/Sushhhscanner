@@ -80,8 +80,8 @@ async def main():
     def silhouette():
         banner = f"""
 {Fore.CYAN}╔══════════════════════════════════════════════════════════════╗
-║                 🔍 Advanced Directory Enumerator 🔍                    ║
-║                      Security Testing Tool                             ║
+║                 🔍 Advanced Directory Enumerator 🔍                    
+║                      Security Testing Tool                             
 ╚══════════════════════════════════════════════════════════════╝{Style.RESET_ALL}
 """
         print(banner)
