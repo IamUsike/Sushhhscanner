@@ -32,18 +32,19 @@ export async function generateDetailedPDFReport(scanData: ScanData): Promise<Uin
     const pdfDoc = await PDFDocument.create();
     
     try {
-        // Use built-in fonts instead of custom fonts
         const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
         const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
         
+        const pageWidth = 595.28;
+        const pageHeight = 841.89;
+        
         // Page 1: Executive Summary
-        const page1 = pdfDoc.addPage([595.28, 841.89]); // A4
-        const { width, height } = page1.getSize();
+        const page1 = pdfDoc.addPage([pageWidth, pageHeight]);
         
         // Title
         page1.drawText('Security Vulnerability Assessment Report', {
             x: 50,
-            y: height - 80,
+            y: pageHeight - 80,
             size: 24,
             font: boldFont,
             color: rgb(0.2, 0.2, 0.2)
@@ -51,7 +52,7 @@ export async function generateDetailedPDFReport(scanData: ScanData): Promise<Uin
         
         page1.drawText('Comprehensive API Security Analysis', {
             x: 50,
-            y: height - 110,
+            y: pageHeight - 110,
             size: 16,
             font: font,
             color: rgb(0.4, 0.4, 0.4)
@@ -63,13 +64,13 @@ export async function generateDetailedPDFReport(scanData: ScanData): Promise<Uin
             `Scan ID: ${scanData.scanId}`,
             `Target: ${scanData.target || 'Unknown'}`,
             `Vulnerabilities: ${scanData.vulnerabilities.length}`,
-            `Endpoints Discovered: ${scanData.endpointsDiscovered}`,
-            `Total Risk Score: ${scanData.totalRiskScore}`,
-            `CVSS Score: ${scanData.cvssScore}`,
-            `Scan Duration: ${scanData.duration}s`
+            `Endpoints Discovered: ${scanData.endpointsDiscovered || scanData.vulnerabilities.length || 0}`,
+            `Total Risk Score: ${scanData.totalRiskScore || calculateFallbackRiskScore(scanData.vulnerabilities)}`,
+            `CVSS Score: ${scanData.cvssScore || scanData.totalRiskScore || 'N/A'}`,
+            `Scan Duration: ${scanData.duration || 'Unknown'}s`
         ];
         
-        let yPos = height - 160;
+        let yPos = pageHeight - 160;
         metadata.forEach(item => {
             page1.drawText(item, {
                 x: 50,
@@ -92,9 +93,10 @@ export async function generateDetailedPDFReport(scanData: ScanData): Promise<Uin
         });
         
         yPos -= 30;
-        const summary = `This security assessment identified ${scanData.vulnerabilities.length} vulnerabilities across ${scanData.endpointsDiscovered} API endpoints. The overall risk score of ${scanData.totalRiskScore} indicates ${scanData.totalRiskScore > 75 ? 'critical' : scanData.totalRiskScore > 50 ? 'high' : 'moderate'} security concerns requiring immediate attention.`;
+        const riskLevel = scanData.totalRiskScore > 75 ? 'critical' : scanData.totalRiskScore > 50 ? 'high' : 'moderate';
+        const summary = `This security assessment identified ${scanData.vulnerabilities.length} vulnerabilities across ${scanData.endpointsDiscovered || scanData.vulnerabilities.length} API endpoints. The overall risk score of ${scanData.totalRiskScore || calculateFallbackRiskScore(scanData.vulnerabilities)} indicates ${riskLevel} security concerns requiring immediate attention.`;
         
-        const summaryLines = splitTextToFit(summary, width - 100, font, 12);
+        const summaryLines = splitTextToFit(summary, pageWidth - 100, font, 12);
         summaryLines.forEach(line => {
             page1.drawText(line, {
                 x: 50,
@@ -138,21 +140,38 @@ export async function generateDetailedPDFReport(scanData: ScanData): Promise<Uin
             yPos -= 18;
         });
         
-        // Page 2: Detailed Vulnerabilities with AI Remediation
-        const page2 = pdfDoc.addPage([595.28, 841.89]);
+        // **FIXED**: Detailed Vulnerabilities - Proper page tracking
+        let currentPage = pdfDoc.addPage([pageWidth, pageHeight]);
+        let currentPageYPos = pageHeight - 80;
         
-        page2.drawText('Detailed Vulnerability Analysis', {
+        currentPage.drawText('Detailed Vulnerability Analysis', {
             x: 50,
-            y: height - 80,
+            y: currentPageYPos,
             size: 20,
             font: boldFont,
             color: rgb(0.2, 0.2, 0.2)
         });
         
-        yPos = height - 120;
+        currentPageYPos -= 40;
         
-        for (let i = 0; i < scanData.vulnerabilities.length && yPos > 100; i++) {
+        for (let i = 0; i < scanData.vulnerabilities.length; i++) {
             const vuln = scanData.vulnerabilities[i];
+            
+            // **FIXED**: Check if we need a new page with proper spacing
+            const estimatedSpaceNeeded = 200; // Minimum space needed for a vulnerability
+            if (currentPageYPos < estimatedSpaceNeeded) {
+                currentPage = pdfDoc.addPage([pageWidth, pageHeight]);
+                currentPageYPos = pageHeight - 80;
+                
+                currentPage.drawText('Detailed Vulnerability Analysis (Continued)', {
+                    x: 50,
+                    y: currentPageYPos,
+                    size: 18,
+                    font: boldFont,
+                    color: rgb(0.2, 0.2, 0.2)
+                });
+                currentPageYPos -= 40;
+            }
             
             // Vulnerability header
             const severityColor = vuln.severity === 'CRITICAL' ? rgb(0.8, 0.2, 0.2) : 
@@ -160,102 +179,163 @@ export async function generateDetailedPDFReport(scanData: ScanData): Promise<Uin
                                  vuln.severity === 'MEDIUM' ? rgb(0.9, 0.7, 0.1) :
                                  rgb(0.2, 0.6, 0.2);
             
-            page2.drawText(`${vuln.type} - ${vuln.severity}`, {
+            currentPage.drawText(`${vuln.type} - ${vuln.severity}`, {
                 x: 50,
-                y: yPos,
+                y: currentPageYPos,
                 size: 16,
                 font: boldFont,
                 color: severityColor
             });
             
-            yPos -= 25;
+            currentPageYPos -= 25;
             
             // Vulnerability details
+            const endpointText = sanitizeTextForPDF(vuln.endpoint || 'N/A');
+            const descriptionText = sanitizeTextForPDF(vuln.description || 'No description available');
+            
             const details = [
-                `Endpoint: ${vuln.endpoint}`,
-                `Method: ${vuln.method}`,
-                `CWE: ${vuln.cwe || 'N/A'}`,
-                `CVSS: ${vuln.cvss || 'N/A'}`,
-                `Description: ${vuln.description}`
+                `Endpoint: ${endpointText}`,
+                `Method: ${sanitizeTextForPDF(vuln.method || 'N/A')}`,
+                `CWE: ${sanitizeTextForPDF(vuln.cwe || 'N/A')}`,
+                `CVSS: ${sanitizeTextForPDF(vuln.cvss || 'N/A')}`
             ];
             
             details.forEach(detail => {
-                if (yPos > 100) {
-                    page2.drawText(detail, {
-                        x: 60,
-                        y: yPos,
-                        size: 11,
-                        font: font,
-                        color: rgb(0.3, 0.3, 0.3)
+                // **FIXED**: Check space before writing each detail
+                if (currentPageYPos < 100) {
+                    currentPage = pdfDoc.addPage([pageWidth, pageHeight]);
+                    currentPageYPos = pageHeight - 80;
+                    
+                    currentPage.drawText('Detailed Vulnerability Analysis (Continued)', {
+                        x: 50,
+                        y: currentPageYPos,
+                        size: 18,
+                        font: boldFont,
+                        color: rgb(0.2, 0.2, 0.2)
                     });
-                    yPos -= 16;
+                    currentPageYPos -= 40;
                 }
+                
+                currentPage.drawText(detail, {
+                    x: 60,
+                    y: currentPageYPos,
+                    size: 11,
+                    font: font,
+                    color: rgb(0.3, 0.3, 0.3)
+                });
+                currentPageYPos -= 16;
             });
             
-            // AI Remediation
-            yPos -= 10;
-            if (yPos > 100) {
-                page2.drawText('AI Remediation Plan:', {
+            // **FIXED**: Description with proper line handling
+            currentPageYPos -= 5;
+            currentPage.drawText('Description:', {
+                x: 60,
+                y: currentPageYPos,
+                size: 11,
+                font: boldFont,
+                color: rgb(0.3, 0.3, 0.3)
+            });
+            currentPageYPos -= 16;
+            
+            const descriptionLines = splitTextToFit(descriptionText, pageWidth - 120, font, 11);
+            for (const line of descriptionLines) {
+                if (currentPageYPos < 100) {
+                    currentPage = pdfDoc.addPage([pageWidth, pageHeight]);
+                    currentPageYPos = pageHeight - 80;
+                    
+                    currentPage.drawText('Detailed Vulnerability Analysis (Continued)', {
+                        x: 50,
+                        y: currentPageYPos,
+                        size: 18,
+                        font: boldFont,
+                        color: rgb(0.2, 0.2, 0.2)
+                    });
+                    currentPageYPos -= 40;
+                }
+                
+                currentPage.drawText(line, {
+                    x: 80,
+                    y: currentPageYPos,
+                    size: 11,
+                    font: font,
+                    color: rgb(0.3, 0.3, 0.3)
+                });
+                currentPageYPos -= 16;
+            }
+            
+            // **FIXED**: AI Remediation with proper page tracking
+            currentPageYPos -= 10;
+            if (currentPageYPos < 100) {
+                currentPage = pdfDoc.addPage([pageWidth, pageHeight]);
+                currentPageYPos = pageHeight - 80;
+                
+                currentPage.drawText('Detailed Vulnerability Analysis (Continued)', {
                     x: 50,
-                    y: yPos,
-                    size: 14,
+                    y: currentPageYPos,
+                    size: 18,
                     font: boldFont,
                     color: rgb(0.2, 0.2, 0.2)
                 });
-                
-                yPos -= 20;
-                
-                try {
-                    const aiRemediation = await generateAIRemediation(vuln);
-                    const remediationLines = splitTextToFit(aiRemediation, width - 100, font, 11);
-                    
-                    remediationLines.forEach(line => {
-                        if (yPos > 100) {
-                            page2.drawText(line, {
-                                x: 60,
-                                y: yPos,
-                                size: 11,
-                                font: font,
-                                color: rgb(0.3, 0.3, 0.3)
-                            });
-                            yPos -= 15;
-                        }
-                    });
-                } catch (error) {
-                    if (yPos > 100) {
-                        page2.drawText('AI remediation generation failed. Please review manually.', {
-                            x: 60,
-                            y: yPos,
-                            size: 11,
-                            font: font,
-                            color: rgb(0.6, 0.3, 0.3)
-                        });
-                        yPos -= 15;
-                    }
-                }
-                
-                yPos -= 20;
+                currentPageYPos -= 40;
             }
             
-            // Add new page if needed
-            if (yPos < 150 && i < scanData.vulnerabilities.length - 1) {
-                const newPage = pdfDoc.addPage([595.28, 841.89]);
-                yPos = height - 80;
+            currentPage.drawText('AI Remediation Plan:', {
+                x: 50,
+                y: currentPageYPos,
+                size: 14,
+                font: boldFont,
+                color: rgb(0.2, 0.2, 0.2)
+            });
+            
+            currentPageYPos -= 20;
+            
+            try {
+                const aiRemediation = await generateAIRemediation(vuln);
+                const remediationText = aiRemediation && aiRemediation.trim() ? 
+                    sanitizeTextForPDF(aiRemediation) : 
+                    generateFallbackRemediation(vuln);
+                
+                // **FIXED**: Process remediation sections properly
+                currentPageYPos = await processRemediationSections(
+                    remediationText, 
+                    currentPage, 
+                    currentPageYPos, 
+                    pdfDoc, 
+                    pageWidth, 
+                    pageHeight, 
+                    font, 
+                    boldFont
+                );
+                
+            } catch (error) {
+                const fallbackRemediation = generateFallbackRemediation(vuln);
+                currentPageYPos = await processRemediationSections(
+                    fallbackRemediation, 
+                    currentPage, 
+                    currentPageYPos, 
+                    pdfDoc, 
+                    pageWidth, 
+                    pageHeight, 
+                    font, 
+                    boldFont
+                );
             }
+            
+            currentPageYPos -= 30; // Space between vulnerabilities
         }
         
         // Page 3: Compliance and Recommendations
-        const page3 = pdfDoc.addPage([595.28, 841.89]);
+        const page3 = pdfDoc.addPage([pageWidth, pageHeight]);
         
         page3.drawText('Compliance Assessment & Recommendations', {
             x: 50,
-            y: height - 80,
+            y: pageHeight - 80,
             size: 20,
             font: boldFont,
             color: rgb(0.2, 0.2, 0.2)
         });
         
-        yPos = height - 120;
+        yPos = pageHeight - 120;
         
         // Compliance status
         const complianceStandards = [
@@ -314,19 +394,26 @@ export async function generateDetailedPDFReport(scanData: ScanData): Promise<Uin
         
         recommendations.forEach(rec => {
             if (yPos > 100) {
-                page3.drawText(`• ${rec}`, {
-                    x: 60,
-                    y: yPos,
-                    size: 11,
-                    font: font,
-                    color: rgb(0.3, 0.3, 0.3)
+                const recLines = splitTextToFit(`• ${rec}`, pageWidth - 120, font, 11);
+                recLines.forEach(line => {
+                    if (yPos > 100) {
+                        page3.drawText(line, {
+                            x: 60,
+                            y: yPos,
+                            size: 11,
+                            font: font,
+                            color: rgb(0.3, 0.3, 0.3)
+                        });
+                        yPos -= 16;
+                    }
                 });
-                yPos -= 16;
             }
         });
         
-        // Footer
-        page3.drawText(`Report generated by AI-Powered Security Assessment Tool - Page ${pdfDoc.getPageCount()}`, {
+        // Footer on last page
+        const pages = pdfDoc.getPages();
+        const lastPage = pages[pages.length - 1];
+        lastPage.drawText(`Report generated by AI-Powered Security Assessment Tool - Page ${pages.length}`, {
             x: 50,
             y: 50,
             size: 10,
@@ -343,25 +430,125 @@ export async function generateDetailedPDFReport(scanData: ScanData): Promise<Uin
     }
 }
 
+// **NEW**: Helper function to process remediation sections properly
+async function processRemediationSections(
+    remediationText: string,
+    currentPage: any,
+    currentPageYPos: number,
+    pdfDoc: any,
+    pageWidth: number,
+    pageHeight: number,
+    font: any,
+    boldFont: any
+): Promise<number> {
+    
+    const sections = remediationText.split(/(?=\d+\.)/g).filter(section => section.trim());
+    
+    for (const section of sections) {
+        const trimmedSection = section.trim();
+        if (!trimmedSection) continue;
+        
+        // Check if we need a new page
+        if (currentPageYPos < 150) {
+            currentPage = pdfDoc.addPage([pageWidth, pageHeight]);
+            currentPageYPos = pageHeight - 80;
+            
+            currentPage.drawText('Detailed Vulnerability Analysis (Continued)', {
+                x: 50,
+                y: pageHeight - 80,
+                size: 18,
+                font: boldFont,
+                color: rgb(0.2, 0.2, 0.2)
+            });
+            currentPageYPos = pageHeight - 120;
+        }
+        
+        // Extract section number and content
+        const sectionMatch = trimmedSection.match(/^(\d+)\.\s*(.*)/s);
+        if (sectionMatch) {
+            const [, sectionNum, content] = sectionMatch;
+            
+            // Draw section number
+            currentPage.drawText(`${sectionNum}.`, {
+                x: 60,
+                y: currentPageYPos,
+                size: 11,
+                font: boldFont,
+                color: rgb(0.2, 0.2, 0.2)
+            });
+            
+            currentPageYPos -= 20;
+            
+            // Draw section content
+            const contentLines = splitTextToFit(content, pageWidth - 140, font, 11);
+            for (const line of contentLines) {
+                if (currentPageYPos < 100) {
+                    currentPage = pdfDoc.addPage([pageWidth, pageHeight]);
+                    currentPageYPos = pageHeight - 80;
+                    
+                    currentPage.drawText('Detailed Vulnerability Analysis (Continued)', {
+                        x: 50,
+                        y: pageHeight - 80,
+                        size: 18,
+                        font: boldFont,
+                        color: rgb(0.2, 0.2, 0.2)
+                    });
+                    currentPageYPos = pageHeight - 120;
+                }
+                
+                currentPage.drawText(line, {
+                    x: 80,
+                    y: currentPageYPos,
+                    size: 11,
+                    font: font,
+                    color: rgb(0.3, 0.3, 0.3)
+                });
+                currentPageYPos -= 16;
+            }
+            currentPageYPos -= 10; // Extra space between sections
+        }
+    }
+    
+    return currentPageYPos;
+}
+
 function splitTextToFit(text: string, maxWidth: number, font: any, fontSize: number): string[] {
-    const words = text.split(' ');
+    const sanitizedText = text
+        .replace(/\r\n/g, ' ')
+        .replace(/\r/g, ' ')
+        .replace(/\n/g, ' ')
+        .replace(/\t/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    
+    const words = sanitizedText.split(' ');
     const lines: string[] = [];
     let currentLine = '';
     
     for (const word of words) {
         const testLine = currentLine ? `${currentLine} ${word}` : word;
-        const testWidth = font.widthOfTextAtSize(testLine, fontSize);
         
-        if (testWidth <= maxWidth) {
-            currentLine = testLine;
-        } else {
+        try {
+            const testWidth = font.widthOfTextAtSize(testLine, fontSize);
+            
+            if (testWidth <= maxWidth) {
+                currentLine = testLine;
+            } else {
+                if (currentLine) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    const maxChars = Math.floor(maxWidth / fontSize * 2);
+                    lines.push(word.substring(0, maxChars));
+                    currentLine = word.substring(maxChars);
+                }
+            }
+        } catch (error) {
             if (currentLine) {
                 lines.push(currentLine);
                 currentLine = word;
             } else {
-                // Word is too long, split it
-                lines.push(word.substring(0, Math.floor(maxWidth / fontSize * 2)));
-                currentLine = word.substring(Math.floor(maxWidth / fontSize * 2));
+                lines.push(word);
             }
         }
     }
@@ -371,4 +558,44 @@ function splitTextToFit(text: string, maxWidth: number, font: any, fontSize: num
     }
     
     return lines;
-} 
+}
+
+function sanitizeTextForPDF(text: string): string {
+    return text
+        .replace(/\r\n/g, ' ')
+        .replace(/\r/g, ' ')
+        .replace(/\n/g, ' ')
+        .replace(/\t/g, ' ')
+        .replace(/\s+/g, ' ')
+        .replace(/[^\x20-\x7E]/g, '')
+        .trim();
+}
+
+function calculateFallbackRiskScore(vulnerabilities: Vulnerability[]): number {
+    if (!vulnerabilities || vulnerabilities.length === 0) return 0;
+    
+    const severityScores = {
+        'CRITICAL': 100,
+        'HIGH': 75,
+        'MEDIUM': 50,
+        'LOW': 25,
+        'INFO': 10
+    };
+    
+    return vulnerabilities.reduce((total, vuln) => {
+        return total + (severityScores[vuln.severity] || 0);
+    }, 0);
+}
+
+function generateFallbackRemediation(vulnerability: Vulnerability): string {
+    const severity = vulnerability.severity;
+    const type = vulnerability.type;
+    
+    return `1. Immediate Action (Within 1 hour): Disable or restrict access to the affected endpoint immediately. Implement temporary blocking at the web server or load balancer level to prevent further data exposure.
+
+2. Technical Fix (Within 24 hours): Review the application code handling the ${vulnerability.endpoint} endpoint. Remove any hardcoded sensitive data, tokens, or credentials from the response. Implement proper input validation and output sanitization.
+
+3. Security Enhancement (Within 1 week): Implement proper secrets management using environment variables or a secure vault. Add comprehensive logging and monitoring for sensitive data access. Configure security headers and implement rate limiting.
+
+4. Verification Step: Test the endpoint to ensure no sensitive data is exposed. Perform a security scan to verify the vulnerability is resolved. Monitor logs for any suspicious activity.`;
+}

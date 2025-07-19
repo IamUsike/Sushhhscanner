@@ -21,6 +21,7 @@ export async function generateAIRemediation(vulnerability: Vulnerability): Promi
         if (provider === 'gemini') {
             const apiKey = process.env.GEMINI_API_KEY;
             if (!apiKey) {
+                console.warn('No Gemini API key found, using fallback remediation');
                 return generateFallbackRemediation(vulnerability);
             }
             
@@ -40,24 +41,31 @@ Vulnerability Details:
 - CWE: ${vulnerability.cwe || 'N/A'}
 - CVSS: ${vulnerability.cvss || 'N/A'}
 
-Please provide a comprehensive remediation plan that includes:
-1. Immediate actions to mitigate the risk
-2. Step-by-step technical remediation steps
-3. Code examples or configuration changes needed
-4. Best practices to prevent similar vulnerabilities
-5. Testing recommendations
-6. Timeline for implementation
+Please provide a concise remediation plan with exactly 3-4 key steps. Format your response as plain text without any markdown formatting, bullet points, or special characters. Use simple numbered lists and clear, actionable language.
 
-Format the response as clear, actionable steps that a developer can follow.`;
+Structure your response as:
+1. Immediate Action (what to do within 1 hour)
+2. Technical Fix (specific code or configuration changes)
+3. Security Enhancement (additional security measures)
+4. Verification Step (how to test the fix)
+
+Keep each step concise and practical. Do not use markdown formatting, asterisks, or special characters.`;
 
             const result = await model.generateContent(prompt);
             const response = result.response;
+            const text = response.text();
             
-            return response.text() || generateFallbackRemediation(vulnerability);
+            if (text && text.trim()) {
+                return text.trim();
+            } else {
+                console.warn('Empty response from Gemini, using fallback');
+                return generateFallbackRemediation(vulnerability);
+            }
             
         } else if (provider === 'groq') {
             const apiKey = process.env.GROQ_API_KEY;
             if (!apiKey) {
+                console.warn('No Groq API key found, using fallback remediation');
                 return generateFallbackRemediation(vulnerability);
             }
             
@@ -76,13 +84,21 @@ Format the response as clear, actionable steps that a developer can follow.`;
                 model: 'mixtral-8x7b-32768'
             });
             
-            return chatCompletion.choices[0].message.content || generateFallbackRemediation(vulnerability);
+            const content = chatCompletion.choices[0].message.content;
+            if (content && content.trim()) {
+                return content.trim();
+            } else {
+                console.warn('Empty response from Groq, using fallback');
+                return generateFallbackRemediation(vulnerability);
+            }
         }
         
+        console.warn('No valid LLM provider configured, using fallback');
         return generateFallbackRemediation(vulnerability);
         
     } catch (error) {
         console.error('AI remediation generation failed:', error);
+        console.log('Using fallback remediation for vulnerability:', vulnerability.type);
         return generateFallbackRemediation(vulnerability);
     }
 }
