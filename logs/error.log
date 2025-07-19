@@ -4140,3 +4140,5065 @@
   version: '1.0.0',
   timestamp: '2025-07-19 15:45:51.106'
 }
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:17.198'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:17.324'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:18.217'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:18.343'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:18.343'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:32.915'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:32.932'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:32.932'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:32.933'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:33.914'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:33.923'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:33.923'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:33.923'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:33.924'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:41.642'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:41.642'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:41.643'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:41.643'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:42.139'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:42.140'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:42.141'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:42.141'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:42.314'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:42.314'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:42.314'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:42.314'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:44.460'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:44.461'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:44.461'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:44.461'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:44.685'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:44.685'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:44.686'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:44.686'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:46.256'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:46.256'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:46.256'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:46.257'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:46.839'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:46.840'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:46.840'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:46.840'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:48.193'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:48.193'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:48.193'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:48.194'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:48.880'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:48.880'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:48.881'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:48.882'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:49.109'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:49.110'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:49.110'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:49.110'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:50.448'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:50.448'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:50.449'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:50.449'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:51.003'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:51.004'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:51.004'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:51.004'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:52.330'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:52.330'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:52.330'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:52.330'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:52.970'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:52.971'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:52.971'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:52.971'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:53.682'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:53.683'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:53.684'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:53.684'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:54.702'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:54.702'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:54.702'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:54.703'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:55.417'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:55.418'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:55.418'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:55.419'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:56.844'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:56.846'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:56.849'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:56.852'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:57.328'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:57.328'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:57.328'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:57.328'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:58.110'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:58.111'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:58.112'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:58.114'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:59.362'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:59.363'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:59.363'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:04:59.363'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:00.112'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:00.112'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:00.112'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:00.112'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:01.030'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:01.030'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:01.030'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:01.030'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:01.696'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:01.696'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:01.696'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:01.697'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:02.328'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:02.329'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:02.329'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:02.329'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:02.783'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:02.783'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:02.784'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:02.784'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:03.767'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:03.767'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:03.767'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:03.767'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:03.908'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:03.908'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:03.908'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:03.908'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:05.727'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:05.727'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:05.727'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:05.728'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:07.013'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:07.013'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:07.013'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:07.013'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:07.581'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:07.583'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:07.583'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:07.583'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:08.277'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:08.277'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:08.278'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:08.278'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:09.851'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:09.851'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:09.851'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:09.851'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:10.079'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:10.079'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:10.079'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:10.079'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:10.725'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:10.726'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:10.726'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:10.726'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:12.185'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:12.185'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:12.185'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:12.185'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:12.815'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:12.815'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:12.816'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:12.816'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:13.737'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:13.737'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:13.737'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:13.737'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:14.387'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:14.387'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:14.388'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:14.388'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:15.085'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:15.086'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:15.086'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:15.086'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:16.423'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:16.424'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:16.424'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:16.425'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:17.187'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:17.187'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:17.188'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:17.188'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:18.464'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:18.464'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:18.464'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:18.464'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:19.158'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:19.158'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:19.158'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:19.158'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:19.813'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:19.813'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:19.813'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:19.813'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:21.378'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:21.378'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:21.379'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:21.379'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:22.122'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:22.122'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:22.123'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:22.123'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:23.378'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:23.378'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:23.379'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:23.379'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:24.068'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:24.069'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:24.069'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:24.069'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:24.929'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:24.929'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:24.930'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:24.930'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:26.205'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:26.205'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:26.205'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:26.206'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:26.848'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:26.848'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:26.849'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:26.849'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:27.742'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:27.743'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:27.743'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:27.743'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:28.486'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:28.486'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:28.486'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:28.486'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:29.309'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:29.309'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:29.309'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:29.310'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:30.810'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:30.811'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:30.811'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:30.812'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:31.376'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:31.376'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:31.376'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:31.376'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:32.733'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:32.734'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:32.734'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:32.734'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:33.408'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:33.408'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:33.409'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:33.409'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:33.641'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:33.642'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:33.642'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:33.643'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:34.929'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:34.929'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:34.930'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:34.930'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:35.682'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:35.682'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:35.682'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:35.682'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:36.147'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:36.148'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:36.148'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:36.148'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:37.095'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:37.095'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:37.095'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:37.095'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:38.326'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:38.326'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:38.326'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:38.327'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:39.672'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:39.673'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:39.674'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:39.674'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:40.385'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:40.385'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:40.386'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:40.386'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:41.660'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:41.660'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:41.660'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:41.660'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:42.301'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:42.301'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:42.301'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:42.301'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:42.984'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:42.985'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:42.985'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:42.986'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:43.954'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:43.955'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:43.955'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:43.955'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:44.975'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:44.975'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:44.975'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:44.976'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:46.010'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:46.010'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:46.010'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:46.010'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:46.702'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:46.702'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:46.702'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:46.703'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:47.337'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:47.338'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:47.339'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:47.340'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:48.617'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:48.617'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:48.617'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:48.618'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:49.355'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:49.355'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:49.355'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:49.355'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:50.498'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:50.499'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:50.499'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:50.499'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:51.149'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:51.150'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:51.150'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:51.150'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:51.826'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:51.826'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:51.826'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:51.826'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:52.699'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:52.699'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:52.699'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:52.699'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:53.291'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:53.292'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:53.292'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:53.292'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:54.201'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:54.201'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:54.201'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:54.202'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:54.894'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:54.894'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:54.894'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:54.894'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:55.131'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:55.132'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:55.132'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:05:55.132'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:06:00.629'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:06:00.641'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:06:00.641'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:06:00.641'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:06:00.641'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:06:00.641'
+}
+{
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  message: 'PDF generation failed: PDF generation failed: Input to `PDFDocument.embedFont` was a custom font, but no `fontkit` instance was found. You must register a `fontkit` instance with `PDFDocument.registerFontkit(...)` before embedding custom fonts.',
+  stack: 'Error: PDF generation failed: Input to `PDFDocument.embedFont` was a custom font, but no `fontkit` instance was found. You must register a `fontkit` instance with `PDFDocument.registerFontkit(...)` before embedding custom fonts.\n' +
+    '    at generateDetailedPDFReport (/Users/sudhanshushekhar/Desktop/cywayz/src/ai/pdfReportGenerator.ts:343:15)\n' +
+    '    at processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+    '    at async /Users/sudhanshushekhar/Desktop/cywayz/src/routes/reports.ts:40:26',
+  level: 'error',
+  timestamp: '2025-07-19 16:07:47.280'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:07:53.701'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:07:53.705'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:07:54.252'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:07:54.258'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:07:54.258'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:07:54.356'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:07:54.366'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:07:54.366'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:07:54.366'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:07:56.829'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:07:56.836'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:07:56.836'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:07:56.837'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:07:56.837'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:04.351'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:04.352'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:04.353'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:04.353'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:04.378'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:04.378'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:04.378'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:04.378'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:04.957'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:04.957'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:04.958'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:04.958'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:06.441'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:06.441'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:06.442'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:06.442'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:07.114'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:07.114'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:07.115'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:07.115'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:08.421'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:08.421'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:08.422'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:08.422'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:09.433'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:09.433'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:09.434'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:09.434'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:10.357'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:10.358'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:10.358'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:10.359'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:10.954'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:10.954'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:10.955'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:10.955'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:11.214'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:11.214'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:11.214'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:11.214'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:12.913'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:12.913'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:12.913'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:12.913'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:13.150'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:13.150'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:13.151'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:13.151'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:14.434'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:14.434'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:14.434'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:14.434'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:15.055'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:15.056'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:15.056'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:15.057'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:15.795'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:15.796'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:15.796'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:15.796'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:17.250'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:17.251'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:17.251'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:17.251'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:17.949'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:17.949'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:17.949'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:17.950'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:19.189'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:19.190'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:19.190'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:19.191'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:19.905'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:19.905'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:19.905'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:19.905'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:20.607'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:20.608'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:20.608'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:20.608'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:22.219'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:22.220'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:22.220'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:22.220'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:22.949'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:22.950'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:22.950'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:22.950'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:24.651'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:24.652'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:24.652'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:24.652'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:25.699'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:25.699'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:25.699'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:25.699'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:26.220'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:26.221'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:26.221'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:26.221'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:26.369'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:26.370'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:26.370'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:26.370'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:27.802'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:27.803'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:27.803'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:27.803'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:28.128'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:28.128'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:28.128'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:28.129'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:29.701'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:29.701'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:29.701'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:29.702'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:30.279'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:30.280'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:30.280'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:30.281'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:31.719'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:31.719'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:31.720'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:31.720'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:32.320'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:32.321'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:32.322'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:32.322'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:33.587'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:33.588'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:33.588'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:33.588'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:34.253'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:34.253'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:34.253'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:34.254'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:34.940'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:34.941'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:34.941'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:34.942'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:36.343'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:36.344'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:36.344'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:36.344'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:36.929'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:36.929'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:36.930'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:36.930'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:38.334'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:38.334'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:38.334'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:38.335'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:38.924'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:38.925'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:38.925'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:38.925'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:39.156'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:39.157'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:39.157'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:39.158'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:40.482'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:40.482'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:40.483'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:40.483'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:41.106'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:41.106'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:41.107'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:41.107'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:41.984'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:41.985'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:41.985'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:41.985'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:42.600'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:42.600'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:42.600'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:42.600'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:42.826'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:42.826'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:42.827'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:42.827'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:44.211'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:44.211'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:44.211'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:44.212'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:44.906'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:44.906'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:44.906'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:44.906'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:45.956'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:45.957'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:45.957'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:45.957'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:46.602'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:46.602'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:46.602'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:46.602'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:47.227'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:47.227'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:47.227'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:47.227'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:48.565'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:48.565'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:48.566'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:48.566'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:49.142'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:49.142'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:49.142'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:49.142'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:50.527'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:50.527'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:50.527'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:50.528'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:51.384'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:51.385'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:51.385'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:51.388'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:51.513'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:51.513'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:51.513'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:51.513'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:52.768'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:52.769'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:52.769'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:52.769'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:53.387'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:53.387'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:53.388'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:53.388'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:54.342'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:54.343'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:54.343'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:54.343'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:55.137'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:55.138'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:55.138'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:55.139'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:55.390'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:55.390'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:55.390'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:55.391'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:56.447'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:56.447'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:56.447'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:56.447'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:57.003'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:57.004'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:57.004'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:57.004'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:57.487'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:57.487'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:57.487'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:57.487'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:58.534'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:58.535'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:58.535'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:58.535'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:59.670'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:59.670'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:59.670'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:08:59.670'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:01.160'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:01.161'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:01.162'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:01.162'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:01.765'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:01.765'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:01.765'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:01.766'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:03.055'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:03.055'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:03.055'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:03.055'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:03.774'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:03.774'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:03.774'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:03.774'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:04.367'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:04.368'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:04.368'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:04.368'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:05.699'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:05.699'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:05.699'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:05.700'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:06.401'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:06.401'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:06.402'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:06.402'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:07.819'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:07.819'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:07.820'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:07.820'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:08.600'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:08.600'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:08.600'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:08.601'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:08.846'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:08.846'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:08.847'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:08.847'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:10.086'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:10.086'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:10.086'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:10.087'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:10.324'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:10.324'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:10.324'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:10.325'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:11.261'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:11.262'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:11.262'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:11.262'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:11.495'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:11.495'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:11.496'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:11.496'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:11.735'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:11.735'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:11.736'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:11.736'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:13.105'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:13.105'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:13.106'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:13.106'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:13.848'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:13.849'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:13.849'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:13.849'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:14.784'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:14.785'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:14.785'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:14.786'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:15.400'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:15.400'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:15.400'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:15.400'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:15.631'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:15.631'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:15.631'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:15.631'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:21.023'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:21.032'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:21.032'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:21.033'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:21.033'
+}
+{
+  message: "Enhanced risk scoring failed: Cannot read properties of undefined (reading 'length')",
+  level: 'error',
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  timestamp: '2025-07-19 16:09:21.033'
+}
+{
+  service: 'api-risk-visualizer',
+  version: '1.0.0',
+  message: 'PDF generation failed: PDF generation failed: Input to `PDFDocument.embedFont` was a custom font, but no `fontkit` instance was found. You must register a `fontkit` instance with `PDFDocument.registerFontkit(...)` before embedding custom fonts.',
+  stack: 'Error: PDF generation failed: Input to `PDFDocument.embedFont` was a custom font, but no `fontkit` instance was found. You must register a `fontkit` instance with `PDFDocument.registerFontkit(...)` before embedding custom fonts.\n' +
+    '    at generateDetailedPDFReport (/Users/sudhanshushekhar/Desktop/cywayz/src/ai/pdfReportGenerator.ts:343:15)\n' +
+    '    at processTicksAndRejections (node:internal/process/task_queues:95:5)\n' +
+    '    at async /Users/sudhanshushekhar/Desktop/cywayz/src/routes/reports.ts:40:26',
+  level: 'error',
+  timestamp: '2025-07-19 16:09:29.266'
+}

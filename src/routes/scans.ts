@@ -7,7 +7,7 @@ import { logger } from '@utils/logger';
 import { Scan, ScanTarget, APIResponse } from '@/types';
 import { EndpointDiscovery, DiscoveryOptions } from '../discovery/endpointDiscovery';
 import { Server as SocketIOServer } from 'socket.io';
-import { reportRoutes } from './reports';
+
 // n8n integration for notifications (using native fetch in Node.js 18+)
 import 'dotenv/config';
 const globalAny = global as any;

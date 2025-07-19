@@ -8,7 +8,7 @@ import path from 'path';
 
 import { logger } from './utils/logger';
 import { scanRoutes } from './routes/scans';
-import { reportRoutes } from './routes/reports';
+import reportRoutes from './routes/reports';
 import mlRoutes from './routes/ml';
 import { notFound, errorHandler } from './utils/middleware'; // Restore middleware
 import { database } from './core/database'; // Corrected import path

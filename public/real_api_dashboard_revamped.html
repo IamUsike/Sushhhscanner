@@ -1530,7 +1530,7 @@
                 // Add export button handlers
                 document.getElementById('exportJSON')?.addEventListener('click', () => this.downloadReport('json'));
                 document.getElementById('exportCSV')?.addEventListener('click', () => this.downloadReport('csv'));
-                document.getElementById('exportPDF')?.addEventListener('click', () => this.downloadReport('pdf'));
+                document.getElementById('exportPDF')?.addEventListener('click', () => this.generatePDFReport());
             }
 
             // New method to initialize the heatmap
@@ -2680,93 +2680,87 @@
             // PDF Report Generation
             async generatePDFReport() {
                 try {
-                    this.addActivity('📄 Generating AI PDF Report', 'Creating comprehensive security assessment...');
+                    this.showNotification('Generating PDF report...', 'info');
                     
-                    // Validate scan data
-                    if (this.vulnerabilities.length === 0) {
-                        this.showNotification('No vulnerabilities found. Cannot generate PDF.', 'warning');
-                        return;
-                    }
-
-                    // Prepare scan data for PDF generation
+                    // Prepare comprehensive scan data for PDF
                     const scanData = {
-                        id: this.currentScanId || `scan-${Date.now()}`,
-                        userId: 'mock-user-id',
-                        target: { baseUrl: this.dom.targetUrlInput.value },
-                        status: 'completed',
-                        progress: 100,
-                        currentStep: 'Scan Complete',
-                        vulnerabilities: this.vulnerabilities,
-                        metadata: {
-                            startedAt: new Date(this.scanStartTime || Date.now()),
-                            endedAt: new Date(),
-                            endpointsDiscovered: this.endpoints.length,
-                            aiAnalysisEnabled: true
+                        scanId: this.scanId || `scan-${Date.now()}`,
+                        target: this.targetUrl || 'Unknown Target',
+                        startTime: this.scanStartTime || new Date().toISOString(),
+                        endTime: this.scanEndTime || new Date().toISOString(),
+                        duration: this.scanDuration || 0,
+                        vulnerabilities: this.vulnerabilities || [],
+                        endpointsDiscovered: this.endpointsDiscovered || 0,
+                        totalRiskScore: this.totalRiskScore || 0,
+                        cvssScore: this.cvssScore || 0,
+                        scanProgress: {
+                            urlsDiscovered: this.scanProgress?.urlsDiscovered || 0,
+                            vulnerabilitiesFound: this.scanProgress?.vulnerabilitiesFound || 0,
+                            scanPerformance: this.scanProgress?.scanPerformance || {}
                         },
-                        configuration: {
-                            depth: 'comprehensive',
-                            includeAI: true
-                        },
-                        endpoints: this.endpoints
+                        mlMetrics: {
+                            riskScore: this.totalRiskScore || 0,
+                            cvssScore: this.cvssScore || 0,
+                            severityBreakdown: this.getSeverityBreakdown()
+                        }
                     };
 
-                    // Validate scan data
-                    console.log('Preparing PDF with scan data:', scanData);
+                    console.log('Sending scan data for PDF generation:', scanData);
 
-                    // Generate PDF report via API
-                    const response = await fetch(`/api/v1/reports/${scanData.id}`, {
+                    const response = await fetch('/api/v1/reports/generate-pdf', {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ 
-                            format: 'pdf',
-                            scanData: scanData  // Pass full scan data
-                        })
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(scanData)
                     });
 
-                    // Log the raw response for debugging
-                    const responseText = await response.text();
-                    console.log('Raw API Response:', responseText);
-
-                    // Parse the response
-                    let result;
-                    try {
-                        result = JSON.parse(responseText);
-                    } catch (parseError) {
-                        console.error('Failed to parse response:', parseError);
-                        throw new Error(`Invalid server response: ${responseText}`);
-                    }
-
                     if (!response.ok) {
-                        throw new Error(result.error?.message || 'Unknown server error');
+                        const errorData = await response.json();
+                        throw new Error(errorData.message || `HTTP ${response.status}`);
                     }
 
-                    if (result.success && result.data.downloadUrl) {
-                        // Download the PDF
-                        const downloadResponse = await fetch(result.data.downloadUrl);
-                        if (downloadResponse.ok) {
-                            const blob = await downloadResponse.blob();
-                            const url = window.URL.createObjectURL(blob);
-                            const a = document.createElement('a');
-                            a.href = url;
-                            a.download = `security-assessment-${scanData.id}.pdf`;
-                            document.body.appendChild(a);
-                            a.click();
-                            document.body.removeChild(a);
-                            window.URL.revokeObjectURL(url);
-                            
-                            this.addActivity('✅ PDF Report Generated', 'AI-powered security assessment downloaded successfully');
-                            this.showNotification('PDF report generated and downloaded successfully!', 'success');
-                        } else {
-                            throw new Error('Failed to download PDF');
-                        }
-                    } else {
-                        throw new Error('PDF generation failed: Invalid response');
+                    const result = await response.json();
+                    
+                    if (!result.success) {
+                        throw new Error(result.message || 'PDF generation failed');
                     }
+
+                    // Download the PDF
+                    const { data: base64PDF, filename } = result.report;
+                    
+                    // Convert base64 to blob and download
+                    const binaryString = atob(base64PDF);
+                    const bytes = new Uint8Array(binaryString.length);
+                    for (let i = 0; i < binaryString.length; i++) {
+                        bytes[i] = binaryString.charCodeAt(i);
+                    }
+                    
+                    const blob = new Blob([bytes], { type: 'application/pdf' });
+                    const url = URL.createObjectURL(blob);
+                    
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+
+                    this.showNotification('PDF report generated and downloaded successfully!', 'success');
+                    
                 } catch (error) {
                     console.error('PDF generation failed:', error);
-                    this.addActivity('❌ PDF Generation Failed', error.message || 'Failed to generate PDF report');
-                    this.showNotification(`PDF Report Generation Error: ${error.message}`, 'error');
+                    this.showNotification(`PDF generation failed: ${error.message}`, 'error');
                 }
+            }
+
+            getSeverityBreakdown() {
+                const breakdown = {};
+                this.vulnerabilities.forEach(vuln => {
+                    breakdown[vuln.severity] = (breakdown[vuln.severity] || 0) + 1;
+                });
+                return breakdown;
             }
         }
 
