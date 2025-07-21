@@ -1585,29 +1585,39 @@
                 this.showNotification(`Generating ${format.toUpperCase()} report...`, 'info');
                 
                 try {
-                    // Step 1: Request report generation
+                    // Prepare full scan data for report
+                    const scanData = {
+                        format,
+                        scanId: this.currentScanId,
+                        vulnerabilities: this.vulnerabilities || [],
+                        endpoints: this.endpoints || [],
+                        startTime: this.scanStartTime || new Date().toISOString(),
+                        endTime: this.scanEndTime || new Date().toISOString(),
+                        duration: this.scanDuration || Math.floor((Date.now() - (this.scanStartTime || Date.now())) / 1000),
+                        totalRiskScore: this.totalRiskScore || 0,
+                        cvssScore: this.cvssScore || 0,
+                        scanProgress: this.scanProgress || {},
+                        mlMetrics: this.mlMetrics || {},
+                        target: this.dom?.targetUrlInput?.value || this.targetUrl || 'Unknown Target',
+                    };
                     const response = await fetch(`/api/v1/reports/${this.currentScanId}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ format })
+                        body: JSON.stringify(scanData)
                     });
-                    
                     if (!response.ok) {
                         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
                     }
-                    
                     const result = await response.json();
                     if (!result.success || !result.data?.downloadUrl) {
                         throw new Error(result.message || 'Failed to generate report');
                     }
-                    
                     // Step 2: Download the report
                     const downloadUrl = result.data.downloadUrl;
                     const fileResponse = await fetch(downloadUrl);
                     if (!fileResponse.ok) {
                         throw new Error('Failed to download report file');
                     }
-                    
                     const blob = await fileResponse.blob();
                     const url = window.URL.createObjectURL(blob);
                     const a = document.createElement('a');
