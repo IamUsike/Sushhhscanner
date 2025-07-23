@@ -1,0 +1,2 @@
+[ERROR] Error during scan:(strdump() missing 1 required positional argument: 'fp')
+Exception: dump() missing 1 required positional argument: 'fp'

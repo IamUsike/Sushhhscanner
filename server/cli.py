@@ -121,8 +121,22 @@ async def main():
     parser.add_argument("--tooloutput-pdf", type=str, help="Export external tool output to PDF file")
     parser.add_argument("--tooloutput-csv", type=str, help="Export external tool output to CSV file")
     parser.add_argument("--tooloutput-excel", type=str, help="Export external tool output to Excel file")
+    parser.add_argument("--tui", action="store_true", help="Launch Text User Interface (TUI) instead of CLI mode")
 
     args=parser.parse_args()
+
+    # Launch TUI if requested
+    if args.tui:
+        try:
+            from tui import main as tui_main
+            tui_main()
+            return
+        except ImportError as e:
+            print_status(f"TUI not available: {e}. Please install textual: pip install textual", "error")
+            sys.exit(1)
+        except Exception as e:
+            print_status(f"Error launching TUI: {e}", "error")
+            sys.exit(1)
 
     def log_error(message):
         if args.error_log:

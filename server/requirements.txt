@@ -12,4 +12,5 @@ tabulate
 tqdm
 pandas
 openpyxl
-reportlab 
+reportlab
+textual==0.40.1 

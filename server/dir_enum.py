@@ -198,7 +198,7 @@ class DirectoryEnumerator:
                 "error": str(e)
             }
 
-    async def scan_target(self, target_url: str, wordlist_type: str = "common", max_workers: int = 50, delay: float = 0.1, engine: str = "internal", tool_cmd_template: str = None, per_dir_cmd_template: str = None, custom_wordlist=None, recursive=False, max_depth=2, show_progress=False, rate_limit=None) -> dict:
+    async def scan_target(self, target_url: str, wordlist_type: str = "common", max_workers: int = 50, delay: float = 0.1, engine: str = "internal", tool_cmd_template: str = None, per_dir_cmd_template: str = None, custom_wordlist=None, recursive=False, max_depth=2, show_progress=False, rate_limit=None, progress_callback=None) -> dict:
         target_url = self.normalize_url(target_url)
         self.scan_stats["start_time"] = time.time()
         if engine == "external" and tool_cmd_template:
@@ -234,6 +234,7 @@ class DirectoryEnumerator:
                 min_interval = 1.0 / rate_limit
             else:
                 min_interval = None
+            completed = 0
             while queue:
                 base_url, depth = queue.popleft()
                 if (base_url, depth) in checked_dirs or depth > max_depth:
@@ -263,6 +264,11 @@ class DirectoryEnumerator:
                         if recursive and result.is_directory and depth < max_depth:
                             queue.append((result.url, depth + 1))
                     pbar.update(1)
+                    completed += 1
+                    if progress_callback and est_total > 0:
+                        progress = min(completed / est_total, 1.0)
+                        status = f"Scanning... ({completed}/{est_total})"
+                        progress_callback(progress, status)
                 all_results.extend(valid_results)
             pbar.close()
             self.results = all_results
