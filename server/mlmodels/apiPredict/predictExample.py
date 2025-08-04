@@ -1,3 +1,8 @@
+### This is a demo code to understand how semi-supervised traning takes 
+### place and how the model tranins iteself, the implementations can be 
+### such that they persist memory or start with a clean memory each time.
+
+
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
@@ -27,7 +32,9 @@ class SimpleEndpointPredictor:
             'has_version': 1 if re.search(r'v\d', path) else 0,
         }
         
-        return features
+        return featured traning takes 
+        ### place and how the model tranins iteself, the implementations can be 
+        ### such that they persist memory or start with a clean memory each time.s
 
     def demonstrate_training(self):
         """Show exactly what happens during training"""

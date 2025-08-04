@@ -1,0 +1,61 @@
+flowchart TD
+    A[Target Input<br/>URL/API Endpoint] --> B{Scanning Mode}
+    
+    B -->|Public API| C[Nuclei Scanner<br/>OWASP API Top 10<br/>Vulnerability Detection]
+    B -->|Authenticated| D[Nuclei Scanner + Auth<br/>Customer Provided Tokens<br/>Full Authorization Testing]
+    
+    C --> E[Vulnerability Results<br/>JSON Output]
+    D --> E
+    
+    E --> F[Local LLM Agent<br/>Analyze & Prioritize Findings]
+    
+    F --> G{Vulnerability Type<br/>Classification}
+    
+    G -->|SQL Injection| H[Execute SQLMap<br/>Targeted Testing]
+    G -->|JWT Issues| I[Execute JWT Testing<br/>Algorithm/Secret Testing]
+    G -->|XSS| J[Execute XSS Testing<br/>Payload Validation]
+    G -->|BOLA/IDOR| K[Execute Authorization Tests<br/>Object Level Access]
+    G -->|Rate Limiting| L[Execute Resource Tests<br/>DoS/Consumption Testing]
+    G -->|Other Vulns| M[Execute Custom Scripts<br/>Targeted Exploitation]
+    
+    H --> N[Parse Tool Output]
+    I --> N
+    J --> N
+    K --> N
+    L --> N
+    M --> N
+    
+    N --> O[LLM Analysis<br/>Validate Exploitability<br/>Risk Assessment]
+    
+    O --> P[Generate Report<br/>• Confirmed Vulnerabilities<br/>• Exploitation Evidence<br/>• Risk Ratings<br/>• Remediation Steps]
+    
+    P --> Q[Final Security Report<br/>Dashboard/PDF/JSON]
+    
+    %% Styling
+    classDef startEnd fill:#e1f5fe
+    classDef scanner fill:#f3e5f5
+    classDef llm fill:#e8f5e8
+    classDef tools fill:#fff3e0
+    classDef output fill:#fce4ec
+    
+    class A,Q startEnd
+    class C,D,E scanner
+    class F,O llm
+    class H,I,J,K,L,M,N tools
+    class P output
+    
+    %% Phase indicators
+    subgraph "Phase 1: Initial Implementation"
+        direction TB
+        A1[Target Input] --> B1[Nuclei Scanner]
+        B1 --> E1[Basic Vuln Detection]
+        E1 --> F1[LLM Analysis]
+        F1 --> P1[Simple Report]
+    end
+    
+    subgraph "Phase 2: Advanced Features"
+        direction TB
+        A2[Multi-mode Support] --> B2[Intelligent Tool Selection]
+        B2 --> C2[Advanced Exploitation]
+        C2 --> D2[Comprehensive Reporting]
+    end
