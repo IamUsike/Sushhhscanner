@@ -1,3 +1,4 @@
+
 flowchart TD
     A[Target Input<br/>URL/API Endpoint] --> B{Scanning Mode}
     
@@ -7,55 +8,79 @@ flowchart TD
     C --> E[Vulnerability Results<br/>JSON Output]
     D --> E
     
-    E --> F[Local LLM Agent<br/>Analyze & Prioritize Findings]
+    E --> F[LLM Agent<br/>Initial Analysis & Triage]
     
-    F --> G{Vulnerability Type<br/>Classification}
+    F --> G{Requires Deep<br/>Reconnaissance?}
     
-    G -->|SQL Injection| H[Execute SQLMap<br/>Targeted Testing]
-    G -->|JWT Issues| I[Execute JWT Testing<br/>Algorithm/Secret Testing]
-    G -->|XSS| J[Execute XSS Testing<br/>Payload Validation]
-    G -->|BOLA/IDOR| K[Execute Authorization Tests<br/>Object Level Access]
-    G -->|Rate Limiting| L[Execute Resource Tests<br/>DoS/Consumption Testing]
-    G -->|Other Vulns| M[Execute Custom Scripts<br/>Targeted Exploitation]
+    G -->|Web App Found| H[Web Reconnaissance Phase<br/>• Katana/Hakrawler Crawling<br/>• Form Discovery<br/>• Parameter Enumeration<br/>• Auth Mechanism Detection<br/>• Endpoint Mapping]
+    G -->|Infrastructure Only| I[Direct Tool Selection]
     
-    H --> N[Parse Tool Output]
-    I --> N
-    J --> N
-    K --> N
-    L --> N
-    M --> N
+    H --> J[Parse Reconnaissance Data<br/>• Extract Forms/Parameters<br/>• Map Attack Surface<br/>• Identify Input Contexts]
     
-    N --> O[LLM Analysis<br/>Validate Exploitability<br/>Risk Assessment]
+    J --> K[LLM Agent<br/>Analyze & Prioritize<br/>with Full Context]
+    I --> K
     
-    O --> P[Generate Report<br/>• Confirmed Vulnerabilities<br/>• Exploitation Evidence<br/>• Risk Ratings<br/>• Remediation Steps]
+    K --> L{Vulnerability Type<br/>Classification}
     
-    P --> Q[Final Security Report<br/>Dashboard/PDF/JSON]
+    L -->|SQL Injection + Forms| M[Execute SQLMap<br/>Targeted Parameter Testing<br/>with Discovered Forms]
+    L -->|XSS + Input Fields| N[Execute XSS Testing<br/>Context-Aware Payloads<br/>on Discovered Inputs]
+    L -->|JWT Issues| O[Execute JWT Testing<br/>Algorithm/Secret Testing]
+    L -->|BOLA/IDOR + Auth| P[Execute Authorization Tests<br/>Object Level Access<br/>with Session Context]
+    L -->|Rate Limiting| Q[Execute Resource Tests<br/>DoS/Consumption Testing]
+    L -->|Infrastructure Vulns| R[Execute Custom Scripts<br/>CVE-specific Exploits]
     
-    %% Styling
-    classDef startEnd fill:#e1f5fe
-    classDef scanner fill:#f3e5f5
-    classDef llm fill:#e8f5e8
-    classDef tools fill:#fff3e0
-    classDef output fill:#fce4ec
+    M --> S[Parse Tool Output]
+    N --> S
+    O --> S
+    P --> S
+    Q --> S
+    R --> S
     
-    class A,Q startEnd
+    S --> T[LLM Analysis<br/>Validate Exploitability<br/>Risk Assessment<br/>Attack Chain Analysis]
+    
+    T --> U[Generate Report<br/>• Confirmed Vulnerabilities<br/>• Exploitation Evidence<br/>• Attack Chains<br/>• Risk Ratings<br/>• Remediation Steps]
+    
+    U --> V[Final Security Report<br/>Dashboard/PDF/JSON]
+    
+    %% Improved Color Styling
+    classDef startEnd fill:#2196F3,stroke:#1976D2,stroke-width:2px,color:#fff
+    classDef scanner fill:#4CAF50,stroke:#388E3C,stroke-width:2px,color:#fff
+    classDef recon fill:#FF9800,stroke:#F57C00,stroke-width:2px,color:#fff
+    classDef llm fill:#9C27B0,stroke:#7B1FA2,stroke-width:2px,color:#fff
+    classDef tools fill:#F44336,stroke:#D32F2F,stroke-width:2px,color:#fff
+    classDef output fill:#607D8B,stroke:#455A64,stroke-width:2px,color:#fff
+    classDef decision fill:#FFEB3B,stroke:#F57F17,stroke-width:2px,color:#000
+    
+    class A,V startEnd
     class C,D,E scanner
-    class F,O llm
-    class H,I,J,K,L,M,N tools
-    class P output
+    class H,J recon
+    class F,K,T llm
+    class M,N,O,P,Q,R,S tools
+    class U output
+    class B,G,L decision
     
-    %% Phase indicators
-    subgraph "Phase 1: Initial Implementation"
+    %% Phase indicators with better spacing
+    subgraph "Phase 1: Discovery & Initial Scanning"
         direction TB
         A1[Target Input] --> B1[Nuclei Scanner]
         B1 --> E1[Basic Vuln Detection]
-        E1 --> F1[LLM Analysis]
-        F1 --> P1[Simple Report]
     end
     
-    subgraph "Phase 2: Advanced Features"
+    subgraph "Phase 2: Reconnaissance & Context Building"
         direction TB
-        A2[Multi-mode Support] --> B2[Intelligent Tool Selection]
-        B2 --> C2[Advanced Exploitation]
-        C2 --> D2[Comprehensive Reporting]
+        F1[LLM Triage] --> H1[Web Crawling]
+        H1 --> J1[Attack Surface Mapping]
     end
+    
+    subgraph "Phase 3: Targeted Exploitation"
+        direction TB
+        K1[Intelligent Tool Selection] --> M1[Context-Aware Testing]
+        M1 --> S1[Result Validation]
+    end
+    
+    subgraph "Phase 4: Analysis & Reporting"
+        direction TB
+        T1[Risk Assessment] --> U1[Report Generation]
+        U1 --> V1[Final Output]
+    end
+
